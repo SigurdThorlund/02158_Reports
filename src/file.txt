@@ -1,0 +1,156 @@
+Purpose
+To get aquainted with the Java thread pool framework for concurrent execution and to experience some phenomena and challenges of parallel processsing.
+
+Preparations
+
+Read about Java thread pools in [Proc 4.6]. You may also look at this basic introduction to the Java Executor Framework even study its documentation.
+
+The algorithm of this assignment represents a case of iterative parallelism described in [Andrews 1.4]. and the similar concept data parallel algorithm described in [Andrews 3.5].
+
+You are supposed to visualize your results with graphs. For this, you may want to install Gnuplot. See http://gnuplot.info for installation instructions. You can also use any other visualization tool (Maple, Matlab, R, ...) that you might be familiar with.
+
+Program setup
+
+    Fetch the program Search.java that is a Java program that will search a file for occurrences of a given pattern (using an overly naive approach that suffices here).
+
+    Compile the program and run it from the command line with
+
+    java Search <file> <pattern>
+
+    where <file> is a file name, and <pattern> is the string to be located.
+
+    The program performs a sequential search using the Java executor framework. This is accomplished by creating a single task searching the whole file and letting this be executed by a single thread executor. The result of the single task is represented by a future which (when ready) can be used directly as the overall result.
+
+    The program measures the elapsed search time (loading of file not included) and prints the number of occurrences.
+
+    Study and understand how the main() method works.
+
+    Run the program on a large file and vary the search pattern in order to obtain a search which takes about a second.
+
+    You may e.g. try to find DNA-patterns in part of the human cromosome 2 or search the complete works of William Shakespeare (e.g. for "Something is rotten in the state of Denmark.").
+
+Problem 1: Time variations
+
+Actually, the program is able to run the search multiple times. This may be set with the -R option:
+
+java Search -R <r> <file> <pattern>
+
+where <r> is the desired number of runs. Try to run your search with, say, 10 runs.
+
+Plot the resulting execution times. How does the execution time vary?
+
+If you see that the execution times stabilize after some runs, these first runs may be seen warm-up runs not to be considered for a proper execution time comparison.
+
+Discuss what may be the reasons for the warm-up phenomenon.
+
+You may discard the first <w> runs by using the option -W <w>.
+
+Adjust the -W and -P options so that you get a sequence of reasonable identical measurements and state your results.
+
+Problem 2: Splitting up in tasks
+
+Now modify the program to allow for the search to be performed as a number of independent tasks whose results can be combined to the overall results. The number of tasks to use should be given by a third parameter to the program and is available in the global variable ntasks.
+
+The given Search class already has the machinery to submit muliple tasks to the thread pool. Start by uncommenting the multi-task search part of the main method.
+
+For now, keep the single thread executor.
+
+The given SearchTask class should not be modified.
+
+You should, in particular, be careful to analyze which part of the character array each task should work on and how the position results should be combined.
+
+Test that the multi-task search works correctly. As part of this, you may try to find the number of occurrences of xxxx (four x-es) in the file xtest.txt [It should be 2605].
+
+Describe your deliberations on the splitting and discuss whether the workload has been distributed as evenly as possible.
+
+The program measures the elapsed execution time of the multi-task search as for the single task and calculates the average speedup obtained by using multiple tasks.
+
+Explain the speedup notion.
+
+Execute the program (using say 10 runs) and observe the multi-task execution times. Is the speedup as expected?
+
+Problem 3: Concurrent execution
+
+Once the program is running correctly, you may replace the execution engine with a Executor.newCachedThreadPool() which will run each tasks on its own thread.
+
+Now you should conduct a series of experiments where, for the same file and pattern, you vary the number of tasks (=threads) and record the speedups uptained.
+
+The results may be recorded by supplying the name of a data file using the option -d <datafile>. You may then add a data line using the method writeData(String).
+
+Your results should be illustrated by graphs showing the speedup as a function of the number of tasks.
+
+How does the speedup vary as the number of tasks goes from 1 to say 20? Is that as expected?
+
+Try to let the number of tasks grow even further (using fairly large steps). What do you observe?
+
+Problem 4: Limiting the concurrency
+
+Finally, you should try to decouple tasks and threads by using Executor.newFixedThreadPool(nthreads) where the global variable nthreads should be set by the fourth program parameter.
+
+For a fixed search problem, try to see how the performance is related to the number of tasks and threads varying these.
+
+Illustrate the results using graphs. How do your explain the results?
+
+Problem 5 (extra): Running on the HPC
+
+The assignment may be done on your own computer (desktop or laptop), but the effect of the parallel execution will be limited by the number of cores you have. If instead you run on a so-called application node of the DTU HPC Cluster, the machine will appear to have an indefinite(!) number of processors(cores).
+
+To run on an HPC application node either install the ThinLinc client application (see http://gbar.dtu.dk/faq/43-thinlinc or just use the web-based client on https://thinlinc.gbar.dtu.dk)
+
+Log in with your usual DTU credentials, right-click on the desktop and chose "Open terminal here" to start a terminal (the prompt should start with n-62-...). You are now in a standard Linux environment, from where you may download the code, start various editors/IDEs and run the code. [To leave, rightclick >> Applications >> Log out]
+
+You can transfer files from your laptop using scp (Linux, Mac) or Putty/WinSCP (Windows) or just copy/paste into an editor. Alternatively you may transfer via a git repository.
+
+Try to redo some of the experiments from Problem 3 or 4 and compare the results. What do you observe? Can you explain this?
+
+You may use the command lscpu to learn how many processors the node has. Is this recognized in your results?
+
+Caveat: Always beware that measuring computing times on a timeshared multi-user system is like measuring length with an elastic ruler.
+
+Group Work
+
+The assignment should be made in groups of 2-3 students. If you for some reason would prefer to do the assignment on your own, you must get prior permission from the teacher (HHL). You need not register your groups before the hand-in.
+
+All groups should make Problems 1 to 4. Groups of 3 students are expected to do Problem 5 as well.
+
+Of course, each group must work on its own. In particular you must not exchange any form of code or texts with other groups.
+
+Hand-in
+
+The asssignment must be handed in on Inside no later than
+Wednesday September 23, 2020 at 23.59
+
+The hand-in should comprise the following:
+
+    A pdf report.
+
+    All principal versions of the search program.
+
+    Documentation of all execution experiments in the form of text files with program output. These should be properly (i.e. systematically) named and referenced in the report.
+
+The report should be uploaded as a separate file. The programs and documentation files should be zipped.
+
+Reporting
+
+The report should include
+
+    A front page with all information about what, who and where.
+
+    A section for each problem. This should describe your deliberations on the problem, provide answers to the questions raised, describe what you have done and present your results in the form requested.
+
+     
+    Your experiments must be properly documented, stating which programs were run on which hardware with references to the documentation files.
+
+    A conclusion with reflections on using concurrency for improving performance.
+
+The report should be brief, but there is no page limit.
+
+Help
+
+Assistance for the assignment will be available on September 17, during the lab session as indicated on the course plan.
+
+Updates
+
+In case of amendments or updates, these will appear here. Major updates will be announced on Inside.
+
+Sep 14: Due to a bug in version 1.0, Search.java has been updated to version 1.1. 
