@@ -59,7 +59,7 @@ public class Search {
     static int len;                     // Length of actual text
     static String fname;                // Text file name
     static char[] pattern;              // Search pattern
-    static int ntasks = 1;              // No. of tasks
+    static int ntasks = 10;              // No. of tasks
     static int nthreads = 1;            // No. of threads to use
     static boolean printPos = false;    // Print all positions found
     static int warmups = 0;             // No. of warmup searches
@@ -231,11 +231,23 @@ public class Search {
              * Run search using multiple tasks
              *********************************************/
 
-/*+++++++++ Uncomment for Problem 2+ 
+//+++++++++ Uncomment for Problem 2+ 
          
             // Create list of tasks
             List<SearchTask> taskList = new ArrayList<SearchTask>();
             // Add tasks to list here
+            for (int i = 0; i < ntasks; i++) {
+                int startt = i * len / ntasks;
+                int end = (i+1) * len / ntasks + pattern.length - 1;
+                
+                if (i == ntasks - 1) {
+                    taskList.add(new SearchTask(text, pattern, startt, len));
+                } else if (i == 0) {
+                    taskList.add(new SearchTask(text, pattern, 0, end));
+                } else {
+                    taskList.add(new SearchTask(text, pattern, startt, end));
+                }
+            }
 
             List<Integer> result = null;
             
@@ -256,6 +268,11 @@ public class Search {
                 // Overall result is an ordered list of unique occurrence positions
                 result = new LinkedList<Integer>();
                 // Combine future results into an overall result 
+                for (int i = 0; i<futures.size(); i++) {
+                    for (int j = 0; j<futures.get(i).get().size(); j++) {
+                        result.add(futures.get(i).get().get(j));
+                    }
+                }
 
                 time = (double) (System.nanoTime() - start) / 1e9;
                 totalTime += time;    
@@ -274,7 +291,7 @@ public class Search {
             }
             System.out.printf("\n\nAverage speedup: %1.2f\n\n", singleTime / multiTime);
 
-++++++++++*/
+//++++++++++*/
 
             /**********************************************
              * Terminate engine after use
