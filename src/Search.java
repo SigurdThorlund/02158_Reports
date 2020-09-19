@@ -191,6 +191,8 @@ public class Search {
 
             /* Setup execution engine */
             ExecutorService engine = Executors.newSingleThreadExecutor();
+            //ExecutorService engine = Executors.newCachedThreadPool();
+            //ExecutorService engine = Executors.newFixedThreadPool(nthreads);
 
             /**********************************************
              * Run search using a single task
