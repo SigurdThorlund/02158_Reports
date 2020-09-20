@@ -190,9 +190,9 @@ public class Search {
                     fname, new String(pattern), ntasks, nthreads, warmups, runs);
 
             /* Setup execution engine */
-            //ExecutorService engine = Executors.newSingleThreadExecutor();
+            ExecutorService engine = Executors.newSingleThreadExecutor();
             //ExecutorService engine = Executors.newCachedThreadPool();
-            ExecutorService engine = Executors.newFixedThreadPool(nthreads);
+            //ExecutorService engine = Executors.newFixedThreadPool(nthreads);
 
             //Clear the output file
             File file = new File("output.txt");
@@ -241,7 +241,7 @@ public class Search {
              *********************************************/
 
 //+++++++++ Uncomment for Problem 2+ 
-         
+
             // Create list of tasks
             List<SearchTask> taskList = new ArrayList<SearchTask>();
             // Add tasks to list here
@@ -287,7 +287,7 @@ public class Search {
                 totalTime += time;    
                 
                 System.out.printf("\nUsing %2d tasks: ", ntasks);
-                writeRun(run);  writeResult(result);  writeTime(time);
+                writeRun(run);  writeResult(result);  writeTime(time); writeData(String.valueOf(time));
             }
 
             double multiTime = totalTime / runs;
