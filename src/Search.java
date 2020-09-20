@@ -190,9 +190,15 @@ public class Search {
                     fname, new String(pattern), ntasks, nthreads, warmups, runs);
 
             /* Setup execution engine */
-            ExecutorService engine = Executors.newSingleThreadExecutor();
+            //ExecutorService engine = Executors.newSingleThreadExecutor();
             //ExecutorService engine = Executors.newCachedThreadPool();
-            //ExecutorService engine = Executors.newFixedThreadPool(nthreads);
+            ExecutorService engine = Executors.newFixedThreadPool(nthreads);
+
+            //Clear the output file
+            File file = new File("output.txt");
+            PrintWriter writer = new PrintWriter(file);
+            writer.print("");
+            writer.close();
 
             /**********************************************
              * Run search using a single task
@@ -221,7 +227,8 @@ public class Search {
                 totalTime += time;
 
                 System.out.print("\nSingle task: ");
-                writeRun(run);  writeResult(singleResult);  writeTime(time);
+                String timeVal = String.valueOf(time);
+                writeRun(run);  writeResult(singleResult);  writeTime(time); writeData(timeVal);
             }
 
             double singleTime = totalTime / runs;
