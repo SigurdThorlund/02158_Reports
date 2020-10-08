@@ -14,11 +14,18 @@ public class Alley {
 
     /* Determine whether pos is right before alley is entered */
     public boolean atEntry(Pos pos) {
+        if (pos.col == 1) {
+            return pos.row == 1 || pos.row == 2;
+        } else if (pos.col == 0) {
+            return pos.row == 10;
+        }
         return false;
     }
 
     /* Determine whether pos is right after alley is left */
     public boolean atExit(Pos pos) {
+        if (pos.col == 0) return pos.row == 0;
+        else if (pos.col == 1) return pos.row == 9;
         return false;
     }
 
