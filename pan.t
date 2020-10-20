@@ -28,103 +28,104 @@ settable(void)
 
 	trans[2] = (Trans **) emalloc(12*sizeof(Trans *));
 
-	T = trans[2][5] = settr(59,0,0,0,0,"IF", 0, 2, 0);
-	T = T->nxt	= settr(59,0,1,0,0,"IF", 0, 2, 0);
-	    T->nxt	= settr(59,0,3,0,0,"IF", 0, 2, 0);
-	trans[2][1]	= settr(55,0,9,3,0,"((!(!((SafetyAlley[0]._p==entry)))&&!((SafetyAlley[0]._p==alley))))", 1, 2, 0);
-	trans[2][2]	= settr(56,0,9,1,0,"goto accept_S4", 0, 2, 0);
-	trans[2][6]	= settr(60,0,9,1,0,".(goto)", 0, 2, 0);
-	trans[2][3]	= settr(57,0,5,1,0,"(1)", 0, 2, 0);
-	trans[2][4]	= settr(58,0,5,1,0,"goto T0_init", 0, 2, 0);
-	T = trans[2][9] = settr(63,0,0,0,0,"IF", 0, 2, 0);
-	    T->nxt	= settr(63,0,7,0,0,"IF", 0, 2, 0);
-	trans[2][7]	= settr(61,0,9,4,0,"(!((SafetyAlley[0]._p==alley)))", 1, 2, 0);
-	trans[2][8]	= settr(62,0,9,1,0,"goto accept_S4", 0, 2, 0);
-	trans[2][10]	= settr(64,0,11,1,0,".(goto)", 0, 2, 0);
-	trans[2][11]	= settr(65,0,0,5,5,"-end-", 0, 3500, 0);
+	T = trans[2][5] = settr(60,0,0,0,0,"IF", 0, 2, 0);
+	T = T->nxt	= settr(60,0,1,0,0,"IF", 0, 2, 0);
+	    T->nxt	= settr(60,0,3,0,0,"IF", 0, 2, 0);
+	trans[2][1]	= settr(56,0,9,3,0,"((!(!((SafetyAlley[0]._p==entry)))&&!((SafetyAlley[0]._p==alley))))", 1, 2, 0);
+	trans[2][2]	= settr(57,0,9,1,0,"goto accept_S4", 0, 2, 0);
+	trans[2][6]	= settr(61,0,9,1,0,".(goto)", 0, 2, 0);
+	trans[2][3]	= settr(58,0,5,1,0,"(1)", 0, 2, 0);
+	trans[2][4]	= settr(59,0,5,1,0,"goto T0_init", 0, 2, 0);
+	T = trans[2][9] = settr(64,0,0,0,0,"IF", 0, 2, 0);
+	    T->nxt	= settr(64,0,7,0,0,"IF", 0, 2, 0);
+	trans[2][7]	= settr(62,0,9,4,0,"(!((SafetyAlley[0]._p==alley)))", 1, 2, 0);
+	trans[2][8]	= settr(63,0,9,1,0,"goto accept_S4", 0, 2, 0);
+	trans[2][10]	= settr(65,0,11,1,0,".(goto)", 0, 2, 0);
+	trans[2][11]	= settr(66,0,0,5,5,"-end-", 0, 3500, 0);
 
 	/* proctype 1: EnterExit */
 
 	trans[1] = (Trans **) emalloc(35*sizeof(Trans *));
 
-	trans[1][32]	= settr(52,0,31,1,0,".(goto)", 0, 2, 0);
-	T = trans[1][31] = settr(51,0,0,0,0,"DO", 0, 2, 0);
-	    T->nxt	= settr(51,0,28,0,0,"DO", 0, 2, 0);
-	T = trans[1][28] = settr(48,0,0,0,0,"IF", 0, 2, 0);
-	T = T->nxt	= settr(48,0,1,0,0,"IF", 0, 2, 0);
-	T = T->nxt	= settr(48,0,12,0,0,"IF", 0, 2, 0);
-	    T->nxt	= settr(48,0,26,0,0,"IF", 0, 2, 0);
-	trans[1][1]	= settr(21,0,9,6,0,"(enter[i])", 1, 2, 0);
-	T = trans[1][9] = settr(29,0,0,0,0,"IF", 0, 2, 0);
-	T = T->nxt	= settr(29,0,2,0,0,"IF", 0, 2, 0);
-	T = T->nxt	= settr(29,0,5,0,0,"IF", 0, 2, 0);
-	    T->nxt	= settr(29,0,7,0,0,"IF", 0, 2, 0);
-	trans[1][2]	= settr(22,0,3,7,0,"(((mutex==1)&&(counter==0)))", 1, 2, 0);
-	trans[1][3]	= settr(23,0,4,8,8,"mutex = 0", 1, 2, 0);
-	trans[1][4]	= settr(24,0,11,9,9,"inAlley[i] = 1", 1, 2, 0);
-	trans[1][10]	= settr(30,0,11,1,0,".(goto)", 0, 2, 0);
-	trans[1][5]	= settr(25,0,6,10,0,"((((i>3)&&(counter>0))&&(mutex==0)))", 1, 2, 0);
-	trans[1][6]	= settr(26,0,11,11,11,"inAlley[i] = 1", 1, 2, 0);
-	trans[1][7]	= settr(27,0,8,12,0,"((((i<4)&&(counter<0))&&(mutex==0)))", 1, 2, 0);
-	trans[1][8]	= settr(28,0,11,13,13,"inAlley[i] = 1", 1, 2, 0);
-	trans[1][11]	= settr(31,0,30,14,14,"enter[i] = 0", 1, 2, 0);
-	trans[1][29]	= settr(49,0,30,1,0,".(goto)", 0, 2, 0); /* m: 30 -> 0,31 */
+	trans[1][32]	= settr(53,0,31,1,0,".(goto)", 0, 2, 0);
+	T = trans[1][31] = settr(52,0,0,0,0,"DO", 0, 2, 0);
+	    T->nxt	= settr(52,0,28,0,0,"DO", 0, 2, 0);
+	T = trans[1][28] = settr(49,0,0,0,0,"IF", 0, 2, 0);
+	T = T->nxt	= settr(49,0,1,0,0,"IF", 0, 2, 0);
+	T = T->nxt	= settr(49,0,12,0,0,"IF", 0, 2, 0);
+	    T->nxt	= settr(49,0,26,0,0,"IF", 0, 2, 0);
+	trans[1][1]	= settr(22,0,9,6,0,"(enter[i])", 1, 2, 0);
+	T = trans[1][9] = settr(30,0,0,0,0,"IF", 0, 2, 0);
+	T = T->nxt	= settr(30,0,2,0,0,"IF", 0, 2, 0);
+	T = T->nxt	= settr(30,0,5,0,0,"IF", 0, 2, 0);
+	    T->nxt	= settr(30,0,7,0,0,"IF", 0, 2, 0);
+	trans[1][2]	= settr(23,0,3,7,0,"(((mutex==1)&&(counter==0)))", 1, 2, 0);
+	trans[1][3]	= settr(24,0,4,8,8,"mutex = 0", 1, 2, 0);
+	trans[1][4]	= settr(25,0,11,9,9,"inAlley[i] = 1", 1, 2, 0);
+	trans[1][10]	= settr(31,0,11,1,0,".(goto)", 0, 2, 0);
+	trans[1][5]	= settr(26,0,6,10,0,"((((i>3)&&(counter>0))&&(mutex==0)))", 1, 2, 0);
+	trans[1][6]	= settr(27,0,11,11,11,"inAlley[i] = 1", 1, 2, 0);
+	trans[1][7]	= settr(28,0,8,12,0,"((((i<4)&&(counter<0))&&(mutex==0)))", 1, 2, 0);
+	trans[1][8]	= settr(29,0,11,13,13,"inAlley[i] = 1", 1, 2, 0);
+	trans[1][11]	= settr(32,0,30,14,14,"enter[i] = 0", 1, 2, 0);
+	trans[1][29]	= settr(50,0,30,1,0,".(goto)", 0, 2, 0); /* m: 30 -> 0,31 */
 	reached1[30] = 1;
-	trans[1][12]	= settr(32,0,13,15,0,"(exit[i])", 1, 2, 0);
-	trans[1][13]	= settr(33,0,14,16,16,"inAlley[i] = 0", 1, 2, 0);
-	trans[1][14]	= settr(34,0,19,17,17,"exit[i] = 0", 1, 2, 0);
-	T = trans[1][19] = settr(39,0,0,0,0,"IF", 0, 2, 0);
-	T = T->nxt	= settr(39,0,15,0,0,"IF", 0, 2, 0);
-	    T->nxt	= settr(39,0,17,0,0,"IF", 0, 2, 0);
-	trans[1][15]	= settr(35,0,16,18,0,"((i>3))", 0, 2, 0);
-	trans[1][16]	= settr(36,0,24,19,19,"counter = (counter-1)", 1, 2, 0);
-	trans[1][20]	= settr(40,0,24,1,0,".(goto)", 0, 2, 0);
-	trans[1][17]	= settr(37,0,18,20,0,"((i<4))", 0, 2, 0);
-	trans[1][18]	= settr(38,0,24,21,21,"counter = (counter+1)", 1, 2, 0);
-	T = trans[1][24] = settr(44,0,0,0,0,"IF", 0, 2, 0);
-	T = T->nxt	= settr(44,0,21,0,0,"IF", 0, 2, 0);
-	    T->nxt	= settr(44,0,23,0,0,"IF", 0, 2, 0);
-	trans[1][21]	= settr(41,0,22,22,0,"((counter==0))", 1, 2, 0);
-	trans[1][22]	= settr(42,0,30,23,23,"mutex = 1", 1, 2, 0);
-	trans[1][25]	= settr(45,0,30,1,0,".(goto)", 0, 2, 0); /* m: 30 -> 0,31 */
+	trans[1][12]	= settr(33,0,13,15,0,"(exit[i])", 1, 2, 0);
+	trans[1][13]	= settr(34,0,14,16,16,"inAlley[i] = 0", 1, 2, 0);
+	trans[1][14]	= settr(35,0,19,17,17,"exit[i] = 0", 1, 2, 0);
+	T = trans[1][19] = settr(40,0,0,0,0,"IF", 0, 2, 0);
+	T = T->nxt	= settr(40,0,15,0,0,"IF", 0, 2, 0);
+	    T->nxt	= settr(40,0,17,0,0,"IF", 0, 2, 0);
+	trans[1][15]	= settr(36,0,16,18,0,"((i>3))", 0, 2, 0);
+	trans[1][16]	= settr(37,0,24,19,19,"counter = (counter-1)", 1, 2, 0);
+	trans[1][20]	= settr(41,0,24,1,0,".(goto)", 0, 2, 0);
+	trans[1][17]	= settr(38,0,18,20,0,"((i<4))", 0, 2, 0);
+	trans[1][18]	= settr(39,0,24,21,21,"counter = (counter+1)", 1, 2, 0);
+	T = trans[1][24] = settr(45,0,0,0,0,"IF", 0, 2, 0);
+	T = T->nxt	= settr(45,0,21,0,0,"IF", 0, 2, 0);
+	    T->nxt	= settr(45,0,23,0,0,"IF", 0, 2, 0);
+	trans[1][21]	= settr(42,0,22,22,0,"((counter==0))", 1, 2, 0);
+	trans[1][22]	= settr(43,0,30,23,23,"mutex = 1", 1, 2, 0);
+	trans[1][25]	= settr(46,0,30,1,0,".(goto)", 0, 2, 0); /* m: 30 -> 0,31 */
 	reached1[30] = 1;
-	trans[1][23]	= settr(43,0,31,24,24,"(1)", 0, 2, 0); /* m: 30 -> 31,0 */
+	trans[1][23]	= settr(44,0,31,24,24,"(1)", 0, 2, 0); /* m: 30 -> 31,0 */
 	reached1[30] = 1;
-	trans[1][26]	= settr(46,0,27,2,0,"else", 0, 2, 0);
-	trans[1][27]	= settr(47,0,31,25,25,"(1)", 0, 2, 0); /* m: 30 -> 31,0 */
+	trans[1][26]	= settr(47,0,27,2,0,"else", 0, 2, 0);
+	trans[1][27]	= settr(48,0,31,25,25,"(1)", 0, 2, 0); /* m: 30 -> 31,0 */
 	reached1[30] = 1;
-	trans[1][30]	= settr(50,0,31,26,26,"i = ((i+1)%8)", 0, 2, 0);
-	trans[1][33]	= settr(53,0,34,1,0,"break", 0, 2, 0);
-	trans[1][34]	= settr(54,0,0,27,27,"-end-", 0, 3500, 0);
+	trans[1][30]	= settr(51,0,31,26,26,"i = ((i+1)%8)", 0, 2, 0);
+	trans[1][33]	= settr(54,0,34,1,0,"break", 0, 2, 0);
+	trans[1][34]	= settr(55,0,0,27,27,"-end-", 0, 3500, 0);
 
 	/* proctype 0: SafetyAlley */
 
-	trans[0] = (Trans **) emalloc(22*sizeof(Trans *));
+	trans[0] = (Trans **) emalloc(23*sizeof(Trans *));
 
-	trans[0][19]	= settr(18,0,18,1,0,".(goto)", 0, 2, 0);
-	T = trans[0][18] = settr(17,0,0,0,0,"DO", 0, 2, 0);
-	    T->nxt	= settr(17,0,1,0,0,"DO", 0, 2, 0);
+	trans[0][20]	= settr(19,0,19,1,0,".(goto)", 0, 2, 0);
+	T = trans[0][19] = settr(18,0,0,0,0,"DO", 0, 2, 0);
+	    T->nxt	= settr(18,0,1,0,0,"DO", 0, 2, 0);
 	trans[0][1]	= settr(0,0,2,1,0,"(1)", 1, 2, 0);
-	trans[0][2]	= settr(1,0,15,28,28,"enter[pid] = 1", 1, 2, 0);
-	T = trans[0][15] = settr(14,0,0,0,0,"IF", 1, 2, 0);
-	T = T->nxt	= settr(14,0,3,0,0,"IF", 0, 2, 0);
-	    T->nxt	= settr(14,0,9,0,0,"IF", 0, 2, 0);
-	trans[0][3]	= settr(2,0,4,29,0,"((pid>3))", 0, 2, 0);
-	trans[0][4]	= settr(3,0,5,30,30,"counter = (counter+1)", 1, 2, 0);
-	trans[0][5]	= settr(4,0,6,31,0,"assert(!(inAlley[3]))", 1, 2, 0);
-	trans[0][6]	= settr(5,0,7,32,0,"assert(!(inAlley[2]))", 1, 2, 0);
-	trans[0][7]	= settr(6,0,8,33,0,"assert(!(inAlley[1]))", 1, 2, 0);
-	trans[0][8]	= settr(7,0,17,34,0,"assert(!(inAlley[0]))", 1, 2, 0);
-	trans[0][16]	= settr(15,0,17,1,0,".(goto)", 0, 2, 0);
-	trans[0][9]	= settr(8,0,10,35,0,"((pid<4))", 0, 2, 0);
-	trans[0][10]	= settr(9,0,11,36,36,"counter = (counter-1)", 1, 2, 0);
-	trans[0][11]	= settr(10,0,12,37,0,"assert(!(inAlley[4]))", 1, 2, 0);
-	trans[0][12]	= settr(11,0,13,38,0,"assert(!(inAlley[5]))", 1, 2, 0);
-	trans[0][13]	= settr(12,0,14,39,0,"assert(!(inAlley[6]))", 1, 2, 0);
-	trans[0][14]	= settr(13,0,17,40,0,"assert(!(inAlley[7]))", 1, 2, 0);
-	trans[0][17]	= settr(16,0,18,41,41,"exit[pid] = 1", 1, 2, 0);
-	trans[0][20]	= settr(19,0,21,1,0,"break", 0, 2, 0);
-	trans[0][21]	= settr(20,0,0,42,42,"-end-", 0, 3500, 0);
+	trans[0][2]	= settr(1,0,3,28,28,"enter[pid] = 1", 1, 2, 0);
+	trans[0][3]	= settr(2,0,16,29,0,"(inAlley[pid])", 1, 2, 0);
+	T = trans[0][16] = settr(15,0,0,0,0,"IF", 1, 2, 0);
+	T = T->nxt	= settr(15,0,4,0,0,"IF", 0, 2, 0);
+	    T->nxt	= settr(15,0,10,0,0,"IF", 0, 2, 0);
+	trans[0][4]	= settr(3,0,5,30,0,"((pid>3))", 0, 2, 0);
+	trans[0][5]	= settr(4,0,6,31,31,"counter = (counter+1)", 1, 2, 0);
+	trans[0][6]	= settr(5,0,7,32,0,"assert(!(inAlley[3]))", 1, 2, 0);
+	trans[0][7]	= settr(6,0,8,33,0,"assert(!(inAlley[2]))", 1, 2, 0);
+	trans[0][8]	= settr(7,0,9,34,0,"assert(!(inAlley[1]))", 1, 2, 0);
+	trans[0][9]	= settr(8,0,18,35,0,"assert(!(inAlley[0]))", 1, 2, 0);
+	trans[0][17]	= settr(16,0,18,1,0,".(goto)", 0, 2, 0);
+	trans[0][10]	= settr(9,0,11,36,0,"((pid<4))", 0, 2, 0);
+	trans[0][11]	= settr(10,0,12,37,37,"counter = (counter-1)", 1, 2, 0);
+	trans[0][12]	= settr(11,0,13,38,0,"assert(!(inAlley[4]))", 1, 2, 0);
+	trans[0][13]	= settr(12,0,14,39,0,"assert(!(inAlley[5]))", 1, 2, 0);
+	trans[0][14]	= settr(13,0,15,40,0,"assert(!(inAlley[6]))", 1, 2, 0);
+	trans[0][15]	= settr(14,0,18,41,0,"assert(!(inAlley[7]))", 1, 2, 0);
+	trans[0][18]	= settr(17,0,19,42,42,"exit[pid] = 1", 1, 2, 0);
+	trans[0][21]	= settr(20,0,22,1,0,"break", 0, 2, 0);
+	trans[0][22]	= settr(21,0,0,43,43,"-end-", 0, 3500, 0);
 	/* np_ demon: */
 	trans[_NP_] = (Trans **) emalloc(2*sizeof(Trans *));
 	T = trans[_NP_][0] = settr(9997,0,1,_T5,0,"(np_)", 1,2,0);

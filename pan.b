@@ -127,8 +127,10 @@
 		goto R999;
 ;
 		;
+		;
+		;
 		
-	case 30: /* STATE 4 */
+	case 31: /* STATE 5 */
 		;
 		now.counter = trpt->bup.oval;
 		;
@@ -144,7 +146,7 @@
 		;
 		;
 		
-	case 36: /* STATE 10 */
+	case 37: /* STATE 11 */
 		;
 		now.counter = trpt->bup.oval;
 		;
@@ -158,13 +160,13 @@
 		;
 		;
 		
-	case 41: /* STATE 17 */
+	case 42: /* STATE 18 */
 		;
 		now.exit[ Index(((P0 *)this)->_pid, 8) ] = trpt->bup.oval;
 		;
 		goto R999;
 
-	case 42: /* STATE 21 */
+	case 43: /* STATE 22 */
 		;
 		p_restor(II);
 		;

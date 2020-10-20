@@ -9,6 +9,8 @@ their direction (sign)
 clockwise (positive), counterclockwise (negative)*/
 
 int mutex = 1;
+int mutexCC = 1;
+int counterCC = 0;
 
 
 active [N] proctype SafetyAlley()
@@ -21,16 +23,9 @@ entry:
 	inAlley[_pid] ->
 alley:
 	if
-	::	_pid > 3 -> counter++;
-				assert(!inAlley[3]);
-				assert(!inAlley[2]);
-				assert(!inAlley[1]);
-				assert(!inAlley[0]);
+	::	_pid >= 4 -> counter++;
 	::	_pid < 4 -> counter--;
-				assert(!inAlley[4]);
-				assert(!inAlley[5]);
-				assert(!inAlley[6]);
-				assert(!inAlley[7]);
+					counterCC--;
 	fi;
 	exit[_pid] = true;
 	od;
@@ -42,21 +37,39 @@ active proctype EnterExit() {
 	::
 		if
 		:: enter[i] ->  if
-					   	::	(mutex == 1 && counter == 0) -> mutex = 0;
-															inAlley[i] = true;
-						::	(i > 3 && counter > 0 && mutex == 0) -> inAlley[i] = true;
-						::	(i < 4 && counter < 0 && mutex == 0) -> inAlley[i] = true;
+					   	:: (i < 4 && counter < 0)   -> 	counterCC--;
+														counter--;
+														inAlley[i] = true;
+														enter[i] = false;
+						:: (i >= 4 && counter > 0)  ->	counter++;
+														inAlley[i] = true;
+														enter[i] = false;
+						:: (i >= 4 && mutex == 1)	->	mutex = 0;
+														counter++;
+														inAlley[i] = true;
+														enter[i] = false;				   	
+						:: (i < 4 && mutexCC == 1)	->	mutexCC = 0;
+														if
+														:: (counterCC == 0 && mutex == 1)	->						counterCC--;
+																	mutex = 0;
+														:: else ->	counterCC--;
+														fi;
+														mutexCC = 1;
+														counter--;
+														inAlley[i] = true;
+														enter[i] = false;
 						fi;
-						enter[i] = false;
+
 		:: exit[i] -> 	inAlley[i] = false;
 						exit[i] = false;
 						if
-						:: i > 3 -> counter--;
-						:: i < 4 -> counter++;
+						:: i < 4 ->		counter++;
+										counterCC++;
+						:: i >= 4 ->		counter--;
 						fi;
+
 						if
 						:: counter == 0 -> mutex = 1;
-						:: skip;
 						fi;
 		:: else -> skip;
 		fi;

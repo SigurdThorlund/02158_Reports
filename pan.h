@@ -1,5 +1,5 @@
 #define SpinVersion	"Spin Version 6.0.0 -- 5 December 2010"
-#define PanSource	"SafetyAlley"
+#define PanSource	"SafetyAlley.pml"
 
 #define G_long	4
 #define G_int	4
@@ -92,14 +92,14 @@ uchar *loopstate2;
 #define nstates1	35	/* EnterExit */
 #define endstate1	34
 short src_ln1 [] = {
-	  0,  43,  44,  44,  45,  46,  46,  47, 
-	 47,  43,  49,  49,  50,  50,  51,  53, 
-	 53,  54,  54,  52,  56,  57,  57,  58, 
-	 56,  60,  60,  60,  42,  62,  62,  40, 
-	 64,  40,  64,   0, };
+	  0,  46,  47,  47,  48,  49,  49,  50, 
+	 50,  46,  52,  52,  53,  53,  54,  56, 
+	 56,  57,  57,  55,  59,  60,  60,  61, 
+	 59,  63,  63,  63,  45,  65,  65,  43, 
+	 67,  43,  67,   0, };
 S_F_MAP src_file1 [] = {
 	{ ""-"", 0, 0 },
-	{ "SafetyAlley", 1, 34 },
+	{ "SafetyAlley.pml", 1, 34 },
 	{ ""-"", 35, 36 }
 };
 uchar reached1 [] = {
@@ -110,21 +110,21 @@ uchar reached1 [] = {
 	  1,   1,   0,   0, };
 uchar *loopstate1;
 
-#define nstates0	22	/* SafetyAlley */
-#define endstate0	21
+#define nstates0	23	/* SafetyAlley */
+#define endstate0	22
 short src_ln0 [] = {
-	  0,  18,  20,  23,  23,  24,  25,  26, 
-	 27,  28,  28,  29,  30,  31,  32,  22, 
-	 34,  34,  16,  36,  16,  36,   0, };
+	  0,  20,  22,  23,  26,  26,  27,  28, 
+	 29,  30,  31,  31,  32,  33,  34,  35, 
+	 25,  37,  37,  18,  39,  18,  39,   0, };
 S_F_MAP src_file0 [] = {
 	{ ""-"", 0, 0 },
-	{ "SafetyAlley", 1, 21 },
-	{ ""-"", 22, 23 }
+	{ "SafetyAlley.pml", 1, 22 },
+	{ ""-"", 23, 24 }
 };
 uchar reached0 [] = {
-	  0,   1,   0,   1,   0,   0,   0,   0, 
-	  0,   1,   0,   0,   0,   0,   0,   0, 
-	  1,   0,   0,   1,   1,   0,   0, };
+	  0,   1,   0,   0,   1,   0,   0,   0, 
+	  0,   0,   1,   0,   0,   0,   0,   0, 
+	  0,   1,   0,   0,   1,   1,   0,   0, };
 uchar *loopstate0;
 struct {
 	int tp; short *src;
@@ -144,8 +144,8 @@ struct {
 } code_lookup[] = {
 	{ (char *) 0, "" }
 };
-#define _T5	43
-#define _T2	44
+#define _T5	44
+#define _T2	45
 #define T_ID	unsigned char
 #define SYNC	0
 #define ASYNC	0
@@ -410,6 +410,8 @@ typedef struct State {
 } State;
 
 #define HAS_TRACK	0
+/* hidden variable: */	int mutexCC;
+/* hidden variable: */	int counterCC;
 int _; /* a predefined write-only variable */
 
 #define FORWARD_MOVES	"pan.m"
@@ -424,7 +426,7 @@ uchar *loopstate3;  /* np_ */
 #define start3	0 /* np_ */
 #define start2	5
 #define start1	31
-#define start0	18
+#define start0	19
 #ifdef NP
 	#define ACCEPT_LAB	1 /* at least 1 in np_ */
 #else
@@ -555,7 +557,7 @@ void qsend(int, int, int);
 #define GLOBAL	7
 #define BAD	8
 #define ALPHA_F	9
-#define NTRANS	45
+#define NTRANS	46
 #ifdef PEG
 	long peg[NTRANS];
 #endif
