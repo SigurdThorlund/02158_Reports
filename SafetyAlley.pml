@@ -31,7 +31,7 @@ alley:
 	od;
 }
 
-active proctype EnterExit() {
+active proctype Enter() {
 	int i = 0;
 	do
 	::
@@ -59,7 +59,17 @@ active proctype EnterExit() {
 														inAlley[i] = true;
 														enter[i] = false;
 						fi;
+		:: else -> skip;
+		fi;
+	i = (i+1) % N;
+	od;
+}
 
+active proctype Exit() {
+	int i = 0;
+	do
+	::
+		if
 		:: exit[i] -> 	inAlley[i] = false;
 						exit[i] = false;
 						if
