@@ -13,7 +13,7 @@ public class Alley {
 
     public Alley() {
         mutex = new Semaphore(1);
-        mutexCC = new Semaphore(2);
+        mutexCC = new Semaphore(1);
         counter = 0;
         counterCC = 0;
     }
@@ -37,19 +37,28 @@ public class Alley {
 
     /* Block until car no. may enter alley */
     public void enter(int no) throws InterruptedException {
+        // Counterclockwise car entering alley with car in same direction
         if (no < 5 && counter < 0) {
+            counterCC--;
             counter--;
+        // Clockwise car entering alley with car in same direction
         } else if (no >= 5 && counter > 0) {
             counter++;
+        // Clockwise car entering alley with no car or car in opposite direction
         } else if (no >= 5) {
             mutex.P();
             counter++;
+        // Counterclockwise car entering alley with no car or car in opposite direction
         } else if (no < 5) {
             mutexCC.P();
             if (counterCC == 0) {
+                counterCC--;
                 mutex.P();
+            } else {
+                counterCC--;
             }
-            counterCC--;
+            mutexCC.V();
+            counter--;
         }
     }
 
