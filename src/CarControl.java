@@ -111,7 +111,6 @@ class Conductor extends Thread {
             cd.register(car);
 
             while (true) { 
-
                 if (atGate(curpos)) { 
                     mygate.pass(); 
                     car.setSpeed(chooseSpeed());

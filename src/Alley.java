@@ -7,9 +7,15 @@
 public class Alley {
 
     Semaphore mutex;
+    Semaphore mutexCC;
+    int counter;
+    int counterCC;
 
     public Alley() {
         mutex = new Semaphore(1);
+        mutexCC = new Semaphore(2);
+        counter = 0;
+        counterCC = 0;
     }
 
     /* Determine whether pos is right before alley is entered */
@@ -31,12 +37,33 @@ public class Alley {
 
     /* Block until car no. may enter alley */
     public void enter(int no) throws InterruptedException {
-        mutex.P();
+        if (no < 5 && counter < 0) {
+            counter--;
+        } else if (no >= 5 && counter > 0) {
+            counter++;
+        } else if (no >= 5) {
+            mutex.P();
+            counter++;
+        } else if (no < 5) {
+            mutexCC.P();
+            if (counterCC == 0) {
+                mutex.P();
+            }
+            counterCC--;
+        }
     }
 
     /* Register that car no. has left the alley */
     public void leave(int no) {
-        mutex.V();
-    }
+        if (no < 5) {
+            counter++;
+            counterCC++;
+        } else if (no >= 5) {
+            counter--;
+        }
 
+        if (counter == 0) {
+            mutex.V();
+        }
+    }
 }
