@@ -18,6 +18,7 @@ active [N] proctype SafetyAlley()
 		skip; /*Dummy*/
 entry:
 	enter[_pid] = true;
+	inAlley[_pid] ->
 alley:
 	if
 	::	_pid > 3 -> counter++;
