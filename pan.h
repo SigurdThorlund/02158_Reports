@@ -73,58 +73,68 @@ typedef struct S_F_MAP {
 	char *fnm; int from; int upto;
 } S_F_MAP;
 
-#define nstates2	12	/* fair */
-#define endstate2	11
+#define nstates2	18	/* complete */
+#define endstate2	17
 short src_ln2 [] = {
-	  0,   3,   3,   4,   4,   2,   6,   8, 
-	  8,   7,  10,  10,   0, };
+	  0,   3,   3,   4,   4,   5,   5,   2, 
+	  7,   9,   9,   8,  11,  13,  13,  12, 
+	 15,  15,   0, };
 S_F_MAP src_file2 [] = {
 	{ ""-"", 0, 0 },
-	{ "_spin_nvr.tmp", 1, 11 },
-	{ ""-"", 12, 13 }
+	{ "_spin_nvr.tmp", 1, 17 },
+	{ ""-"", 18, 19 }
 };
 short *src_claim;
 uchar reached2 [] = {
-	  0,   1,   1,   1,   1,   0,   1,   1, 
-	  1,   0,   1,   0,   0, };
+	  0,   1,   1,   1,   1,   1,   1,   0, 
+	  1,   1,   1,   0,   1,   1,   1,   0, 
+	  1,   0,   0, };
 uchar *loopstate2;
 
-#define nstates1	35	/* EnterExit */
-#define endstate1	34
+#define nstates1	64	/* Alley */
+#define endstate1	63
 short src_ln1 [] = {
-	  0,  46,  47,  47,  48,  49,  49,  50, 
-	 50,  46,  52,  52,  53,  53,  54,  56, 
-	 56,  57,  57,  55,  59,  60,  60,  61, 
-	 59,  63,  63,  63,  45,  65,  65,  43, 
-	 67,  43,  67,   0, };
+	  0,  44,  45,  45,  46,  47,  48,  49, 
+	 51,  51,  52,  53,  54,  56,  56,  57, 
+	 58,  59,  60,  62,  62,  64,  64,  65, 
+	 66,  67,  68,  70,  70,  71,  72,  73, 
+	 74,  74,  63,  76,  76,  77,  44,  79, 
+	 79,  80,  80,  81,  82,  82,  79,  84, 
+	 84,  86,  86,  85,  88,  88,  89,  89, 
+	 43,  91,  92,  93,  41,  95,  41,  95, 
+	  0, };
 S_F_MAP src_file1 [] = {
 	{ ""-"", 0, 0 },
-	{ "SafetyAlley.pml", 1, 34 },
-	{ ""-"", 35, 36 }
+	{ "SafetyAlley.pml", 1, 63 },
+	{ ""-"", 64, 65 }
 };
 uchar reached1 [] = {
-	  0,   1,   1,   0,   0,   1,   0,   1, 
-	  0,   0,   1,   0,   1,   0,   0,   1, 
-	  0,   1,   0,   0,   1,   1,   0,   1, 
-	  0,   1,   1,   0,   1,   1,   0,   0, 
-	  1,   1,   0,   0, };
+	  0,   1,   1,   0,   0,   0,   0,   1, 
+	  1,   0,   0,   0,   1,   1,   0,   0, 
+	  0,   0,   1,   1,   0,   1,   0,   0, 
+	  0,   0,   0,   1,   0,   0,   0,   0, 
+	  1,   1,   0,   1,   0,   1,   0,   1, 
+	  1,   1,   0,   0,   1,   0,   0,   1, 
+	  0,   1,   0,   0,   1,   0,   1,   1, 
+	  1,   1,   0,   0,   0,   1,   1,   0, 
+	  0, };
 uchar *loopstate1;
 
-#define nstates0	23	/* SafetyAlley */
-#define endstate0	22
+#define nstates0	20	/* SafetyAlley */
+#define endstate0	19
 short src_ln0 [] = {
-	  0,  20,  22,  23,  26,  26,  27,  28, 
-	 29,  30,  31,  31,  32,  33,  34,  35, 
-	 25,  37,  37,  18,  39,  18,  39,   0, };
+	  0,  20,  22,  23,  24,  27,  27,  28, 
+	 29,  31,  31,  32,  33,  26,  35,  35, 
+	 18,  37,  18,  37,   0, };
 S_F_MAP src_file0 [] = {
 	{ ""-"", 0, 0 },
-	{ "SafetyAlley.pml", 1, 22 },
-	{ ""-"", 23, 24 }
+	{ "SafetyAlley.pml", 1, 19 },
+	{ ""-"", 20, 21 }
 };
 uchar reached0 [] = {
-	  0,   1,   0,   0,   1,   0,   0,   0, 
-	  0,   0,   1,   0,   0,   0,   0,   0, 
-	  0,   1,   0,   0,   1,   1,   0,   0, };
+	  0,   1,   0,   0,   0,   1,   0,   0, 
+	  0,   1,   0,   0,   0,   0,   1,   0, 
+	  0,   1,   1,   0,   0, };
 uchar *loopstate0;
 struct {
 	int tp; short *src;
@@ -144,8 +154,8 @@ struct {
 } code_lookup[] = {
 	{ (char *) 0, "" }
 };
-#define _T5	44
-#define _T2	45
+#define _T5	63
+#define _T2	64
 #define T_ID	unsigned char
 #define SYNC	0
 #define ASYNC	0
@@ -161,27 +171,27 @@ struct {
 #endif
 char *procname[] = {
    "SafetyAlley",
-   "EnterExit",
-   "fair",
+   "Alley",
+   "complete",
    ":np_:",
 };
 
 enum btypes { NONE=0, N_CLAIM=1, I_PROC=2, A_PROC=3, P_PROC=4, E_TRACE=5, N_TRACE=6 };
 int Btypes[] = {
    3,	/* SafetyAlley */
-   3,	/* EnterExit */
-   1,	/* fair */
+   3,	/* Alley */
+   1,	/* complete */
    0	/* :np_: */
 };
 
-typedef struct P2 { /* fair */
+typedef struct P2 { /* complete */
 	unsigned _pid : 8;  /* 0..255 */
 	unsigned _t   : 3; /* proctype */
 	unsigned _p   : 7; /* state    */
 } P2;
 #define Air2	(sizeof(P2) - 3)
-#define PEnterExit	((P1 *)this)
-typedef struct P1 { /* EnterExit */
+#define PAlley	((P1 *)this)
+typedef struct P1 { /* Alley */
 	unsigned _pid : 8;  /* 0..255 */
 	unsigned _t   : 3; /* proctype */
 	unsigned _p   : 7; /* state    */
@@ -406,12 +416,12 @@ typedef struct State {
 	uchar exit[8];
 	int counter;
 	int mutex;
+	int mutexCC;
+	int counterCC;
 	uchar sv[VECTORSZ];
 } State;
 
 #define HAS_TRACK	0
-/* hidden variable: */	int mutexCC;
-/* hidden variable: */	int counterCC;
 int _; /* a predefined write-only variable */
 
 #define FORWARD_MOVES	"pan.m"
@@ -424,13 +434,13 @@ uchar *loopstate3;  /* np_ */
 #define endstate3	2 /* np_ */
 
 #define start3	0 /* np_ */
-#define start2	5
-#define start1	31
-#define start0	19
+#define start2	7
+#define start1	60
+#define start0	16
 #ifdef NP
 	#define ACCEPT_LAB	1 /* at least 1 in np_ */
 #else
-	#define ACCEPT_LAB	1 /* user-defined accept labels */
+	#define ACCEPT_LAB	2 /* user-defined accept labels */
 #endif
 #ifdef MEMCNT
 	#ifdef MEMLIM
@@ -557,7 +567,7 @@ void qsend(int, int, int);
 #define GLOBAL	7
 #define BAD	8
 #define ALPHA_F	9
-#define NTRANS	46
+#define NTRANS	65
 #ifdef PEG
 	long peg[NTRANS];
 #endif

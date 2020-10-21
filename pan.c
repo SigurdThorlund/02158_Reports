@@ -536,10 +536,10 @@ addproc(int n)
 		reached3[0] = 1;
 		accpstate[3][1] = 1;
 		break;
-	case 2:	/* fair */
+	case 2:	/* complete */
 		((P2 *)pptr(h))->_t = 2;
-		((P2 *)pptr(h))->_p = 5;
-		reached2[5]=1;
+		((P2 *)pptr(h))->_p = 7;
+		reached2[7]=1;
 		src_claim = src_ln2;
 		/* params: */
 		/* locals: */
@@ -549,15 +549,15 @@ addproc(int n)
 		locinit2(h);
 #endif
 		break;
-	case 1:	/* EnterExit */
+	case 1:	/* Alley */
 		((P1 *)pptr(h))->_t = 1;
-		((P1 *)pptr(h))->_p = 31;
-		reached1[31]=1;
+		((P1 *)pptr(h))->_p = 60;
+		reached1[60]=1;
 		/* params: */
 		/* locals: */
 		((P1 *)pptr(h))->_2_i = 0;
 #ifdef VAR_RANGES
-		logval("EnterExit:i", ((P1 *)pptr(h))->_2_i);
+		logval("Alley:i", ((P1 *)pptr(h))->_2_i);
 #endif
 #ifdef HAS_CODE
 		locinit1(h);
@@ -565,8 +565,8 @@ addproc(int n)
 		break;
 	case 0:	/* SafetyAlley */
 		((P0 *)pptr(h))->_t = 0;
-		((P0 *)pptr(h))->_p = 19;
-		reached0[19]=1;
+		((P0 *)pptr(h))->_p = 16;
+		reached0[16]=1;
 		/* params: */
 		/* locals: */
 #ifdef VAR_RANGES
@@ -677,8 +677,9 @@ run(void)
 	stopstate[1][endstate1] = 1;
 	stopstate[2][endstate2] = 1;
 	stopstate[3][endstate3] = 1;
-	accpstate[2][9] = 1;
-	visstate[0][16] = 1;
+	accpstate[2][15] = 1;
+	accpstate[2][11] = 1;
+	visstate[0][13] = 1;
 	visstate[0][2] = 1;
 	retrans(0, nstates0, start0, src_ln0, reached0, loopstate0);
 	retrans(1, nstates1, start1, src_ln1, reached1, loopstate1);
@@ -10224,8 +10225,8 @@ iniglobals(void)
 	}
 		now.counter = 0;
 		now.mutex = 1;
-		mutexCC = 1;
-		counterCC = 0;
+		now.mutexCC = 1;
+		now.counterCC = 0;
 #ifdef VAR_RANGES
 	{	int l_in;
 		for (l_in = 0; l_in < 8; l_in++)
@@ -10247,6 +10248,8 @@ iniglobals(void)
 	}
 		logval("counter", now.counter);
 		logval("mutex", now.mutex);
+		logval("mutexCC", now.mutexCC);
+		logval("counterCC", now.counterCC);
 #endif
 	Maxbody = max(Maxbody, sizeof(State)-VECTORSZ);
 }
@@ -11873,6 +11876,8 @@ c_globals(void)
 	}
 	printf("	int    counter:	%d\n", now.counter);
 	printf("	int    mutex:	%d\n", now.mutex);
+	printf("	int    mutexCC:	%d\n", now.mutexCC);
+	printf("	int    counterCC:	%d\n", now.counterCC);
 }
 void
 c_locals(int pid, int tp)
@@ -11882,7 +11887,7 @@ c_locals(int pid, int tp)
 		/* none */
 		break;
 	case 1:
-		printf("local vars proc %d (EnterExit):\n", pid);
+		printf("local vars proc %d (Alley):\n", pid);
 	printf("	int    i:	%d\n", ((P1 *)pptr(pid))->_2_i);
 		break;
 	case 0:
