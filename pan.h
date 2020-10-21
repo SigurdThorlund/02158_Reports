@@ -1,5 +1,5 @@
 #define SpinVersion	"Spin Version 6.0.0 -- 5 December 2010"
-#define PanSource	"SafetyAlley.pml"
+#define PanSource	"SafetyAlley4Cars.pml"
 
 #define G_long	4
 #define G_int	4
@@ -44,7 +44,6 @@ char *trailfilename;
 #ifndef NFAIR
 	#define NFAIR	2	/* must be >= 2 */
 #endif
-#define REM_REFS	5
 #define HAS_CODE
 #if defined(RANDSTORE) && !defined(RANDSTOR)
 	#define RANDSTOR	RANDSTORE
@@ -73,51 +72,49 @@ typedef struct S_F_MAP {
 	char *fnm; int from; int upto;
 } S_F_MAP;
 
-#define nstates2	18	/* complete */
-#define endstate2	17
+#define nstates2	9	/* nocrash */
+#define endstate2	8
 short src_ln2 [] = {
-	  0,   3,   3,   4,   4,   5,   5,   2, 
-	  7,   9,   9,   8,  11,  13,  13,  12, 
-	 15,  15,   0, };
+	  0,   3,   3,   4,   4,   2,   6,   7, 
+	  8,   0, };
 S_F_MAP src_file2 [] = {
 	{ ""-"", 0, 0 },
-	{ "_spin_nvr.tmp", 1, 17 },
-	{ ""-"", 18, 19 }
+	{ "_spin_nvr.tmp", 1, 8 },
+	{ ""-"", 9, 10 }
 };
 short *src_claim;
 uchar reached2 [] = {
-	  0,   1,   1,   1,   1,   1,   1,   0, 
-	  1,   1,   1,   0,   1,   1,   1,   0, 
-	  1,   0,   0, };
+	  0,   1,   1,   1,   1,   0,   1,   1, 
+	  0,   0, };
 uchar *loopstate2;
 
-#define nstates1	64	/* Alley */
-#define endstate1	63
+#define nstates1	69	/* Alley */
+#define endstate1	68
 short src_ln1 [] = {
 	  0,  44,  45,  45,  46,  47,  48,  49, 
 	 51,  51,  52,  53,  54,  56,  56,  57, 
 	 58,  59,  60,  62,  62,  64,  64,  65, 
 	 66,  67,  68,  70,  70,  71,  72,  73, 
-	 74,  74,  63,  76,  76,  77,  44,  79, 
-	 79,  80,  80,  81,  82,  82,  79,  84, 
-	 84,  86,  86,  85,  88,  88,  89,  89, 
-	 43,  91,  92,  93,  41,  95,  41,  95, 
-	  0, };
+	 74,  74,  63,  76,  76,  77,  78,  78, 
+	 44,  80,  80,  81,  81,  82,  83,  83, 
+	 80,  85,  86,  86,  87,  88,  88,  85, 
+	 90,  90,  90,  91,  91,  43,  93,  94, 
+	 95,  41,  97,  41,  97,   0, };
 S_F_MAP src_file1 [] = {
 	{ ""-"", 0, 0 },
-	{ "SafetyAlley.pml", 1, 63 },
-	{ ""-"", 64, 65 }
+	{ "SafetyAlley4Cars.pml", 1, 68 },
+	{ ""-"", 69, 70 }
 };
 uchar reached1 [] = {
 	  0,   1,   1,   0,   0,   0,   0,   1, 
 	  1,   0,   0,   0,   1,   1,   0,   0, 
 	  0,   0,   1,   1,   0,   1,   0,   0, 
 	  0,   0,   0,   1,   0,   0,   0,   0, 
-	  1,   1,   0,   1,   0,   1,   0,   1, 
-	  1,   1,   0,   0,   1,   0,   0,   1, 
-	  0,   1,   0,   0,   1,   0,   1,   1, 
-	  1,   1,   0,   0,   0,   1,   1,   0, 
-	  0, };
+	  1,   1,   0,   1,   0,   1,   1,   1, 
+	  0,   1,   1,   1,   0,   0,   1,   0, 
+	  0,   1,   1,   0,   0,   1,   0,   0, 
+	  1,   0,   0,   1,   1,   1,   1,   0, 
+	  0,   0,   1,   1,   0,   0, };
 uchar *loopstate1;
 
 #define nstates0	20	/* SafetyAlley */
@@ -128,7 +125,7 @@ short src_ln0 [] = {
 	 18,  37,  18,  37,   0, };
 S_F_MAP src_file0 [] = {
 	{ ""-"", 0, 0 },
-	{ "SafetyAlley.pml", 1, 19 },
+	{ "SafetyAlley4Cars.pml", 1, 19 },
 	{ ""-"", 20, 21 }
 };
 uchar reached0 [] = {
@@ -172,7 +169,7 @@ struct {
 char *procname[] = {
    "SafetyAlley",
    "Alley",
-   "complete",
+   "nocrash",
    ":np_:",
 };
 
@@ -180,21 +177,21 @@ enum btypes { NONE=0, N_CLAIM=1, I_PROC=2, A_PROC=3, P_PROC=4, E_TRACE=5, N_TRAC
 int Btypes[] = {
    3,	/* SafetyAlley */
    3,	/* Alley */
-   1,	/* complete */
+   1,	/* nocrash */
    0	/* :np_: */
 };
 
-typedef struct P2 { /* complete */
+typedef struct P2 { /* nocrash */
 	unsigned _pid : 8;  /* 0..255 */
 	unsigned _t   : 3; /* proctype */
-	unsigned _p   : 7; /* state    */
+	unsigned _p   : 8; /* state    */
 } P2;
 #define Air2	(sizeof(P2) - 3)
 #define PAlley	((P1 *)this)
 typedef struct P1 { /* Alley */
 	unsigned _pid : 8;  /* 0..255 */
 	unsigned _t   : 3; /* proctype */
-	unsigned _p   : 7; /* state    */
+	unsigned _p   : 8; /* state    */
 	int _2_i;
 } P1;
 #define Air1	(sizeof(P1) - Offsetof(P1, _2_i) - 1*sizeof(int))
@@ -202,13 +199,13 @@ typedef struct P1 { /* Alley */
 typedef struct P0 { /* SafetyAlley */
 	unsigned _pid : 8;  /* 0..255 */
 	unsigned _t   : 3; /* proctype */
-	unsigned _p   : 7; /* state    */
+	unsigned _p   : 8; /* state    */
 } P0;
 #define Air0	(sizeof(P0) - 3)
 typedef struct P3 { /* np_ */
 	unsigned _pid : 8;  /* 0..255 */
 	unsigned _t   : 3; /* proctype */
-	unsigned _p   : 7; /* state    */
+	unsigned _p   : 8; /* state    */
 } P3;
 #define Air3	(sizeof(P3) - 3)
 
@@ -411,13 +408,13 @@ typedef struct State {
 		unsigned short _event;
 	#endif
 #endif
-	uchar enter[8];
-	uchar inAlley[8];
-	uchar exit[8];
-	int counter;
+	uchar enter[4];
+	uchar inAlley[4];
+	uchar exit[4];
+	int co;
 	int mutex;
 	int mutexCC;
-	int counterCC;
+	int coCC;
 	uchar sv[VECTORSZ];
 } State;
 
@@ -434,13 +431,13 @@ uchar *loopstate3;  /* np_ */
 #define endstate3	2 /* np_ */
 
 #define start3	0 /* np_ */
-#define start2	7
-#define start1	60
+#define start2	5
+#define start1	65
 #define start0	16
 #ifdef NP
 	#define ACCEPT_LAB	1 /* at least 1 in np_ */
 #else
-	#define ACCEPT_LAB	2 /* user-defined accept labels */
+	#define ACCEPT_LAB	1 /* user-defined accept labels */
 #endif
 #ifdef MEMCNT
 	#ifdef MEMLIM

@@ -94,5 +94,6 @@ L1:
 	od;
 }
 //ltl fair {([] (SafetyAlley[0]@entry -> <> (SafetyAlley[0]@alley)) }
-ltl complete {([] (SafetyAlley[0]@entry -> <> (SafetyAlley[0]@alley))) && ([] ((counter == -5) -> <> (counter == 5))) }
+//ltl complete {([] (SafetyAlley[0]@entry -> <> (SafetyAlley[0]@alley))) && ([] ((counter == -5) -> <> (counter == 5))) }
 //ltl counter_liveness {[] ((counter == -5) -> <> (counter == 5)) }
+ltl nocrash {[] (inAlley[0] -> !inAlley[5])}

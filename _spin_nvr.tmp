@@ -1,16 +1,9 @@
-never complete {    /* !(([] ((! ((SafetyAlley[0]@entry))) || (<> ((SafetyAlley[0]@alley))))) && ([] ((! ((counter==-(5)))) || (<> ((counter==5)))))) */
+never nocrash {    /* !([] ((! (inAlley[0])) || (! (inAlley[3])))) */
 T0_init:
 	if
-	:: (! ((! ((counter==-(5))))) && ! (((counter==5)))) -> goto accept_S5
-	:: (! ((! ((SafetyAlley[0]@entry)))) && ! (((SafetyAlley[0]@alley)))) -> goto accept_S10
+	:: (! (((! (inAlley[0])) || (! (inAlley[3]))))) -> goto accept_all
 	:: (1) -> goto T0_init
 	fi;
-accept_S5:
-	if
-	:: (! (((counter==5)))) -> goto accept_S5
-	fi;
-accept_S10:
-	if
-	:: (! (((SafetyAlley[0]@alley)))) -> goto accept_S10
-	fi;
+accept_all:
+	skip
 }
