@@ -20,7 +20,7 @@ class NaiveBarrier extends Barrier {
 
         arrived++;
 
-        System.out.println("Arrived: " + arrived);
+        //System.out.println("Arrived: " + arrived);
         if (arrived < 9) {
             //Thread.sleep(3000);
             wait();

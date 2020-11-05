@@ -4,11 +4,13 @@
 
 //Hans Henrik Lovengreen     Oct 30, 2020
 
+import java.lang.reflect.Array;
+import java.util.Arrays;
+
 class SafeBarrier extends Barrier {
 
-    int arrived = 0;
-
     boolean active = false;
+    int[] arrived_cars = new int[9];
 
     public SafeBarrier(CarDisplayI cd) {
         super(cd);
@@ -19,14 +21,21 @@ class SafeBarrier extends Barrier {
 
         if (!active) return;
 
-        arrived++;
+        arrived_cars[no]++;
 
-        System.out.println("no: " + no + " Arrived: " + arrived);
-        while (arrived < 9) wait();
+        System.out.println("Car: " + no + ", val: " + arrived_cars[no]);
+        while (!all_arrived()) wait();
 
         notifyAll();
+        arrived_cars[no]--;
+    }
 
-        arrived--;
+    private synchronized boolean all_arrived() {
+        int sum = 0;
+        for (int i:arrived_cars) {
+            sum = sum + i;
+        }
+        return sum == 9;
     }
 
     @Override
@@ -37,9 +46,10 @@ class SafeBarrier extends Barrier {
     @Override
     public synchronized void off() {
         active = false;
-        arrived = 0;
+        arrived_cars = new int[9];
         notifyAll();
     }
+
 
     @Override
     // May be (ab)used for robustness testing
