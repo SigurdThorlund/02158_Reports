@@ -10,7 +10,8 @@ import java.util.Arrays;
 class SafeBarrier extends Barrier {
 
     boolean active = false;
-    int[] arrived_cars = new int[9];
+    int arrived;
+    int driving;
 
     public SafeBarrier(CarDisplayI cd) {
         super(cd);
@@ -21,21 +22,26 @@ class SafeBarrier extends Barrier {
 
         if (!active) return;
 
-        arrived_cars[no]++;
+        arrived++;
 
-        System.out.println("Car: " + no + ", val: " + arrived_cars[no]);
-        while (!all_arrived()) wait();
+        System.out.println("Car: " + no + ", arrived: " + arrived);
+        while (arrived < 9) wait();
 
-        notifyAll();
-        arrived_cars[no]--;
-    }
+        //if (driving == 0) System.out.println("car no: " + no);
 
-    private synchronized boolean all_arrived() {
-        int sum = 0;
-        for (int i:arrived_cars) {
-            sum = sum + i;
+        driving ++;
+
+        //First car driving out will notify the others. Then it will wait until all cars have left.
+        if (driving == 1) {
+            notifyAll();
+            while (driving != 0) {
+                wait();
+            }
+        } else if (driving == 9) {
+            arrived = 0;
+            driving = 0;
+            notify();
         }
-        return sum == 9;
     }
 
     @Override
@@ -46,7 +52,7 @@ class SafeBarrier extends Barrier {
     @Override
     public synchronized void off() {
         active = false;
-        arrived_cars = new int[9];
+        arrived = 0;
         notifyAll();
     }
 
