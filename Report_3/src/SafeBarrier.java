@@ -24,24 +24,18 @@ class SafeBarrier extends Barrier {
 
         arrived++;
 
-        System.out.println("Car: " + no + ", arrived: " + arrived);
+        System.out.println("Arrived, Car no: " + no + ", Num: " + arrived);
+
+        //First barrier
         while (arrived < 9) wait();
 
-        //if (driving == 0) System.out.println("car no: " + no);
+        notifyAll();
 
-        driving ++;
+        wait();
 
-        //First car driving out will notify the others. Then it will wait until all cars have left.
-        if (driving == 1) {
-            notifyAll();
-            while (driving != 0) {
-                wait();
-            }
-        } else if (driving == 9) {
-            arrived = 0;
-            driving = 0;
-            notify();
-        }
+        arrived = 0;
+
+        notifyAll();
     }
 
     @Override
