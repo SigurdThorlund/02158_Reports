@@ -33,7 +33,7 @@ class SafeBarrier extends Barrier {
         //First car out notifies the rest and then goes to wait until all cars have reached the second barrier.
         notifyAll();
 
-        driving ++;
+        driving++;
 
         //Second barrier: When last car arrives to the second barrier then we can reset the cars arrived.
         while (driving < 9) {

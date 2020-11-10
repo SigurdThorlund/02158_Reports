@@ -13,6 +13,7 @@ class DynamicBarrier extends Barrier {
     int arrived;
     boolean lastOut;
     int driving;
+    int threshold = 9;
 
     public DynamicBarrier(CarDisplayI cd) {
         super(cd);
@@ -26,9 +27,9 @@ class DynamicBarrier extends Barrier {
         arrived++;
 
         //First barrier: The first car leaving will reset the driving variable.
-        while (arrived < 9) wait();
+        while (arrived < threshold) wait();
 
-        if (driving == 9) driving = 0;
+        if (driving == threshold) driving = 0;
 
         //First car out notifies the rest and then goes to wait until all cars have reached the second barrier.
         notifyAll();
@@ -36,11 +37,11 @@ class DynamicBarrier extends Barrier {
         driving ++;
 
         //Second barrier: When last car arrives to the second barrier then we can reset the cars arrived.
-        while (driving < 9) {
+        while (driving < threshold) {
             wait();
         }
 
-        if (arrived == 9) arrived = 0;
+        if (arrived == threshold) arrived = 0;
 
         notifyAll();
 
@@ -61,11 +62,23 @@ class DynamicBarrier extends Barrier {
 
     @Override
     // May be (ab)used for robustness testing
-    public void set(int k) {
-        synchronized (this) {
-            notify();
+    public synchronized void set(int k) {
+        if (k <= threshold) {
+            threshold = k;
+            if (arrived >= k) {
+                notifyAll();
+            }
+            return;
+
+        } else if (k > threshold) {
+            while (arrived > 0) {
+                try {
+                    wait();
+                } catch (Exception e) {
+                    continue;
+                }
+            }
+            threshold = k;
         }
     }
-
-
 }
