@@ -13,6 +13,9 @@ class DynamicBarrier extends Barrier {
     int arrived;
     boolean lastOut;
     int driving;
+    int aThreshold = 9;
+    int dThreshold = aThreshold;
+    int nextThreshold = aThreshold;
 
     public DynamicBarrier(CarDisplayI cd) {
         super(cd);
@@ -24,24 +27,28 @@ class DynamicBarrier extends Barrier {
         if (!active) return;
 
         arrived++;
-
+        System.out.println(" A: " + arrived);
         //First barrier: The first car leaving will reset the driving variable.
-        while (arrived < 9) wait();
+        while (arrived < aThreshold) wait();
 
-        if (driving == 9) driving = 0;
-
+        if (driving >= dThreshold) {
+            driving = 0;
+            dThreshold = nextThreshold;
+        }
         //First car out notifies the rest and then goes to wait until all cars have reached the second barrier.
         notifyAll();
 
         driving ++;
-
+        System.out.println("D: " + driving);
         //Second barrier: When last car arrives to the second barrier then we can reset the cars arrived.
-        while (driving < 9) {
+        while (driving < dThreshold) {
             wait();
         }
 
-        if (arrived == 9) arrived = 0;
-
+        if (arrived >= aThreshold) {
+            arrived = 0;
+            aThreshold = nextThreshold;
+        }
         notifyAll();
 
     }
@@ -62,8 +69,20 @@ class DynamicBarrier extends Barrier {
     @Override
     // May be (ab)used for robustness testing
     public void set(int k) {
-        synchronized (this) {
-            notify();
+        nextThreshold = k;
+        System.out.println("Next threshold: " + nextThreshold);
+        synchronized(this) {
+            boolean thresholdChanged = false;
+            if(k <= aThreshold) {
+                //With a smaller threshold the cars must be released earlier
+                aThreshold = nextThreshold;
+                thresholdChanged = true;
+            }
+            if (k <= dThreshold) {
+                dThreshold = nextThreshold;
+                thresholdChanged = true;
+            }
+            if(thresholdChanged) notifyAll();
         }
     }
 
