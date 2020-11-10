@@ -37,6 +37,7 @@ class Conductor extends Thread {
         mygate = g;
         startpos = cd.getStartPos(no);
         barpos   = cd.getBarrierPos(no);  // For later use
+        CarI car;
 
         col = chooseColor();
 
@@ -92,7 +93,7 @@ class Conductor extends Thread {
 
     public void run() {
         try {
-            CarI car = cd.newCar(no, col, startpos);
+            car = cd.newCar(no, col, startpos);
             curpos = startpos;
             field.enter(no, curpos);
             cd.register(car);
@@ -174,7 +175,8 @@ public class CarControl implements CarControlI{
    }
     
     public void removeCar(int no) { 
-        cd.println("Remove Car not implemented in this version");
+        //conductor[no].cd.deregister();
+        return;
     }
 
     public void restoreCar(int no) { 
