@@ -7,6 +7,10 @@
 
 import java.awt.Color;
 
+class Lock {
+
+}
+
 class Conductor extends Thread {
 
     double basespeed = 7.0;          // Tiles per second
@@ -27,13 +31,21 @@ class Conductor extends Thread {
     Pos curpos;                      // Current position 
     Pos newpos;                      // New position to go to
 
-    public Conductor(int no, CarDisplayI cd, Gate g, Field field, Alley alley, Barrier barrier) {
+    CarI car;
+    boolean active = true;
+    boolean moving = false;
+    boolean onlyAtNewPos = false;
+
+    Lock lock;
+
+    public Conductor(int no, CarDisplayI cd, Gate g, Field field, Alley alley, Barrier barrier, Lock lock) {
 
         this.no = no;
         this.cd = cd;
         this.field = field;
         this.alley = alley;
         this.barrier = barrier;
+        this.lock = lock;
         mygate = g;
         startpos = cd.getStartPos(no);
         barpos   = cd.getBarrierPos(no);  // For later use
@@ -99,7 +111,6 @@ class Conductor extends Thread {
             cd.register(car);
 
             while (true) { 
-
                 if (atGate(curpos)) { 
                     mygate.pass(); 
                     car.setSpeed(chooseSpeed());
@@ -110,6 +121,7 @@ class Conductor extends Thread {
                 if (atBarrier(curpos)) barrier.sync(no);
                 
                 if (atEntry(curpos)) alley.enter(no);
+                
                 field.enter(no, newpos);
 
                 car.driveTo(newpos);
@@ -137,6 +149,7 @@ public class CarControl implements CarControlI{
     Field field;              // Field
     Alley alley;              // Alley
     Barrier barrier;          // Barrier
+    Lock lock;
 
     public CarControl(CarDisplayI cd) {
         this.cd = cd;
@@ -145,10 +158,11 @@ public class CarControl implements CarControlI{
         field = new Field();
         alley = new Alley();
         barrier = Barrier.create(cd);
+        lock = new Lock();
 
         for (int no = 0; no < 9; no++) {
             gate[no] = Gate.create();
-            conductor[no] = new Conductor(no,cd,gate[no],field,alley,barrier);
+            conductor[no] = new Conductor(no,cd,gate[no],field,alley,barrier,lock);
             conductor[no].setName("Conductor-" + no);
             conductor[no].start();
         } 
@@ -174,13 +188,14 @@ public class CarControl implements CarControlI{
         barrier.set(k);
    }
     
-    public void removeCar(int no) { 
-        //conductor[no].cd.deregister();
-        return;
+    public void removeCar(int no) {
+        conductor[no].field.tileMutex[conductor[no].curpos.row, conductor[no].curpos.col];
+        conductor[no].field.tileMutex[conductor[no].newpos.row, conductor[no].newpos.col];
+        cd.deregister(conductor[no].car);
     }
 
-    public void restoreCar(int no) { 
-        cd.println("Restore Car not implemented in this version");
+    public void restoreCar(int no) {  
+        cd.register(conductor[no].car);
     }
 
     /* Speed settings for testing purposes */
