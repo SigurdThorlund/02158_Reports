@@ -62,6 +62,9 @@ class DynamicBarrier extends Barrier {
     public synchronized void off() {
         active = false;
         arrived = 0;
+        driving = 0;
+        aThreshold = nextThreshold;
+        dThreshold = nextThreshold;
         notifyAll();
     }
 
@@ -83,8 +86,14 @@ class DynamicBarrier extends Barrier {
                 thresholdChanged = true;
             }
             if(thresholdChanged) notifyAll();
+            try {
+                while (aThreshold != nextThreshold || dThreshold != nextThreshold) {
+                    System.out.println("A: " + aThreshold + " D: " + dThreshold);
+                    wait();
+                }
+            } catch(InterruptedException e) {
+                System.out.println("Waiting for threshold to update was interrupted!");
+            }
         }
     }
-
-
 }
