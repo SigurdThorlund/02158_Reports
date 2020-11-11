@@ -108,7 +108,6 @@ class Conductor extends Thread {
                 }
 
                 newpos = nextPos(curpos);
-
                 if (atBarrier(curpos)) barrier.sync(no);
                 
                 if (atEntry(curpos)) alley.enter(no);
@@ -193,35 +192,21 @@ public class CarControl implements CarControlI{
         if (active[no]) {
             Conductor c = conductor[no];
 
-            // if InterruptedException, then we are waiting to enter another field (the field at newpos)
-            try {
-                c.interrupt();
-                // if no InterruptedException, leave both newpos and curpos
-                c.field.leave(c.newpos);
-
-                synchronized(c) {
-                    // if got the semaphore for both fields
-                    if (c.newpos != c.curpos) {
-                        c.field.leave(c.curpos);
-                    }
-                }
-            } catch(InterruptedException e) {
-                // If InterruptedException, we only got the semaphore for curpos
-                c.field.leave(c.curpos);
-            }
-            
             // deregister fjerne bilen fra GUI (og måske nogle andre ting)
             // Men den rører ikke ved de semaforer som conductoren måske har
             // pillet ved
             cd.deregister(c.car);
 
+            // Vi skal finde ud af hvornår vi skal forlade de forskellige fields/alleys
+            c.field.leave(c.curpos);
+            c.field.leave(c.newpos);
             c.alley.leave(no);
             active[no] = false;
         }
     }
 
 
-
+    // tror at denne funktion er korrekt -thw
     public synchronized void restoreCar(int no) {
         if (!active[no]) {
             // Det er ok at erstatte conductor med en ny conductor, det står inde i assignment teksten nede i bunden
