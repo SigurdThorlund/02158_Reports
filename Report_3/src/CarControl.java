@@ -222,7 +222,6 @@ public class CarControl implements CarControlI{
 
             Conductor c = conductor[no];
             c.interrupt();
-
             
             synchronized (conductor[no]) {
                 if (c.isInterrupted()) {
