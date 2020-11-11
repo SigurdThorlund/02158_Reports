@@ -22,7 +22,7 @@ public class Alley {
     /* Register that car no. has left the alley */
     public synchronized void leave(int no) {
         if (no < 5) {
-            down--; 
+            down--;
             if (down == 0) notifyAll();
         } else {
             up--; 

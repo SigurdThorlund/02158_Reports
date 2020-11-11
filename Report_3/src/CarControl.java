@@ -95,6 +95,12 @@ class Conductor extends Thread {
         return pos.equals(barpos);
     }
 
+    //Car removal helper function
+    boolean inAlley(Pos pos) {
+        return (pos.col == 0) || (pos.row == 1 && pos.col < 4) || (pos.row == 2 && pos.col == 1) ||
+               (pos.row == 0 && pos.col < 3) || (pos.row == 9 && pos.col < 2);
+    }
+
     public void run() {
         try {
             car = cd.newCar(no, col, startpos);
@@ -118,6 +124,7 @@ class Conductor extends Thread {
                 
                 synchronized(this) {
                     field.leave(curpos);
+                    if (atExit(newpos)) alley.leave(no);
                     curpos = newpos;
                 }
 
@@ -200,7 +207,10 @@ public class CarControl implements CarControlI{
             // Vi skal finde ud af hvornår vi skal forlade de forskellige fields/alleys
             c.field.leave(c.curpos);
             c.field.leave(c.newpos);
-            c.alley.leave(no);
+            System.out.println("CP: "+ c.curpos + " NP: "+ c.newpos);
+            if(c.inAlley(c.curpos) || c.inAlley(c.newpos)) {
+                c.alley.leave(no);
+            }
             active[no] = false;
         }
     }
