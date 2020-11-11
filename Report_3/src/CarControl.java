@@ -44,7 +44,6 @@ class Conductor extends Thread {
         curpos = startpos;
         newpos = startpos;
         barpos   = cd.getBarrierPos(no);  // For later use
-        
 
         col = chooseColor();
 
@@ -111,13 +110,14 @@ class Conductor extends Thread {
             curpos = startpos;
             field.enter(no, curpos);
             cd.register(car);
-            while (true) { 
+            while (true) {
                 if (atGate(curpos)) { 
                     mygate.pass(); 
                     car.setSpeed(chooseSpeed());
                 }
 
                 newpos = nextPos(curpos);
+
                 if (atBarrier(curpos)) barrier.sync(no);
                 
                 if (atEntry(curpos)) {
@@ -126,50 +126,48 @@ class Conductor extends Thread {
                         inAlley = true;
                     }
                 }
+
+                System.out.println("1");
+
                 synchronized(this) {
                     field.enter(no, newpos);
                     this.isAdvancing = true;
                 }
+
+                System.out.println("2");
                 car.driveTo(newpos);
-                
+
+                System.out.println("3");
                 synchronized(this) {
                     field.leave(curpos);
                     this.isAdvancing = false;
+                    curpos = newpos;
+                }
+
+                synchronized (this) {
                     if (atExit(newpos)) {
                         alley.leave(no);
                         inAlley = false;
                     }
-                    curpos = newpos;
                 }
+
+                System.out.println("4");
+
+                System.out.println("");
             }
 
         } catch (InterruptedException e) {
-            takeOutOfService();
+            System.out.println("interrupted");
+            return;
         } catch (Exception e) {
             cd.println("Exception in Conductor no. " + no);
             System.err.println("Exception in Conductor no. " + no + ":" + e);
             e.printStackTrace();
         }
     }
-
-    public void takeOutOfService() {
-        System.out.println("TakeOutOfService " + no);
-        cd.deregister(car);
-
-        // Vi skal finde ud af hvornår vi skal forlade de forskellige fields/alleys
-        field.leave(curpos);
-        if(isAdvancing) {
-            field.leave(newpos);
-        }
-
-        if(inAlley) {
-            alley.leave(no);
-        }
-    }
-
 }
 
-public class CarControl implements CarControlI{
+public class CarControl implements CarControlI {
 
     CarDisplayI cd;           // Reference to GUI
     Conductor[] conductor;    // Car controllers
@@ -223,16 +221,23 @@ public class CarControl implements CarControlI{
             Conductor c = conductor[no];
             c.interrupt();
             
-            synchronized (conductor[no]) {
-                if (c.isInterrupted()) {
-                    cd.deregister(c.car);
-                    //c.takeOutOfService();
-                    System.out.println("isInterrupted " + c.no);
+            synchronized (c) {
+                cd.deregister(c.car);
+                field.leave(c.curpos);
+
+                if(c.inAlley) {
+                    c.alley.leave(c.no);
                 }
-                active[no] = false;
+
+                if(c.isAdvancing && c.curpos != c.newpos) {
+                    field.leave(c.newpos);
+                }
             }
+
+            active[no] = false;
         }
     }
+    
 
 
     // tror at denne funktion er korrekt -thw
@@ -241,6 +246,7 @@ public class CarControl implements CarControlI{
             // Det er ok at erstatte conductor med en ny conductor, det står inde i assignment teksten nede i bunden
             conductor[no] = new Conductor(no,cd,gate[no],field,alley,barrier);
             conductor[no].setName("Conductor-" + no);
+            System.out.println("RestoreCar");
             conductor[no].start();
             active[no] = true;
         }
@@ -257,9 +263,3 @@ public class CarControl implements CarControlI{
     }
 
 }
-
-
-
-
-
-

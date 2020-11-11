@@ -23,6 +23,7 @@ public class Semaphore {
 
     public synchronized void V() {
         s++;
+        if (s > 1) throw new Error("Semaphore initialized to negative value: " + s);
         notify();
     }
 
