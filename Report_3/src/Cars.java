@@ -1152,7 +1152,6 @@ public class Cars extends JFrame implements CarDisplayI {
     }
 
     public boolean deregister(CarI car) {
-        this.println("deregister");
         return sim.remove((CarModel) car);
     }
 

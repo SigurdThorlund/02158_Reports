@@ -101,7 +101,6 @@ class Conductor extends Thread {
             curpos = startpos;
             field.enter(no, curpos);
             cd.register(car);
-            int a = 0;
             while (true) { 
                 if (atGate(curpos)) { 
                     mygate.pass(); 
@@ -113,16 +112,24 @@ class Conductor extends Thread {
                 if (atBarrier(curpos)) barrier.sync(no);
                 
                 if (atEntry(curpos)) alley.enter(no);
-                
+
                 field.enter(no, newpos);
 
                 car.driveTo(newpos);
                 
-                field.leave(curpos);
-                if (atExit(newpos)) alley.leave(no);
+                synchronized(this) {
+                    field.leave(curpos);
+                    curpos = newpos;
+                }
 
-                curpos = newpos;
-                a++;
+
+
+                if (!field.tileMutex[newpos.row][newpos.col].toString().equals("0") && !field.tileMutex[newpos.row][newpos.col].toString().equals("1")){
+                    cd.println("newpos tile: " + field.tileMutex[newpos.row][newpos.col].toString());
+                }
+                if (!field.tileMutex[curpos.row][curpos.col].toString().equals("0") && !field.tileMutex[curpos.row][curpos.col].toString().equals("1")){
+                    cd.println("curpos tile: " + field.tileMutex[curpos.row][curpos.col].toString());
+                }
             }
 
         } catch (Exception e) {
@@ -178,25 +185,50 @@ public class CarControl implements CarControlI{
 
    public void barrierSet(int k) {
         barrier.set(k);
-   }
+    }
     
+    // Vi skal fjerne bilen med det samme
+    // altså vi må ikke vente til den har kørt videre til det næste tile/felt på banen
     public synchronized void removeCar(int no) {
         if (active[no]) {
             Conductor c = conductor[no];
+
+            // if InterruptedException, then we are waiting to enter another field (the field at newpos)
+            try {
+                c.interrupt();
+                // if no InterruptedException, leave both newpos and curpos
+                c.field.leave(c.newpos);
+
+                synchronized(c) {
+                    // if got the semaphore for both fields
+                    if (c.newpos != c.curpos) {
+                        c.field.leave(c.curpos);
+                    }
+                }
+            } catch(InterruptedException e) {
+                // If InterruptedException, we only got the semaphore for curpos
+                c.field.leave(c.curpos);
+            }
+            
+            // deregister fjerne bilen fra GUI (og måske nogle andre ting)
+            // Men den rører ikke ved de semaforer som conductoren måske har
+            // pillet ved
             cd.deregister(c.car);
 
-            c.field.tileMutex[c.curpos.row][c.curpos.col] = new Semaphore(1);
-            c.field.tileMutex[c.newpos.row][c.newpos.col] = new Semaphore(1);
+            c.alley.leave(no);
             active[no] = false;
         }
     }
 
+
+
     public synchronized void restoreCar(int no) {
         if (!active[no]) {
+            // Det er ok at erstatte conductor med en ny conductor, det står inde i assignment teksten nede i bunden
             conductor[no] = new Conductor(no,cd,gate[no],field,alley,barrier);
             conductor[no].setName("Conductor-" + no);
-            active[no] = true;
             conductor[no].start();
+            active[no] = true;
         }
     }
 
