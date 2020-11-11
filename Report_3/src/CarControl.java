@@ -126,23 +126,29 @@ class Conductor extends Thread {
                         inAlley = true;
                     }
                 }
+
                 synchronized(this) {
                     field.enter(no, newpos);
                     this.isAdvancing = true;
                 }
-                car.driveTo(newpos);
-                
+
+                synchronized(this) {
+                    car.driveTo(newpos);
+                }
+
                 synchronized(this) {
                     field.leave(curpos);
                     this.isAdvancing = false;
+                    curpos = newpos;
+                }
+
+                synchronized(this) {
                     if (atExit(newpos)) {
                         alley.leave(no);
                         inAlley = false;
                     }
-                    curpos = newpos;
                 }
             }
-
         } catch (InterruptedException e) {
             takeOutOfService();
         } catch (Exception e) {
@@ -153,20 +159,14 @@ class Conductor extends Thread {
     }
 
     public void takeOutOfService() {
-        System.out.println("TakeOutOfService " + no);
-        cd.deregister(car);
-
-        // Vi skal finde ud af hvornår vi skal forlade de forskellige fields/alleys
-        field.leave(curpos);
-        if(isAdvancing) {
+        if (isAdvancing) {
             field.leave(newpos);
         }
 
-        if(inAlley) {
+        if (inAlley) {
             alley.leave(no);
         }
     }
-
 }
 
 public class CarControl implements CarControlI{
@@ -214,31 +214,23 @@ public class CarControl implements CarControlI{
    public void barrierSet(int k) {
         barrier.set(k);
     }
-    
-    // Vi skal fjerne bilen med det samme
-    // altså vi må ikke vente til den har kørt videre til det næste tile/felt på banen
+
     public synchronized void removeCar(int no) {
         if (active[no]) {
 
             Conductor c = conductor[no];
             c.interrupt();
             
-            synchronized (conductor[no]) {
-                if (c.isInterrupted()) {
-                    cd.deregister(c.car);
-                    //c.takeOutOfService();
-                    System.out.println("isInterrupted " + c.no);
-                }
-                active[no] = false;
+            synchronized (c) {
+                cd.deregister(c.car);
+                c.field.leave(c.curpos);
             }
+            active[no] = false;
         }
     }
 
-
-    // tror at denne funktion er korrekt -thw
     public synchronized void restoreCar(int no) {
         if (!active[no]) {
-            // Det er ok at erstatte conductor med en ny conductor, det står inde i assignment teksten nede i bunden
             conductor[no] = new Conductor(no,cd,gate[no],field,alley,barrier);
             conductor[no].setName("Conductor-" + no);
             conductor[no].start();

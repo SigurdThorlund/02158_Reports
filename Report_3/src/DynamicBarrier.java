@@ -27,7 +27,6 @@ class DynamicBarrier extends Barrier {
         if (!active) return;
 
         arrived++;
-        System.out.println(" A: " + arrived);
         //First barrier: The first car leaving will reset the driving variable.
         while (arrived < aThreshold) wait();
 
@@ -39,7 +38,6 @@ class DynamicBarrier extends Barrier {
         notifyAll();
 
         driving ++;
-        System.out.println("D: " + driving);
         //Second barrier: When last car arrives to the second barrier then we can reset the cars arrived.
         while (driving < dThreshold) {
             wait();
@@ -73,7 +71,6 @@ class DynamicBarrier extends Barrier {
     // May be (ab)used for robustness testing
     public void set(int k) {
         nextThreshold = k;
-        System.out.println("Next threshold: " + nextThreshold);
         synchronized(this) {
             boolean thresholdChanged = false;
             if(k <= aThreshold) {
@@ -88,7 +85,6 @@ class DynamicBarrier extends Barrier {
             if(thresholdChanged) notifyAll();
             try {
                 while (aThreshold != nextThreshold || dThreshold != nextThreshold) {
-                    System.out.println("A: " + aThreshold + " D: " + dThreshold);
                     wait();
                 }
             } catch(InterruptedException e) {
