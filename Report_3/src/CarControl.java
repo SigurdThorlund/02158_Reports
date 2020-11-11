@@ -28,6 +28,8 @@ class Conductor extends Thread {
     Pos newpos;                      // New position to go to
 
     CarI car;
+    boolean isAdvancing;
+    boolean inAlley;
 
     public Conductor(int no, CarDisplayI cd, Gate g, Field field, Alley alley, Barrier barrier) {
 
@@ -36,6 +38,7 @@ class Conductor extends Thread {
         this.field = field;
         this.alley = alley;
         this.barrier = barrier;
+        this.isAdvancing = false;
         mygate = g;
         startpos = cd.getStartPos(no);
         curpos = startpos;
@@ -116,15 +119,24 @@ class Conductor extends Thread {
                 newpos = nextPos(curpos);
                 if (atBarrier(curpos)) barrier.sync(no);
                 
-                if (atEntry(curpos)) alley.enter(no);
+                if (atEntry(curpos)) {
+                    synchronized(this) {
+                        alley.enter(no);
+                        inAlley = true;
+                    }
+                }
 
                 field.enter(no, newpos);
-
+                this.isAdvancing = true;
                 car.driveTo(newpos);
                 
                 synchronized(this) {
                     field.leave(curpos);
-                    if (atExit(newpos)) alley.leave(no);
+                    this.isAdvancing = false;
+                    if (atExit(newpos)) {
+                        alley.leave(no);
+                        inAlley = false;
+                    }
                     curpos = newpos;
                 }
 
@@ -206,9 +218,12 @@ public class CarControl implements CarControlI{
 
             // Vi skal finde ud af hvornår vi skal forlade de forskellige fields/alleys
             c.field.leave(c.curpos);
-            c.field.leave(c.newpos);
+            if(c.isAdvancing) {
+                c.field.leave(c.newpos);
+            }
+
             System.out.println("CP: "+ c.curpos + " NP: "+ c.newpos);
-            if(c.inAlley(c.curpos) || c.inAlley(c.newpos)) {
+            if(c.inAlley) {
                 c.alley.leave(no);
             }
             active[no] = false;
