@@ -30,6 +30,7 @@ class Conductor extends Thread {
     boolean isAdvancing;
     boolean inAlley;
 
+    CarI car;
     public Conductor(int no, CarDisplayI cd, Gate g, Field field, Alley alley, Barrier barrier) {
 
         this.no = no;
@@ -104,9 +105,9 @@ class Conductor extends Thread {
     }
 
     public void run() {
-        CarI car = cd.newCar(no, col, startpos);;
+        //car = cd.newCar(no, col, startpos);
         try {
-            //car = cd.newCar(no, col, startpos);
+            car = cd.newCar(no, col, startpos);
             curpos = startpos;
             field.enter(no, curpos);
             cd.register(car);
@@ -125,9 +126,10 @@ class Conductor extends Thread {
                         inAlley = true;
                     }
                 }
-                
-                field.enter(no, newpos);
-                this.isAdvancing = true;
+                synchronized(this) {
+                    field.enter(no, newpos);
+                    this.isAdvancing = true;
+                }
                 car.driveTo(newpos);
                 
                 synchronized(this) {
@@ -142,26 +144,26 @@ class Conductor extends Thread {
             }
 
         } catch (InterruptedException e) {
-            System.out.println("deregistering");
-
-            cd.deregister(car);
-            System.out.println("deregistering done");
-
-            // Vi skal finde ud af hvornår vi skal forlade de forskellige fields/alleys
-            field.leave(curpos);
-            if(isAdvancing) {
-                field.leave(newpos);
-            }
-
-            System.out.println("CP: "+ curpos + " NP: "+ newpos);
-            if(inAlley) {
-                alley.leave(no);
-            }
-
+            takeOutOfService();
         } catch (Exception e) {
             cd.println("Exception in Conductor no. " + no);
             System.err.println("Exception in Conductor no. " + no + ":" + e);
             e.printStackTrace();
+        }
+    }
+
+    public void takeOutOfService() {
+        System.out.println("TakeOutOfService " + no);
+        cd.deregister(car);
+
+        // Vi skal finde ud af hvornår vi skal forlade de forskellige fields/alleys
+        field.leave(curpos);
+        if(isAdvancing) {
+            field.leave(newpos);
+        }
+
+        if(inAlley) {
+            alley.leave(no);
         }
     }
 
@@ -220,14 +222,16 @@ public class CarControl implements CarControlI{
 
             Conductor c = conductor[no];
             c.interrupt();
-            System.out.println("START START START");
-            synchronized (conductor[no]) {
 
-                System.out.println("MIDDLE MIDDLE MIDDLE");
+            
+            synchronized (conductor[no]) {
+                if (c.isInterrupted()) {
+                    cd.deregister(c.car);
+                    //c.takeOutOfService();
+                    System.out.println("isInterrupted " + c.no);
+                }
                 active[no] = false;
             }
-
-            System.out.println("END END END");
         }
     }
 
