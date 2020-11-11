@@ -27,7 +27,6 @@ class Conductor extends Thread {
     Pos curpos;                      // Current position 
     Pos newpos;                      // New position to go to
 
-    CarI car;
     boolean isAdvancing;
     boolean inAlley;
 
@@ -44,7 +43,7 @@ class Conductor extends Thread {
         curpos = startpos;
         newpos = startpos;
         barpos   = cd.getBarrierPos(no);  // For later use
-        CarI car;
+        
 
         col = chooseColor();
 
@@ -105,8 +104,9 @@ class Conductor extends Thread {
     }
 
     public void run() {
+        CarI car = cd.newCar(no, col, startpos);;
         try {
-            car = cd.newCar(no, col, startpos);
+            //car = cd.newCar(no, col, startpos);
             curpos = startpos;
             field.enter(no, curpos);
             cd.register(car);
@@ -125,7 +125,7 @@ class Conductor extends Thread {
                         inAlley = true;
                     }
                 }
-
+                
                 field.enter(no, newpos);
                 this.isAdvancing = true;
                 car.driveTo(newpos);
@@ -139,15 +139,23 @@ class Conductor extends Thread {
                     }
                     curpos = newpos;
                 }
+            }
 
+        } catch (InterruptedException e) {
+            System.out.println("deregistering");
 
+            cd.deregister(car);
+            System.out.println("deregistering done");
 
-                if (!field.tileMutex[newpos.row][newpos.col].toString().equals("0") && !field.tileMutex[newpos.row][newpos.col].toString().equals("1")){
-                    cd.println("newpos tile: " + field.tileMutex[newpos.row][newpos.col].toString());
-                }
-                if (!field.tileMutex[curpos.row][curpos.col].toString().equals("0") && !field.tileMutex[curpos.row][curpos.col].toString().equals("1")){
-                    cd.println("curpos tile: " + field.tileMutex[curpos.row][curpos.col].toString());
-                }
+            // Vi skal finde ud af hvornår vi skal forlade de forskellige fields/alleys
+            field.leave(curpos);
+            if(isAdvancing) {
+                field.leave(newpos);
+            }
+
+            System.out.println("CP: "+ curpos + " NP: "+ newpos);
+            if(inAlley) {
+                alley.leave(no);
             }
 
         } catch (Exception e) {
@@ -209,24 +217,17 @@ public class CarControl implements CarControlI{
     // altså vi må ikke vente til den har kørt videre til det næste tile/felt på banen
     public synchronized void removeCar(int no) {
         if (active[no]) {
+
             Conductor c = conductor[no];
+            c.interrupt();
+            System.out.println("START START START");
+            synchronized (conductor[no]) {
 
-            // deregister fjerne bilen fra GUI (og måske nogle andre ting)
-            // Men den rører ikke ved de semaforer som conductoren måske har
-            // pillet ved
-            cd.deregister(c.car);
-
-            // Vi skal finde ud af hvornår vi skal forlade de forskellige fields/alleys
-            c.field.leave(c.curpos);
-            if(c.isAdvancing) {
-                c.field.leave(c.newpos);
+                System.out.println("MIDDLE MIDDLE MIDDLE");
+                active[no] = false;
             }
 
-            System.out.println("CP: "+ c.curpos + " NP: "+ c.newpos);
-            if(c.inAlley) {
-                c.alley.leave(no);
-            }
-            active[no] = false;
+            System.out.println("END END END");
         }
     }
 
