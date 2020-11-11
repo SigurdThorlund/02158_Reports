@@ -92,7 +92,7 @@ class DynamicBarrier extends Barrier {
                     wait();
                 }
             } catch(InterruptedException e) {
-                System.out.println("Waiting for threshold to update was interrupted!");
+                System.out.println("Waiting for thresholds to update was interrupted!");
             }
         }
     }
