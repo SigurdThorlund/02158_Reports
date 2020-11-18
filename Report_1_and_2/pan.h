@@ -1,5 +1,5 @@
 #define SpinVersion	"Spin Version 6.0.0 -- 5 December 2010"
-#define PanSource	"SafetyAlley4Cars.pml"
+#define PanSource	"SafetyAlley.pml"
 
 #define G_long	4
 #define G_int	4
@@ -44,6 +44,7 @@ char *trailfilename;
 #ifndef NFAIR
 	#define NFAIR	2	/* must be >= 2 */
 #endif
+#define REM_REFS	5
 #define HAS_CODE
 #if defined(RANDSTORE) && !defined(RANDSTOR)
 	#define RANDSTOR	RANDSTORE
@@ -62,87 +63,70 @@ char *trailfilename;
 #endif
 #ifdef NP
 	#define HAS_NP	2
-	#define VERI	3	/* np_ */
+	#define VERI	2	/* np_ */
 #endif
 #if !defined(NOCLAIM) && !defined NP
 	#define NCLAIMS	1
-	#define VERI	2
+	#define VERI	1
 #endif
 typedef struct S_F_MAP {
 	char *fnm; int from; int upto;
 } S_F_MAP;
 
-#define nstates2	9	/* nocrash */
-#define endstate2	8
-short src_ln2 [] = {
-	  0,   3,   3,   4,   4,   2,   6,   7, 
-	  8,   0, };
-S_F_MAP src_file2 [] = {
-	{ ""-"", 0, 0 },
-	{ "_spin_nvr.tmp", 1, 8 },
-	{ ""-"", 9, 10 }
-};
-short *src_claim;
-uchar reached2 [] = {
-	  0,   1,   1,   1,   1,   0,   1,   1, 
-	  0,   0, };
-uchar *loopstate2;
-
-#define nstates1	69	/* Alley */
-#define endstate1	68
+#define nstates1	12	/* fair */
+#define endstate1	11
 short src_ln1 [] = {
-	  0,  44,  45,  45,  46,  47,  48,  49, 
-	 51,  51,  52,  53,  54,  56,  56,  57, 
-	 58,  59,  60,  62,  62,  64,  64,  65, 
-	 66,  67,  68,  70,  70,  71,  72,  73, 
-	 74,  74,  63,  76,  76,  77,  78,  78, 
-	 44,  80,  80,  81,  81,  82,  83,  83, 
-	 80,  85,  86,  86,  87,  88,  88,  85, 
-	 90,  90,  90,  91,  91,  43,  93,  94, 
-	 95,  41,  97,  41,  97,   0, };
+	  0,   3,   3,   4,   4,   2,   6,   8, 
+	  8,   7,  10,  10,   0, };
 S_F_MAP src_file1 [] = {
 	{ ""-"", 0, 0 },
-	{ "SafetyAlley4Cars.pml", 1, 68 },
-	{ ""-"", 69, 70 }
+	{ "_spin_nvr.tmp", 1, 11 },
+	{ ""-"", 12, 13 }
 };
+short *src_claim;
 uchar reached1 [] = {
-	  0,   1,   1,   0,   0,   0,   0,   1, 
-	  1,   0,   0,   0,   1,   1,   0,   0, 
-	  0,   0,   1,   1,   0,   1,   0,   0, 
-	  0,   0,   0,   1,   0,   0,   0,   0, 
-	  1,   1,   0,   1,   0,   1,   1,   1, 
-	  0,   1,   1,   1,   0,   0,   1,   0, 
-	  0,   1,   1,   0,   0,   1,   0,   0, 
-	  1,   0,   0,   1,   1,   1,   1,   0, 
-	  0,   0,   1,   1,   0,   0, };
+	  0,   1,   1,   1,   1,   0,   1,   1, 
+	  1,   0,   1,   0,   0, };
 uchar *loopstate1;
 
-#define nstates0	20	/* SafetyAlley */
-#define endstate0	19
+#define nstates0	77	/* SafetyAlley */
+#define endstate0	76
 short src_ln0 [] = {
-	  0,  20,  22,  23,  24,  27,  27,  28, 
-	 29,  31,  31,  32,  33,  26,  35,  35, 
-	 18,  37,  18,  37,   0, };
+	  0,  27,  30,  17,  17,  16,  19,  17, 
+	 17,  16,  19,  33,  33,  21,  21,  36, 
+	 21,  21,  17,  17,  16,  19,  21,  21, 
+	 17,  17,  16,  19,  40,  32,  42,  42, 
+	 17,  17,  16,  19,  44,  44,  46,  21, 
+	 21,  17,  17,  16,  19,  17,  17,  16, 
+	 19,  49,  43,  51,  29,  52,  52,  21, 
+	 21,  17,  17,  16,  19,  59,  59,  60, 
+	 60,  58,  62,  62,  63,  21,  21,  21, 
+	 21,  25,  66,  25,  66,   0, };
 S_F_MAP src_file0 [] = {
 	{ ""-"", 0, 0 },
-	{ "SafetyAlley4Cars.pml", 1, 19 },
-	{ ""-"", 20, 21 }
+	{ "SafetyAlley.pml", 1, 76 },
+	{ ""-"", 77, 78 }
 };
 uchar reached0 [] = {
-	  0,   1,   0,   0,   0,   1,   0,   0, 
-	  0,   1,   0,   0,   0,   0,   1,   0, 
-	  0,   1,   1,   0,   0, };
+	  0,   1,   1,   1,   0,   1,   0,   1, 
+	  0,   1,   0,   1,   0,   1,   0,   1, 
+	  1,   0,   1,   0,   1,   0,   1,   0, 
+	  1,   0,   1,   0,   0,   0,   1,   1, 
+	  1,   0,   1,   0,   1,   0,   1,   1, 
+	  0,   1,   0,   1,   0,   1,   0,   1, 
+	  0,   0,   0,   1,   0,   1,   0,   1, 
+	  0,   1,   0,   1,   0,   1,   0,   1, 
+	  0,   0,   1,   0,   0,   1,   0,   1, 
+	  0,   0,   1,   1,   0,   0, };
 uchar *loopstate0;
 struct {
 	int tp; short *src;
 } src_all[] = {
-	{ 2, &src_ln2[0] },
 	{ 1, &src_ln1[0] },
 	{ 0, &src_ln0[0] },
 	{ 0, (short *) 0 }
 };
 S_F_MAP *flref[] = {
-	src_file2,
 	src_file1,
 	src_file0 
 };
@@ -151,8 +135,8 @@ struct {
 } code_lookup[] = {
 	{ (char *) 0, "" }
 };
-#define _T5	63
-#define _T2	64
+#define _T5	35
+#define _T2	36
 #define T_ID	unsigned char
 #define SYNC	0
 #define ASYNC	0
@@ -168,33 +152,23 @@ struct {
 #endif
 char *procname[] = {
    "SafetyAlley",
-   "Alley",
-   "nocrash",
+   "fair",
    ":np_:",
 };
 
 enum btypes { NONE=0, N_CLAIM=1, I_PROC=2, A_PROC=3, P_PROC=4, E_TRACE=5, N_TRACE=6 };
 int Btypes[] = {
    3,	/* SafetyAlley */
-   3,	/* Alley */
-   1,	/* nocrash */
+   1,	/* fair */
    0	/* :np_: */
 };
 
-typedef struct P2 { /* nocrash */
+typedef struct P1 { /* fair */
 	unsigned _pid : 8;  /* 0..255 */
 	unsigned _t   : 3; /* proctype */
 	unsigned _p   : 8; /* state    */
-} P2;
-#define Air2	(sizeof(P2) - 3)
-#define PAlley	((P1 *)this)
-typedef struct P1 { /* Alley */
-	unsigned _pid : 8;  /* 0..255 */
-	unsigned _t   : 3; /* proctype */
-	unsigned _p   : 8; /* state    */
-	int _2_i;
 } P1;
-#define Air1	(sizeof(P1) - Offsetof(P1, _2_i) - 1*sizeof(int))
+#define Air1	(sizeof(P1) - 3)
 #define PSafetyAlley	((P0 *)this)
 typedef struct P0 { /* SafetyAlley */
 	unsigned _pid : 8;  /* 0..255 */
@@ -202,12 +176,12 @@ typedef struct P0 { /* SafetyAlley */
 	unsigned _p   : 8; /* state    */
 } P0;
 #define Air0	(sizeof(P0) - 3)
-typedef struct P3 { /* np_ */
+typedef struct P2 { /* np_ */
 	unsigned _pid : 8;  /* 0..255 */
 	unsigned _t   : 3; /* proctype */
 	unsigned _p   : 8; /* state    */
-} P3;
-#define Air3	(sizeof(P3) - 3)
+} P2;
+#define Air2	(sizeof(P2) - 3)
 
 #define Pclaim	P0
 #ifndef NCLAIMS
@@ -408,32 +382,29 @@ typedef struct State {
 		unsigned short _event;
 	#endif
 #endif
-	uchar enter[4];
-	uchar inAlley[4];
-	uchar exit[4];
-	int co;
+	int counter;
 	int mutex;
-	int mutexCC;
-	int coCC;
+	int wait;
+	int edit;
 	uchar sv[VECTORSZ];
 } State;
 
 #define HAS_TRACK	0
+/* hidden variable: */	uchar inAlley[8];
 int _; /* a predefined write-only variable */
 
 #define FORWARD_MOVES	"pan.m"
 #define REVERSE_MOVES	"pan.b"
 #define TRANSITIONS	"pan.t"
-#define _NP_	3
-uchar reached3[3];  /* np_ */
-uchar *loopstate3;  /* np_ */
-#define nstates3	3 /* np_ */
-#define endstate3	2 /* np_ */
+#define _NP_	2
+uchar reached2[3];  /* np_ */
+uchar *loopstate2;  /* np_ */
+#define nstates2	3 /* np_ */
+#define endstate2	2 /* np_ */
 
-#define start3	0 /* np_ */
-#define start2	5
-#define start1	65
-#define start0	16
+#define start2	0 /* np_ */
+#define start1	5
+#define start0	73
 #ifdef NP
 	#define ACCEPT_LAB	1 /* at least 1 in np_ */
 #else
@@ -466,15 +437,15 @@ uchar *loopstate3;  /* np_ */
 	#define MEMLIM	(2048)	/* need a default, using 2 GB */
 #endif
 #define PROG_LAB	0 /* progress labels */
-uchar *accpstate[4];
-uchar *progstate[4];
-uchar *loopstate[4];
-uchar *reached[4];
-uchar *stopstate[4];
-uchar *visstate[4];
-short *mapstate[4];
+uchar *accpstate[3];
+uchar *progstate[3];
+uchar *loopstate[3];
+uchar *reached[3];
+uchar *stopstate[3];
+uchar *visstate[3];
+short *mapstate[3];
 #ifdef HAS_CODE
-	int NrStates[4];
+	int NrStates[3];
 #endif
 #define NQS	0
 short q_flds[1];
@@ -564,7 +535,7 @@ void qsend(int, int, int);
 #define GLOBAL	7
 #define BAD	8
 #define ALPHA_F	9
-#define NTRANS	65
+#define NTRANS	37
 #ifdef PEG
 	long peg[NTRANS];
 #endif
