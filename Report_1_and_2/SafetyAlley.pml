@@ -78,7 +78,21 @@ active proctype SafetyCheck() {
 	od;
 } 
 //A given car will eventually have passed through the alley
-//ltl fair {[] (SafetyAlley[0]@enter -> <> (SafetyAlley[0]@leave)) }
+/*ltl live0 {[] ((SafetyAlley[0]@enter -> <> (SafetyAlley[0]@leave)) && 
+			   (SafetyAlley[1]@enter -> <> (SafetyAlley[1]@leave)) && 
+			   (SafetyAlley[2]@enter -> <> (SafetyAlley[2]@leave)) &&
+			   (SafetyAlley[3]@enter -> <> (SafetyAlley[3]@leave)) &&
+			   (SafetyAlley[4]@enter -> <> (SafetyAlley[4]@leave)) &&
+			   (SafetyAlley[5]@enter -> <> (SafetyAlley[5]@leave)) &&
+			   (SafetyAlley[6]@enter -> <> (SafetyAlley[6]@leave)) &&
+			   (SafetyAlley[7]@enter -> <> (SafetyAlley[7]@leave))) }
+*/
+
+/* It is always the case that if the counter is larger than zero, then some cars no > 4 
+   Will be in the alley, and that we then at some point the counter will become smaller
+   zero, and we will have cars no < 5 in the alley.*/
+ltl updown {[] ((inAlley[4] || inAlley[5] || inAlley[6] || inAlley[7]) -> 
+			 <> (inAlley[0] || inAlley[1] || inAlley[2] || inAlley[3]))}
 
 //When the counter is greater 0 a car with number 4 or greater is in the alley (or multiple cars)
 //ltl up {[] (counter > 0 -> (inAlley[4] || inAlley[5] || inAlley[6] || inAlley[7]))}

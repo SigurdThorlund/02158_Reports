@@ -1,34 +1,11 @@
-never UpOrDown {    /* !(([] ((! (<> ((counter>0)))) || (<> ((counter<0))))) && ((! (<> ((counter<0)))) || (<> ((counter>0))))) */
+never updown {    /* !([] ((! ((((inAlley[4]) || (inAlley[5])) || (inAlley[6])) || (inAlley[7]))) || (<> ((((inAlley[0]) || (inAlley[1])) || (inAlley[2])) || (inAlley[3]))))) */
 T0_init:
 	if
-	:: (! (((counter<0))) && ((counter>0))) -> goto accept_S12
-	:: (! (((counter<0)))) -> goto T0_S15
-	:: (1) -> goto T0_S2
-	:: (! (((counter>0))) && ((counter<0))) -> goto accept_S38
-	:: (! (((counter>0)))) -> goto T0_S41
+	:: (! ((! ((((inAlley[4]) || (inAlley[5])) || (inAlley[6])) || (inAlley[7])))) && ! (((((inAlley[0]) || (inAlley[1])) || (inAlley[2])) || (inAlley[3])))) -> goto accept_S4
+	:: (1) -> goto T0_init
 	fi;
-accept_S12:
+accept_S4:
 	if
-	:: (! (((counter<0)))) -> goto accept_S12
-	fi;
-accept_S38:
-	if
-	:: (! (((counter>0)))) -> goto accept_S38
-	fi;
-T0_S15:
-	if
-	:: (! (((counter<0))) && ((counter>0))) -> goto accept_S12
-	:: (! (((counter<0)))) -> goto T0_S15
-	fi;
-T0_S2:
-	if
-	:: (! (((counter<0))) && ((counter>0))) -> goto accept_S12
-	:: (! (((counter<0)))) -> goto T0_S15
-	:: (1) -> goto T0_S2
-	fi;
-T0_S41:
-	if
-	:: (! (((counter>0))) && ((counter<0))) -> goto accept_S38
-	:: (! (((counter>0)))) -> goto T0_S41
+	:: (! (((((inAlley[0]) || (inAlley[1])) || (inAlley[2])) || (inAlley[3])))) -> goto accept_S4
 	fi;
 }

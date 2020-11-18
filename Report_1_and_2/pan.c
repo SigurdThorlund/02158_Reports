@@ -55,6 +55,10 @@ globinit(void)
 {
 }
 void
+locinit2(int h)
+{
+}
+void
 locinit1(int h)
 {
 }
@@ -437,7 +441,7 @@ void ungrab_ints(int *, int);
 #else
 	#define Index(x, y)	x
 #endif
-short Air[] = {  (short) Air0, (short) Air1, (short) Air2 };
+short Air[] = {  (short) Air0, (short) Air1, (short) Air2, (short) Air3 };
 int
 addproc(int n)
 {	int j, h = now._nr_pr;
@@ -460,6 +464,7 @@ addproc(int n)
 	case 0: j = sizeof(P0); break;
 	case 1: j = sizeof(P1); break;
 	case 2: j = sizeof(P2); break;
+	case 3: j = sizeof(P3); break;
 	default: Uerror("bad proc - addproc");
 	}
 	if (vsize%WS)
@@ -525,11 +530,24 @@ addproc(int n)
 	else
 		((P0 *)this)->_pid = h;
 	switch (n) {
-	case 2:	/* np_ */
+	case 3:	/* np_ */
+		((P3 *)pptr(h))->_t = 3;
+		((P3 *)pptr(h))->_p = 0;
+		reached3[0] = 1;
+		accpstate[3][1] = 1;
+		break;
+	case 2:	/* updown */
 		((P2 *)pptr(h))->_t = 2;
-		((P2 *)pptr(h))->_p = 0;
-		reached2[0] = 1;
-		accpstate[2][1] = 1;
+		((P2 *)pptr(h))->_p = 5;
+		reached2[5]=1;
+		src_claim = src_ln2;
+		/* params: */
+		/* locals: */
+#ifdef VAR_RANGES
+#endif
+#ifdef HAS_CODE
+		locinit2(h);
+#endif
 		break;
 	case 1:	/* SafetyCheck */
 		((P1 *)pptr(h))->_t = 1;
@@ -580,6 +598,7 @@ col_p(int i, char *z)
 	case 0: j = sizeof(P0); break;
 	case 1: j = sizeof(P1); break;
 	case 2: j = sizeof(P2); break;
+	case 3: j = sizeof(P3); break;
 	default: Uerror("bad proctype - collapse");
 	}
 	if (z) x = z; else x = scratch;
@@ -611,41 +630,55 @@ run(void)
 	Maxbody = max(Maxbody, ((int) sizeof(P0)));
 	Maxbody = max(Maxbody, ((int) sizeof(P1)));
 	Maxbody = max(Maxbody, ((int) sizeof(P2)));
+	Maxbody = max(Maxbody, ((int) sizeof(P3)));
 	reached[0] = reached0;
 	reached[1] = reached1;
 	reached[2] = reached2;
+	reached[3] = reached3;
 	accpstate[0] = (uchar *) emalloc(nstates0);
 	accpstate[1] = (uchar *) emalloc(nstates1);
 	accpstate[2] = (uchar *) emalloc(nstates2);
+	accpstate[3] = (uchar *) emalloc(nstates3);
 	progstate[0] = (uchar *) emalloc(nstates0);
 	progstate[1] = (uchar *) emalloc(nstates1);
 	progstate[2] = (uchar *) emalloc(nstates2);
+	progstate[3] = (uchar *) emalloc(nstates3);
 	loopstate0 = loopstate[0] = (uchar *) emalloc(nstates0);
 	loopstate1 = loopstate[1] = (uchar *) emalloc(nstates1);
 	loopstate2 = loopstate[2] = (uchar *) emalloc(nstates2);
+	loopstate3 = loopstate[3] = (uchar *) emalloc(nstates3);
 	stopstate[0] = (uchar *) emalloc(nstates0);
 	stopstate[1] = (uchar *) emalloc(nstates1);
 	stopstate[2] = (uchar *) emalloc(nstates2);
+	stopstate[3] = (uchar *) emalloc(nstates3);
 	visstate[0] = (uchar *) emalloc(nstates0);
 	visstate[1] = (uchar *) emalloc(nstates1);
 	visstate[2] = (uchar *) emalloc(nstates2);
+	visstate[3] = (uchar *) emalloc(nstates3);
 	mapstate[0] = (short *) emalloc(nstates0 * sizeof(short));
 	mapstate[1] = (short *) emalloc(nstates1 * sizeof(short));
 	mapstate[2] = (short *) emalloc(nstates2 * sizeof(short));
+	mapstate[3] = (short *) emalloc(nstates3 * sizeof(short));
+#ifdef HAS_CODE
 #ifdef HAS_CODE
 #ifdef HAS_CODE
 #ifdef HAS_CODE
 	NrStates[0] = nstates0;
 	NrStates[1] = nstates1;
 	NrStates[2] = nstates2;
+	NrStates[3] = nstates3;
+#endif
 #endif
 #endif
 #endif
 	stopstate[0][endstate0] = 1;
 	stopstate[1][endstate1] = 1;
 	stopstate[2][endstate2] = 1;
+	stopstate[3][endstate3] = 1;
+	accpstate[2][9] = 1;
 	retrans(0, nstates0, start0, src_ln0, reached0, loopstate0);
 	retrans(1, nstates1, start1, src_ln1, reached1, loopstate1);
+	retrans(2, nstates2, start2, src_ln2, reached2, loopstate2);
 	if (state_tables)
 	{ if (dodot) exit(0);
 	  printf("\nTransition Type: ");
@@ -10161,6 +10194,7 @@ do_reach(void)
 {
 	r_ck(reached0, nstates0, 0, src_ln0, src_file0);
 	r_ck(reached1, nstates1, 1, src_ln1, src_file1);
+	r_ck(reached2, nstates2, 2, src_ln2, src_file2);
 }
 
 void
@@ -11808,6 +11842,9 @@ void
 c_locals(int pid, int tp)
 {	/* int i; */
 	switch(tp) {
+	case 2:
+		/* none */
+		break;
 	case 1:
 		/* none */
 		break;
