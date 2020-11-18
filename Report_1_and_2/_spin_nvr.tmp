@@ -1,11 +1,34 @@
-never fair {    /* !([] ((! ((SafetyAlley[0]@enter))) || (<> ((SafetyAlley[0]@leave))))) */
+never UpOrDown {    /* !(([] ((! (<> ((counter>0)))) || (<> ((counter<0))))) && ((! (<> ((counter<0)))) || (<> ((counter>0))))) */
 T0_init:
 	if
-	:: (! ((! ((SafetyAlley[0]@enter)))) && ! (((SafetyAlley[0]@leave)))) -> goto accept_S4
-	:: (1) -> goto T0_init
+	:: (! (((counter<0))) && ((counter>0))) -> goto accept_S12
+	:: (! (((counter<0)))) -> goto T0_S15
+	:: (1) -> goto T0_S2
+	:: (! (((counter>0))) && ((counter<0))) -> goto accept_S38
+	:: (! (((counter>0)))) -> goto T0_S41
 	fi;
-accept_S4:
+accept_S12:
 	if
-	:: (! (((SafetyAlley[0]@leave)))) -> goto accept_S4
+	:: (! (((counter<0)))) -> goto accept_S12
+	fi;
+accept_S38:
+	if
+	:: (! (((counter>0)))) -> goto accept_S38
+	fi;
+T0_S15:
+	if
+	:: (! (((counter<0))) && ((counter>0))) -> goto accept_S12
+	:: (! (((counter<0)))) -> goto T0_S15
+	fi;
+T0_S2:
+	if
+	:: (! (((counter<0))) && ((counter>0))) -> goto accept_S12
+	:: (! (((counter<0)))) -> goto T0_S15
+	:: (1) -> goto T0_S2
+	fi;
+T0_S41:
+	if
+	:: (! (((counter>0))) && ((counter<0))) -> goto accept_S38
+	:: (! (((counter>0)))) -> goto T0_S41
 	fi;
 }

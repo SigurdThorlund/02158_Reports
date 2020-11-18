@@ -531,11 +531,10 @@ addproc(int n)
 		reached2[0] = 1;
 		accpstate[2][1] = 1;
 		break;
-	case 1:	/* fair */
+	case 1:	/* SafetyCheck */
 		((P1 *)pptr(h))->_t = 1;
-		((P1 *)pptr(h))->_p = 5;
-		reached1[5]=1;
-		src_claim = src_ln1;
+		((P1 *)pptr(h))->_p = 2;
+		reached1[2]=1;
 		/* params: */
 		/* locals: */
 #ifdef VAR_RANGES
@@ -546,8 +545,8 @@ addproc(int n)
 		break;
 	case 0:	/* SafetyAlley */
 		((P0 *)pptr(h))->_t = 0;
-		((P0 *)pptr(h))->_p = 73;
-		reached0[73]=1;
+		((P0 *)pptr(h))->_p = 97;
+		reached0[97]=1;
 		/* params: */
 		/* locals: */
 #ifdef VAR_RANGES
@@ -645,9 +644,6 @@ run(void)
 	stopstate[0][endstate0] = 1;
 	stopstate[1][endstate1] = 1;
 	stopstate[2][endstate2] = 1;
-	accpstate[1][9] = 1;
-	visstate[0][60] = 1;
-	visstate[0][52] = 1;
 	retrans(0, nstates0, start0, src_ln0, reached0, loopstate0);
 	retrans(1, nstates1, start1, src_ln1, reached1, loopstate1);
 	if (state_tables)
@@ -10170,21 +10166,27 @@ do_reach(void)
 void
 iniglobals(void)
 {
-	{	int l_in;
-		for (l_in = 0; l_in < 8; l_in++)
-		{
-			inAlley[l_in] = 0;
-		}
-	}
-		now.counter = 0;
 		now.mutex = 1;
 		now.wait = 1;
 		now.edit = 1;
+	{	int l_in;
+		for (l_in = 0; l_in < 8; l_in++)
+		{
+			now.inAlley[l_in] = 0;
+		}
+	}
+		now.counter = 0;
 #ifdef VAR_RANGES
-		logval("counter", now.counter);
 		logval("mutex", now.mutex);
 		logval("wait", now.wait);
 		logval("edit", now.edit);
+	{	int l_in;
+		for (l_in = 0; l_in < 8; l_in++)
+		{
+			logval("inAlley[l_in]", now.inAlley[l_in]);
+		}
+	}
+		logval("counter", now.counter);
 #endif
 	Maxbody = max(Maxbody, sizeof(State)-VECTORSZ);
 }
@@ -10659,7 +10661,9 @@ active_procs(void)
 		Addproc(0);
 		Addproc(0);
 		Addproc(0);
+		Addproc(1);
 	} else {
+		Addproc(1);
 		Addproc(0);
 		Addproc(0);
 		Addproc(0);
@@ -11789,10 +11793,16 @@ void
 c_globals(void)
 {	/* int i; */
 	printf("global vars:\n");
-	printf("	int    counter:	%d\n", now.counter);
-	printf("	int    mutex:	%d\n", now.mutex);
-	printf("	int    wait:	%d\n", now.wait);
-	printf("	int    edit:	%d\n", now.edit);
+	printf("	short  counter:	%d\n", now.counter);
+	printf("	bit    mutex:	%d\n", now.mutex);
+	printf("	bit    wait:	%d\n", now.wait);
+	printf("	bit    edit:	%d\n", now.edit);
+	{	int l_in;
+		for (l_in = 0; l_in < 8; l_in++)
+		{
+			printf("	bit    inAlley[%d]:	%d\n", l_in, now.inAlley[l_in]);
+		}
+	}
 }
 void
 c_locals(int pid, int tp)

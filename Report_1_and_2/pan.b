@@ -2,13 +2,11 @@
 	default: Uerror("bad return move");
 	case  0: goto R999; /* nothing to undo */
 
-		 /* CLAIM fair */
+		 /* PROC SafetyCheck */
 ;
 		;
-		;
-		;
 		
-	case 5: /* STATE 11 */
+	case 4: /* STATE 5 */
 		;
 		p_restor(II);
 		;
@@ -19,13 +17,13 @@
 ;
 		;
 		
-	case 7: /* STATE 4 */
+	case 6: /* STATE 4 */
 		;
 		now.wait = trpt->bup.oval;
 		;
 		goto R999;
 
-	case 8: /* STATE 8 */
+	case 7: /* STATE 8 */
 		;
 		now.edit = trpt->bup.oval;
 		;
@@ -33,49 +31,53 @@
 ;
 		;
 		
-	case 10: /* STATE 12 */
+	case 9: /* STATE 13 */
 		;
-		now.counter = trpt->bup.oval;
+		now.inAlley[ Index(((P0 *)this)->_pid, 8) ] = trpt->bup.ovals[1];
+		now.counter = trpt->bup.ovals[0];
 		;
+		ungrab_ints(trpt->bup.ovals, 2);
 		goto R999;
 
-	case 11: /* STATE 13 */
+	case 10: /* STATE 16 */
 		;
 		now.wait = trpt->bup.oval;
 		;
 		goto R999;
 
-	case 12: /* STATE 16 */
+	case 11: /* STATE 21 */
 		;
 		now.edit = trpt->bup.oval;
 		;
 		goto R999;
 
-	case 13: /* STATE 19 */
+	case 12: /* STATE 25 */
 		;
 		now.mutex = trpt->bup.oval;
 		;
 		goto R999;
 
-	case 14: /* STATE 22 */
+	case 13: /* STATE 29 */
 		;
 		now.wait = trpt->bup.oval;
 		;
 		goto R999;
 
-	case 15: /* STATE 25 */
+	case 14: /* STATE 33 */
 		;
 		now.edit = trpt->bup.oval;
 		;
 		goto R999;
 
-	case 16: /* STATE 28 */
+	case 15: /* STATE 37 */
 		;
-		now.counter = trpt->bup.oval;
+		now.inAlley[ Index(((P0 *)this)->_pid, 8) ] = trpt->bup.ovals[1];
+		now.counter = trpt->bup.ovals[0];
 		;
+		ungrab_ints(trpt->bup.ovals, 2);
 		goto R999;
 
-	case 17: /* STATE 33 */
+	case 16: /* STATE 43 */
 		;
 		now.edit = trpt->bup.oval;
 		;
@@ -83,49 +85,47 @@
 ;
 		;
 		
-	case 19: /* STATE 37 */
+	case 18: /* STATE 48 */
 		;
-		now.counter = trpt->bup.oval;
+		now.inAlley[ Index(((P0 *)this)->_pid, 8) ] = trpt->bup.ovals[1];
+		now.counter = trpt->bup.ovals[0];
 		;
+		ungrab_ints(trpt->bup.ovals, 2);
 		goto R999;
 
-	case 20: /* STATE 39 */
+	case 19: /* STATE 52 */
 		;
 		now.edit = trpt->bup.oval;
 		;
 		goto R999;
 
-	case 21: /* STATE 42 */
+	case 20: /* STATE 56 */
 		;
 		now.mutex = trpt->bup.oval;
 		;
 		goto R999;
 
-	case 22: /* STATE 46 */
+	case 21: /* STATE 60 */
 		;
 		now.edit = trpt->bup.oval;
 		;
 		goto R999;
 
-	case 23: /* STATE 49 */
+	case 22: /* STATE 64 */
 		;
-		now.counter = trpt->bup.oval;
+		now.inAlley[ Index(((P0 *)this)->_pid, 8) ] = trpt->bup.ovals[1];
+		now.counter = trpt->bup.ovals[0];
 		;
+		ungrab_ints(trpt->bup.ovals, 2);
 		goto R999;
 
-	case 24: /* STATE 54 */
-		;
-		inAlley[ Index(((P0 *)this)->_pid, 8) ] = trpt->bup.oval;
-		;
-		goto R999;
-
-	case 25: /* STATE 55 */
+	case 23: /* STATE 71 */
 		;
 		now.edit = trpt->bup.oval;
 		;
 		goto R999;
 
-	case 26: /* STATE 58 */
+	case 24: /* STATE 75 */
 		;
 		now.edit = trpt->bup.oval;
 		;
@@ -133,39 +133,37 @@
 ;
 		;
 		
-	case 28: /* STATE 62 */
+	case 26: /* STATE 80 */
 		;
-		now.counter = trpt->bup.oval;
+		now.inAlley[ Index(((P0 *)this)->_pid, 8) ] = trpt->bup.ovals[1];
+		now.counter = trpt->bup.ovals[0];
 		;
+		ungrab_ints(trpt->bup.ovals, 2);
 		goto R999;
 
-	case 29: /* STATE 64 */
+	case 27: /* STATE 84 */
 		;
-		now.counter = trpt->bup.oval;
+		now.inAlley[ Index(((P0 *)this)->_pid, 8) ] = trpt->bup.ovals[1];
+		now.counter = trpt->bup.ovals[0];
 		;
-		goto R999;
-
-	case 30: /* STATE 67 */
-		;
-		inAlley[ Index(((P0 *)this)->_pid, 8) ] = trpt->bup.oval;
-		;
+		ungrab_ints(trpt->bup.ovals, 2);
 		goto R999;
 ;
 		;
 		
-	case 32: /* STATE 69 */
+	case 29: /* STATE 90 */
 		;
 		now.mutex = trpt->bup.oval;
 		;
 		goto R999;
 
-	case 33: /* STATE 71 */
+	case 30: /* STATE 94 */
 		;
 		now.edit = trpt->bup.oval;
 		;
 		goto R999;
 
-	case 34: /* STATE 76 */
+	case 31: /* STATE 100 */
 		;
 		p_restor(II);
 		;
