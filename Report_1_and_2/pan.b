@@ -2,7 +2,7 @@
 	default: Uerror("bad return move");
 	case  0: goto R999; /* nothing to undo */
 
-		 /* CLAIM updown */
+		 /* CLAIM fair1 */
 ;
 		;
 		;
@@ -146,37 +146,39 @@
 ;
 		;
 		
-	case 29: /* STATE 80 */
+	case 29: /* STATE 81 */
 		;
+		down = trpt->bup.ovals[2];
 		now.inAlley[ Index(((P0 *)this)->_pid, 8) ] = trpt->bup.ovals[1];
 		now.counter = trpt->bup.ovals[0];
 		;
-		ungrab_ints(trpt->bup.ovals, 2);
+		ungrab_ints(trpt->bup.ovals, 3);
 		goto R999;
 
-	case 30: /* STATE 84 */
+	case 30: /* STATE 86 */
 		;
+		up = trpt->bup.ovals[2];
 		now.inAlley[ Index(((P0 *)this)->_pid, 8) ] = trpt->bup.ovals[1];
 		now.counter = trpt->bup.ovals[0];
 		;
-		ungrab_ints(trpt->bup.ovals, 2);
+		ungrab_ints(trpt->bup.ovals, 3);
 		goto R999;
 ;
 		;
 		
-	case 32: /* STATE 90 */
+	case 32: /* STATE 92 */
 		;
 		now.mutex = trpt->bup.oval;
 		;
 		goto R999;
 
-	case 33: /* STATE 94 */
+	case 33: /* STATE 100 */
 		;
 		now.edit = trpt->bup.oval;
 		;
 		goto R999;
 
-	case 34: /* STATE 100 */
+	case 34: /* STATE 106 */
 		;
 		p_restor(II);
 		;

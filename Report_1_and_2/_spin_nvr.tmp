@@ -1,11 +1,11 @@
-never updown {    /* !([] ((! ((((inAlley[4]) || (inAlley[5])) || (inAlley[6])) || (inAlley[7]))) || (<> ((((inAlley[0]) || (inAlley[1])) || (inAlley[2])) || (inAlley[3]))))) */
+never fair1 {    /* !([] ((! ((SafetyAlley[1]@entry))) || (<> ((SafetyAlley[1]@crit))))) */
 T0_init:
 	if
-	:: (! ((! ((((inAlley[4]) || (inAlley[5])) || (inAlley[6])) || (inAlley[7])))) && ! (((((inAlley[0]) || (inAlley[1])) || (inAlley[2])) || (inAlley[3])))) -> goto accept_S4
+	:: (! ((! ((SafetyAlley[1]@entry)))) && ! (((SafetyAlley[1]@crit)))) -> goto accept_S4
 	:: (1) -> goto T0_init
 	fi;
 accept_S4:
 	if
-	:: (! (((((inAlley[0]) || (inAlley[1])) || (inAlley[2])) || (inAlley[3])))) -> goto accept_S4
+	:: (! (((SafetyAlley[1]@crit)))) -> goto accept_S4
 	fi;
 }

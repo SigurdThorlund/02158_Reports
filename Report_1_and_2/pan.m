@@ -14,8 +14,8 @@
 		if (trpt->o_pm&1) continue;
 		_m = 3; goto P999;
 
-		 /* CLAIM updown */
-	case 3: /* STATE 1 - _spin_nvr.tmp:3 - [((!(!((((inAlley[4]||inAlley[5])||inAlley[6])||inAlley[7])))&&!((((inAlley[0]||inAlley[1])||inAlley[2])||inAlley[3]))))] (0:0:0 - 1) */
+		 /* CLAIM fair1 */
+	case 3: /* STATE 1 - _spin_nvr.tmp:3 - [((!(!((SafetyAlley[1]._p==entry)))&&!((SafetyAlley[1]._p==crit))))] (0:0:0 - 1) */
 		
 #if defined(VERI) && !defined(NP)
 #if NCLAIMS>1
@@ -37,10 +37,10 @@
 #endif
 #endif
 		reached[2][1] = 1;
-		if (!(( !( !((((((int)now.inAlley[4])||((int)now.inAlley[5]))||((int)now.inAlley[6]))||((int)now.inAlley[7]))))&& !((((((int)now.inAlley[0])||((int)now.inAlley[1]))||((int)now.inAlley[2]))||((int)now.inAlley[3]))))))
+		if (!(( !( !((((int)((P0 *)Pptr(BASE+1))->_p)==68)))&& !((((int)((P0 *)Pptr(BASE+1))->_p)==77)))))
 			continue;
 		_m = 3; goto P999; /* 0 */
-	case 4: /* STATE 7 - _spin_nvr.tmp:8 - [(!((((inAlley[0]||inAlley[1])||inAlley[2])||inAlley[3])))] (0:0:0 - 1) */
+	case 4: /* STATE 7 - _spin_nvr.tmp:8 - [(!((SafetyAlley[1]._p==crit)))] (0:0:0 - 1) */
 		
 #if defined(VERI) && !defined(NP)
 #if NCLAIMS>1
@@ -62,7 +62,7 @@
 #endif
 #endif
 		reached[2][7] = 1;
-		if (!( !((((((int)now.inAlley[0])||((int)now.inAlley[1]))||((int)now.inAlley[2]))||((int)now.inAlley[3])))))
+		if (!( !((((int)((P0 *)Pptr(BASE+1))->_p)==77))))
 			continue;
 		_m = 3; goto P999; /* 0 */
 	case 5: /* STATE 11 - _spin_nvr.tmp:10 - [-end-] (0:0:0 - 1) */
@@ -91,25 +91,25 @@
 		_m = 3; goto P999; /* 0 */
 
 		 /* PROC SafetyCheck */
-	case 6: /* STATE 1 - SafetyAlley.pml:76 - [assert(!(((((inAlley[0]||inAlley[1])||inAlley[2])||inAlley[3])&&(((inAlley[4]||inAlley[5])||inAlley[6])||inAlley[7]))))] (0:0:0 - 1) */
+	case 6: /* STATE 1 - SafetyAlley.pml:88 - [assert(!(((((inAlley[0]||inAlley[1])||inAlley[2])||inAlley[3])&&(((inAlley[4]||inAlley[5])||inAlley[6])||inAlley[7]))))] (0:0:0 - 1) */
 		IfNotBlocked
 		reached[1][1] = 1;
 		spin_assert( !(((((((int)now.inAlley[0])||((int)now.inAlley[1]))||((int)now.inAlley[2]))||((int)now.inAlley[3]))&&(((((int)now.inAlley[4])||((int)now.inAlley[5]))||((int)now.inAlley[6]))||((int)now.inAlley[7])))), " !(((((inAlley[0]||inAlley[1])||inAlley[2])||inAlley[3])&&(((inAlley[4]||inAlley[5])||inAlley[6])||inAlley[7])))", II, tt, t);
 		_m = 3; goto P999; /* 0 */
-	case 7: /* STATE 5 - SafetyAlley.pml:79 - [-end-] (0:0:0 - 1) */
+	case 7: /* STATE 5 - SafetyAlley.pml:91 - [-end-] (0:0:0 - 1) */
 		IfNotBlocked
 		reached[1][5] = 1;
 		if (!delproc(1, II)) continue;
 		_m = 3; goto P999; /* 0 */
 
 		 /* PROC SafetyAlley */
-	case 8: /* STATE 2 - SafetyAlley.pml:30 - [((pid<4))] (0:0:0 - 1) */
+	case 8: /* STATE 2 - SafetyAlley.pml:33 - [((pid<4))] (0:0:0 - 1) */
 		IfNotBlocked
 		reached[0][2] = 1;
 		if (!((((int)((P0 *)this)->_pid)<4)))
 			continue;
 		_m = 3; goto P999; /* 0 */
-	case 9: /* STATE 3 - SafetyAlley.pml:17 - [(wait)] (10:0:1 - 1) */
+	case 9: /* STATE 3 - SafetyAlley.pml:20 - [(wait)] (10:0:1 - 1) */
 		IfNotBlocked
 		reached[0][3] = 1;
 		if (!(((int)now.wait)))
@@ -123,7 +123,7 @@
 #endif
 		;
 		_m = 3; goto P999; /* 1 */
-	case 10: /* STATE 7 - SafetyAlley.pml:17 - [(edit)] (39:0:1 - 1) */
+	case 10: /* STATE 7 - SafetyAlley.pml:20 - [(edit)] (39:0:1 - 1) */
 		IfNotBlocked
 		reached[0][7] = 1;
 		if (!(((int)now.edit)))
@@ -137,13 +137,13 @@
 #endif
 		;
 		_m = 3; goto P999; /* 1 */
-	case 11: /* STATE 11 - SafetyAlley.pml:33 - [((counter<0))] (0:0:0 - 1) */
+	case 11: /* STATE 11 - SafetyAlley.pml:36 - [((counter<0))] (0:0:0 - 1) */
 		IfNotBlocked
 		reached[0][11] = 1;
 		if (!((now.counter<0)))
 			continue;
 		_m = 3; goto P999; /* 0 */
-	case 12: /* STATE 12 - SafetyAlley.pml:33 - [counter = (counter-1)] (0:18:2 - 1) */
+	case 12: /* STATE 12 - SafetyAlley.pml:36 - [counter = (counter-1)] (0:18:2 - 1) */
 		IfNotBlocked
 		reached[0][12] = 1;
 		(trpt+1)->bup.ovals = grab_ints(2);
@@ -162,7 +162,7 @@
 #endif
 		;
 		_m = 3; goto P999; /* 1 */
-	case 13: /* STATE 15 - SafetyAlley.pml:21 - [assert(!(wait))] (0:73:1 - 1) */
+	case 13: /* STATE 15 - SafetyAlley.pml:24 - [assert(!(wait))] (0:73:1 - 1) */
 		IfNotBlocked
 		reached[0][15] = 1;
 		spin_assert( !(((int)now.wait)), " !(wait)", II, tt, t);
@@ -181,7 +181,7 @@
 		reached[0][69] = 1;
 		;
 		_m = 3; goto P999; /* 3 */
-	case 14: /* STATE 20 - SafetyAlley.pml:21 - [assert(!(edit))] (0:27:1 - 1) */
+	case 14: /* STATE 20 - SafetyAlley.pml:24 - [assert(!(edit))] (0:27:1 - 1) */
 		IfNotBlocked
 		reached[0][20] = 1;
 		spin_assert( !(((int)now.edit)), " !(edit)", II, tt, t);
@@ -194,7 +194,7 @@
 #endif
 		;
 		_m = 3; goto P999; /* 1 */
-	case 15: /* STATE 24 - SafetyAlley.pml:17 - [(mutex)] (31:0:1 - 1) */
+	case 15: /* STATE 24 - SafetyAlley.pml:20 - [(mutex)] (31:0:1 - 1) */
 		IfNotBlocked
 		reached[0][24] = 1;
 		if (!(((int)now.mutex)))
@@ -208,7 +208,7 @@
 #endif
 		;
 		_m = 3; goto P999; /* 1 */
-	case 16: /* STATE 28 - SafetyAlley.pml:21 - [assert(!(wait))] (0:35:1 - 1) */
+	case 16: /* STATE 28 - SafetyAlley.pml:24 - [assert(!(wait))] (0:35:1 - 1) */
 		IfNotBlocked
 		reached[0][28] = 1;
 		spin_assert( !(((int)now.wait)), " !(wait)", II, tt, t);
@@ -221,7 +221,7 @@
 #endif
 		;
 		_m = 3; goto P999; /* 1 */
-	case 17: /* STATE 32 - SafetyAlley.pml:17 - [(edit)] (38:0:1 - 1) */
+	case 17: /* STATE 32 - SafetyAlley.pml:20 - [(edit)] (38:0:1 - 1) */
 		IfNotBlocked
 		reached[0][32] = 1;
 		if (!(((int)now.edit)))
@@ -235,7 +235,7 @@
 #endif
 		;
 		_m = 3; goto P999; /* 1 */
-	case 18: /* STATE 36 - SafetyAlley.pml:41 - [counter = (counter-1)] (0:73:2 - 1) */
+	case 18: /* STATE 36 - SafetyAlley.pml:44 - [counter = (counter-1)] (0:73:2 - 1) */
 		IfNotBlocked
 		reached[0][36] = 1;
 		(trpt+1)->bup.ovals = grab_ints(2);
@@ -260,7 +260,7 @@
 		reached[0][69] = 1;
 		;
 		_m = 3; goto P999; /* 3 */
-	case 19: /* STATE 42 - SafetyAlley.pml:17 - [(edit)] (66:0:1 - 1) */
+	case 19: /* STATE 42 - SafetyAlley.pml:20 - [(edit)] (66:0:1 - 1) */
 		IfNotBlocked
 		reached[0][42] = 1;
 		if (!(((int)now.edit)))
@@ -274,13 +274,13 @@
 #endif
 		;
 		_m = 3; goto P999; /* 1 */
-	case 20: /* STATE 46 - SafetyAlley.pml:47 - [((counter>0))] (0:0:0 - 1) */
+	case 20: /* STATE 46 - SafetyAlley.pml:50 - [((counter>0))] (0:0:0 - 1) */
 		IfNotBlocked
 		reached[0][46] = 1;
 		if (!((now.counter>0)))
 			continue;
 		_m = 3; goto P999; /* 0 */
-	case 21: /* STATE 47 - SafetyAlley.pml:47 - [counter = (counter+1)] (0:73:2 - 1) */
+	case 21: /* STATE 47 - SafetyAlley.pml:50 - [counter = (counter+1)] (0:73:2 - 1) */
 		IfNotBlocked
 		reached[0][47] = 1;
 		(trpt+1)->bup.ovals = grab_ints(2);
@@ -305,7 +305,7 @@
 		reached[0][69] = 1;
 		;
 		_m = 3; goto P999; /* 3 */
-	case 22: /* STATE 51 - SafetyAlley.pml:21 - [assert(!(edit))] (0:58:1 - 1) */
+	case 22: /* STATE 51 - SafetyAlley.pml:24 - [assert(!(edit))] (0:58:1 - 1) */
 		IfNotBlocked
 		reached[0][51] = 1;
 		spin_assert( !(((int)now.edit)), " !(edit)", II, tt, t);
@@ -318,7 +318,7 @@
 #endif
 		;
 		_m = 3; goto P999; /* 1 */
-	case 23: /* STATE 55 - SafetyAlley.pml:17 - [(mutex)] (62:0:1 - 1) */
+	case 23: /* STATE 55 - SafetyAlley.pml:20 - [(mutex)] (62:0:1 - 1) */
 		IfNotBlocked
 		reached[0][55] = 1;
 		if (!(((int)now.mutex)))
@@ -332,7 +332,7 @@
 #endif
 		;
 		_m = 3; goto P999; /* 1 */
-	case 24: /* STATE 59 - SafetyAlley.pml:17 - [(edit)] (65:0:1 - 1) */
+	case 24: /* STATE 59 - SafetyAlley.pml:20 - [(edit)] (65:0:1 - 1) */
 		IfNotBlocked
 		reached[0][59] = 1;
 		if (!(((int)now.edit)))
@@ -346,7 +346,7 @@
 #endif
 		;
 		_m = 3; goto P999; /* 1 */
-	case 25: /* STATE 63 - SafetyAlley.pml:53 - [counter = (counter+1)] (0:73:2 - 1) */
+	case 25: /* STATE 63 - SafetyAlley.pml:56 - [counter = (counter+1)] (0:73:2 - 1) */
 		IfNotBlocked
 		reached[0][63] = 1;
 		(trpt+1)->bup.ovals = grab_ints(2);
@@ -371,7 +371,7 @@
 		reached[0][69] = 1;
 		;
 		_m = 3; goto P999; /* 3 */
-	case 26: /* STATE 70 - SafetyAlley.pml:21 - [assert(!(edit))] (0:77:1 - 1) */
+	case 26: /* STATE 70 - SafetyAlley.pml:24 - [assert(!(edit))] (0:77:1 - 1) */
 		IfNotBlocked
 		reached[0][70] = 1;
 		spin_assert( !(((int)now.edit)), " !(edit)", II, tt, t);
@@ -384,12 +384,12 @@
 #endif
 		;
 		_m = 3; goto P999; /* 1 */
-	case 27: /* STATE 74 - SafetyAlley.pml:17 - [(edit)] (86:0:1 - 1) */
+	case 27: /* STATE 74 - SafetyAlley.pml:20 - [(edit)] (88:0:1 - 1) */
 		IfNotBlocked
 		reached[0][74] = 1;
 		if (!(((int)now.edit)))
 			continue;
-		/* merge: edit = (edit-1)(0, 75, 86) */
+		/* merge: edit = (edit-1)(0, 75, 88) */
 		reached[0][75] = 1;
 		(trpt+1)->bup.oval = ((int)now.edit);
 		now.edit = (((int)now.edit)-1);
@@ -398,23 +398,23 @@
 #endif
 		;
 		_m = 3; goto P999; /* 1 */
-	case 28: /* STATE 78 - SafetyAlley.pml:64 - [((pid<4))] (0:0:0 - 1) */
+	case 28: /* STATE 78 - SafetyAlley.pml:67 - [((pid<4))] (0:0:0 - 1) */
 		IfNotBlocked
 		reached[0][78] = 1;
 		if (!((((int)((P0 *)this)->_pid)<4)))
 			continue;
 		_m = 3; goto P999; /* 0 */
-	case 29: /* STATE 79 - SafetyAlley.pml:64 - [counter = (counter+1)] (0:88:2 - 1) */
+	case 29: /* STATE 79 - SafetyAlley.pml:67 - [counter = (counter+1)] (0:97:3 - 1) */
 		IfNotBlocked
 		reached[0][79] = 1;
-		(trpt+1)->bup.ovals = grab_ints(2);
+		(trpt+1)->bup.ovals = grab_ints(3);
 		(trpt+1)->bup.ovals[0] = now.counter;
 		now.counter = (now.counter+1);
 #ifdef VAR_RANGES
 		logval("counter", now.counter);
 #endif
 		;
-		/* merge: inAlley[pid] = 0(88, 80, 88) */
+		/* merge: inAlley[pid] = 0(97, 80, 97) */
 		reached[0][80] = 1;
 		(trpt+1)->bup.ovals[1] = ((int)now.inAlley[ Index(((int)((P0 *)this)->_pid), 8) ]);
 		now.inAlley[ Index(((P0 *)this)->_pid, 8) ] = 0;
@@ -422,70 +422,89 @@
 		logval("inAlley[pid]", ((int)now.inAlley[ Index(((int)((P0 *)this)->_pid), 8) ]));
 #endif
 		;
-		/* merge: .(goto)(0, 87, 88) */
-		reached[0][87] = 1;
+		/* merge: down = (down-1)(97, 81, 97) */
+		reached[0][81] = 1;
+		(trpt+1)->bup.ovals[2] = down;
+		down = (down-1);
+#ifdef VAR_RANGES
+		logval("down", down);
+#endif
 		;
-		_m = 3; goto P999; /* 2 */
-	case 30: /* STATE 83 - SafetyAlley.pml:65 - [counter = (counter-1)] (0:88:2 - 1) */
+		/* merge: .(goto)(0, 89, 97) */
+		reached[0][89] = 1;
+		;
+		_m = 3; goto P999; /* 3 */
+	case 30: /* STATE 84 - SafetyAlley.pml:68 - [counter = (counter-1)] (0:97:3 - 1) */
 		IfNotBlocked
-		reached[0][83] = 1;
-		(trpt+1)->bup.ovals = grab_ints(2);
+		reached[0][84] = 1;
+		(trpt+1)->bup.ovals = grab_ints(3);
 		(trpt+1)->bup.ovals[0] = now.counter;
 		now.counter = (now.counter-1);
 #ifdef VAR_RANGES
 		logval("counter", now.counter);
 #endif
 		;
-		/* merge: inAlley[pid] = 0(88, 84, 88) */
-		reached[0][84] = 1;
+		/* merge: inAlley[pid] = 0(97, 85, 97) */
+		reached[0][85] = 1;
 		(trpt+1)->bup.ovals[1] = ((int)now.inAlley[ Index(((int)((P0 *)this)->_pid), 8) ]);
 		now.inAlley[ Index(((P0 *)this)->_pid, 8) ] = 0;
 #ifdef VAR_RANGES
 		logval("inAlley[pid]", ((int)now.inAlley[ Index(((int)((P0 *)this)->_pid), 8) ]));
 #endif
 		;
-		/* merge: .(goto)(0, 87, 88) */
-		reached[0][87] = 1;
+		/* merge: up = (up-1)(97, 86, 97) */
+		reached[0][86] = 1;
+		(trpt+1)->bup.ovals[2] = up;
+		up = (up-1);
+#ifdef VAR_RANGES
+		logval("up", up);
+#endif
 		;
-		_m = 3; goto P999; /* 2 */
-	case 31: /* STATE 88 - SafetyAlley.pml:67 - [((counter==0))] (0:0:0 - 3) */
+		/* merge: .(goto)(0, 89, 97) */
+		reached[0][89] = 1;
+		;
+		_m = 3; goto P999; /* 3 */
+	case 31: /* STATE 90 - SafetyAlley.pml:72 - [((counter==0))] (0:0:0 - 1) */
 		IfNotBlocked
-		reached[0][88] = 1;
+		reached[0][90] = 1;
 		if (!((now.counter==0)))
 			continue;
 		_m = 3; goto P999; /* 0 */
-	case 32: /* STATE 89 - SafetyAlley.pml:21 - [assert(!(mutex))] (0:96:1 - 1) */
+	case 32: /* STATE 91 - SafetyAlley.pml:24 - [assert(!(mutex))] (0:102:1 - 1) */
 		IfNotBlocked
-		reached[0][89] = 1;
+		reached[0][91] = 1;
 		spin_assert( !(((int)now.mutex)), " !(mutex)", II, tt, t);
-		/* merge: mutex = (mutex+1)(96, 90, 96) */
-		reached[0][90] = 1;
+		/* merge: mutex = (mutex+1)(102, 92, 102) */
+		reached[0][92] = 1;
 		(trpt+1)->bup.oval = ((int)now.mutex);
 		now.mutex = (((int)now.mutex)+1);
 #ifdef VAR_RANGES
 		logval("mutex", ((int)now.mutex));
 #endif
 		;
-		_m = 3; goto P999; /* 1 */
-	case 33: /* STATE 93 - SafetyAlley.pml:21 - [assert(!(edit))] (0:97:1 - 1) */
+		/* merge: .(goto)(0, 98, 102) */
+		reached[0][98] = 1;
+		;
+		_m = 3; goto P999; /* 2 */
+	case 33: /* STATE 99 - SafetyAlley.pml:24 - [assert(!(edit))] (0:103:1 - 1) */
 		IfNotBlocked
-		reached[0][93] = 1;
+		reached[0][99] = 1;
 		spin_assert( !(((int)now.edit)), " !(edit)", II, tt, t);
-		/* merge: edit = (edit+1)(97, 94, 97) */
-		reached[0][94] = 1;
+		/* merge: edit = (edit+1)(103, 100, 103) */
+		reached[0][100] = 1;
 		(trpt+1)->bup.oval = ((int)now.edit);
 		now.edit = (((int)now.edit)+1);
 #ifdef VAR_RANGES
 		logval("edit", ((int)now.edit));
 #endif
 		;
-		/* merge: .(goto)(0, 98, 97) */
-		reached[0][98] = 1;
+		/* merge: .(goto)(0, 104, 103) */
+		reached[0][104] = 1;
 		;
 		_m = 3; goto P999; /* 2 */
-	case 34: /* STATE 100 - SafetyAlley.pml:70 - [-end-] (0:0:0 - 1) */
+	case 34: /* STATE 106 - SafetyAlley.pml:79 - [-end-] (0:0:0 - 1) */
 		IfNotBlocked
-		reached[0][100] = 1;
+		reached[0][106] = 1;
 		if (!delproc(1, II)) continue;
 		_m = 3; goto P999; /* 0 */
 	case  _T5:	/* np_ */

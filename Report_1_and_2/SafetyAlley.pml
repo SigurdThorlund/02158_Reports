@@ -12,6 +12,9 @@ bool edit = 1;
 bool inAlley[N];
 
 
+short up = 0;
+short down = 0;
+
 inline P(mutex) { 
 	atomic { 
 		mutex -> mutex--;
@@ -23,9 +26,9 @@ inline V(mutex) { atomic { assert(!mutex); mutex++; } }
 active [N] proctype SafetyAlley()
 {
 	do
-	::
-		skip;
-enter:
+//	:: break;
+	:: skip;
+entry:
 		if
 		:: _pid < 4 ->		P(wait);
 							P(edit);
@@ -58,16 +61,25 @@ enter:
 		V(edit);
 		//The car has now entered the alley
 
-leave:
+crit:
 		P(edit);
 		if
-		:: _pid < 4 -> atomic { counter++; inAlley[_pid] = false; }
-		:: else -> atomic { counter--; inAlley[_pid] = false; }
+		:: _pid < 4 -> atomic { counter++; inAlley[_pid] = false; down--; }
+		:: else -> atomic { counter--; inAlley[_pid] = false; up--; }
 		fi;
-		counter == 0 -> V(mutex);
+
+		if
+		:: counter == 0 -> V(mutex);
+		:: else -> skip;
+		fi;
+
 		V(edit);
+
 	od;
 }
+
+
+
 
 active proctype SafetyCheck() {
     do ::     
@@ -77,8 +89,29 @@ active proctype SafetyCheck() {
 		);
 	od;
 } 
+
+
+//Obligingness
+/*ltl obl1 { [] ( ((SafetyAlley[0]@entry) && [] !(SafetyAlley[1]@entry || SafetyAlley[2]@entry ||
+												SafetyAlley[3]@entry || SafetyAlley[4]@entry ||
+												SafetyAlley[5]@entry || SafetyAlley[6]@entry ||
+												SafetyAlley[7]@entry) ) -> <> (SafetyAlley[0]@crit))}
+*/
+
+//Resolution
+/*ltl res { [] ( (SafetyAlley[0]@entry || SafetyAlley[1]@entry || SafetyAlley[2]@entry || SafetyAlley[3]@entry ||
+	  			  SafetyAlley[4]@entry || SafetyAlley[5]@entry || SafetyAlley[6]@entry || SafetyAlley[7]@entry) 
+				  -> <> (SafetyAlley[0]@crit || SafetyAlley[1]@crit || SafetyAlley[2]@crit || SafetyAlley[3]@crit ||
+	  				     SafetyAlley[4]@crit || SafetyAlley[5]@crit || SafetyAlley[6]@crit || SafetyAlley[7]@crit) )}
+*/
+
+//Fairness:
+ltl fair1 { []( (SafetyAlley[1]@entry) -> <> (SafetyAlley[1]@crit) ) }
+
+
+
 //A given car will eventually have passed through the alley
-/*ltl live0 {[] ((SafetyAlley[0]@enter -> <> (SafetyAlley[0]@leave)) && 
+/*ltl live {[] ((SafetyAlley[0]@enter -> <> (SafetyAlley[0]@leave)) && 
 			   (SafetyAlley[1]@enter -> <> (SafetyAlley[1]@leave)) && 
 			   (SafetyAlley[2]@enter -> <> (SafetyAlley[2]@leave)) &&
 			   (SafetyAlley[3]@enter -> <> (SafetyAlley[3]@leave)) &&
@@ -88,11 +121,19 @@ active proctype SafetyCheck() {
 			   (SafetyAlley[7]@enter -> <> (SafetyAlley[7]@leave))) }
 */
 
+//ltl bibbitibob {[] (SafetyAlley[0]@enter -> <> (SafetyAlley[0]@crit)) }
+
 /* It is always the case that if the counter is larger than zero, then some cars no > 4 
    Will be in the alley, and that we then at some point the counter will become smaller
    zero, and we will have cars no < 5 in the alley.*/
-ltl updown {[] ((inAlley[4] || inAlley[5] || inAlley[6] || inAlley[7]) -> 
-			 <> (inAlley[0] || inAlley[1] || inAlley[2] || inAlley[3]))}
+//ltl fair {[] ((inAlley[4] || inAlley[5] || inAlley[6] || inAlley[7]) -> 
+//
+//			 <> (inAlley[0] || inAlley[1] || inAlley[2] || inAlley[3]))}
+
+
+//If there is no traffic in the alley, at some point there will be
+//ltl live2 {[] ((counter == 0) -> <>(counter != 0))}
+
 
 //When the counter is greater 0 a car with number 4 or greater is in the alley (or multiple cars)
 //ltl up {[] (counter > 0 -> (inAlley[4] || inAlley[5] || inAlley[6] || inAlley[7]))}
@@ -106,4 +147,6 @@ ltl updown {[] ((inAlley[4] || inAlley[5] || inAlley[6] || inAlley[7]) ->
 //If no cars are driving in the alley, eventually there will be cars driving in the alley
 //and vice versa
 //ltl driveOrNot {[] ((counter == 0) -> <>(counter != 0)) && ((counter != 0) -> <>(counter == 0))}
+
+
 
