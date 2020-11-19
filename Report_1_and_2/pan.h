@@ -44,7 +44,7 @@ char *trailfilename;
 #ifndef NFAIR
 	#define NFAIR	2	/* must be >= 2 */
 #endif
-#define REM_REFS	5
+#define REM_REFS	48
 #define HAS_CODE
 #if defined(RANDSTORE) && !defined(RANDSTOR)
 	#define RANDSTOR	RANDSTORE
@@ -73,7 +73,7 @@ typedef struct S_F_MAP {
 	char *fnm; int from; int upto;
 } S_F_MAP;
 
-#define nstates2	12	/* fair1 */
+#define nstates2	12	/* res */
 #define endstate2	11
 short src_ln2 [] = {
 	  0,   3,   3,   4,   4,   2,   6,   8, 
@@ -92,7 +92,7 @@ uchar *loopstate2;
 #define nstates1	6	/* SafetyCheck */
 #define endstate1	5
 short src_ln1 [] = {
-	  0,  88,  85,  91,  85,  91,   0, };
+	  0,  74,  71,  77,  71,  77,   0, };
 S_F_MAP src_file1 [] = {
 	{ ""-"", 0, 0 },
 	{ "SafetyAlley.pml", 1, 5 },
@@ -102,43 +102,39 @@ uchar reached1 [] = {
 	  0,   1,   0,   1,   1,   0,   0, };
 uchar *loopstate1;
 
-#define nstates0	107	/* SafetyAlley */
-#define endstate0	106
+#define nstates0	94	/* SafetyAlley */
+#define endstate0	93
 short src_ln0 [] = {
-	  0,  30,  33,  20,  20,  19,  22,  20, 
-	 20,  19,  22,  36,  36,  36,  36,  24, 
-	 24,  24,  24,  39,  24,  24,  24,  24, 
-	 20,  20,  19,  22,  24,  24,  24,  24, 
-	 20,  20,  19,  22,  44,  45,  43,  35, 
-	 48,  48,  20,  20,  19,  22,  50,  50, 
-	 50,  50,  52,  24,  24,  24,  24,  20, 
-	 20,  19,  22,  20,  20,  19,  22,  56, 
-	 57,  55,  49,  60,  32,  61,  24,  24, 
-	 24,  24,  20,  20,  19,  22,  67,  67, 
-	 67,  67,  67,  68,  68,  68,  68,  68, 
-	 66,  71,  72,  24,  24,  24,  24,  73, 
-	 73,  71,  76,  24,  24,  24,  24,  28, 
-	 79,  28,  79,   0, };
+	  0,  23,  24,  27,  14,  14,  13,  16, 
+	 14,  14,  13,  16,  30,  30,  18,  18, 
+	 18,  18,  33,  18,  18,  18,  18,  14, 
+	 14,  13,  16,  18,  18,  18,  18,  14, 
+	 14,  13,  16,  37,  29,  39,  39,  14, 
+	 14,  13,  16,  41,  41,  43,  18,  18, 
+	 18,  18,  14,  14,  13,  16,  14,  14, 
+	 13,  16,  46,  40,  48,  26,  49,  18, 
+	 18,  18,  18,  14,  14,  13,  16,  55, 
+	 55,  56,  56,  54,  59,  60,  18,  18, 
+	 18,  18,  61,  61,  59,  64,  18,  18, 
+	 18,  18,  22,  67,  22,  67,   0, };
 S_F_MAP src_file0 [] = {
 	{ ""-"", 0, 0 },
-	{ "SafetyAlley.pml", 1, 106 },
-	{ ""-"", 107, 108 }
+	{ "SafetyAlley.pml", 1, 93 },
+	{ ""-"", 94, 95 }
 };
 uchar reached0 [] = {
-	  0,   1,   1,   1,   0,   1,   0,   1, 
-	  0,   1,   0,   1,   1,   0,   0,   1, 
-	  0,   1,   0,   1,   1,   0,   1,   0, 
+	  0,   1,   1,   1,   1,   0,   1,   0, 
 	  1,   0,   1,   0,   1,   0,   1,   0, 
-	  1,   0,   1,   0,   1,   0,   0,   0, 
-	  1,   1,   1,   0,   1,   0,   1,   1, 
-	  0,   0,   1,   1,   0,   1,   0,   1, 
+	  1,   0,   1,   1,   0,   1,   0,   1, 
 	  0,   1,   0,   1,   0,   1,   0,   1, 
-	  0,   0,   0,   1,   0,   1,   1,   0, 
-	  1,   0,   1,   0,   1,   0,   1,   1, 
-	  0,   0,   0,   1,   1,   0,   0,   0, 
-	  0,   1,   1,   1,   0,   1,   0,   1, 
-	  1,   0,   1,   1,   0,   1,   0,   0, 
-	  1,   1,   0,   0, };
+	  0,   1,   0,   0,   0,   1,   1,   1, 
+	  0,   1,   0,   1,   0,   1,   1,   0, 
+	  1,   0,   1,   0,   1,   0,   1,   0, 
+	  1,   0,   0,   0,   1,   0,   1,   1, 
+	  0,   1,   0,   1,   0,   1,   0,   1, 
+	  0,   1,   0,   0,   1,   1,   1,   0, 
+	  1,   0,   1,   1,   0,   1,   1,   0, 
+	  1,   0,   0,   1,   1,   0,   0, };
 uchar *loopstate0;
 struct {
 	int tp; short *src;
@@ -176,7 +172,7 @@ struct {
 char *procname[] = {
    "SafetyAlley",
    "SafetyCheck",
-   "fair1",
+   "res",
    ":np_:",
 };
 
@@ -184,11 +180,11 @@ enum btypes { NONE=0, N_CLAIM=1, I_PROC=2, A_PROC=3, P_PROC=4, E_TRACE=5, N_TRAC
 int Btypes[] = {
    3,	/* SafetyAlley */
    3,	/* SafetyCheck */
-   1,	/* fair1 */
+   1,	/* res */
    0	/* :np_: */
 };
 
-typedef struct P2 { /* fair1 */
+typedef struct P2 { /* res */
 	unsigned _pid : 8;  /* 0..255 */
 	unsigned _t   : 3; /* proctype */
 	unsigned _p   : 8; /* state    */
@@ -417,14 +413,11 @@ typedef struct State {
 	unsigned mutex : 1;
 	unsigned wait : 1;
 	unsigned edit : 1;
-	uchar inAlley[8];
 	short counter;
 	uchar sv[VECTORSZ];
 } State;
 
 #define HAS_TRACK	0
-/* hidden variable: */	short up;
-/* hidden variable: */	short down;
 int _; /* a predefined write-only variable */
 
 #define FORWARD_MOVES	"pan.m"
@@ -439,7 +432,7 @@ uchar *loopstate3;  /* np_ */
 #define start3	0 /* np_ */
 #define start2	5
 #define start1	2
-#define start0	103
+#define start0	90
 #ifdef NP
 	#define ACCEPT_LAB	1 /* at least 1 in np_ */
 #else

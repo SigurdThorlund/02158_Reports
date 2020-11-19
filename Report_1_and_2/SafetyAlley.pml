@@ -9,12 +9,6 @@ bool mutex = 1;
 bool wait = 1;
 bool edit = 1;
 
-bool inAlley[N];
-
-
-short up = 0;
-short down = 0;
-
 inline P(mutex) { 
 	atomic { 
 		mutex -> mutex--;
@@ -26,36 +20,30 @@ inline V(mutex) { atomic { assert(!mutex); mutex++; } }
 active [N] proctype SafetyAlley()
 {
 	do
-//	:: break;
+	:: break;
 	:: skip;
 entry:
 		if
 		:: _pid < 4 ->		P(wait);
 							P(edit);
 							if
-							:: counter < 0 -> 	atomic { counter--; inAlley[_pid] = true; }
+							:: counter < 0 -> 	counter--;
  												V(wait);
 
 							:: else ->			V(edit);
 												P(mutex);
 												V(wait);
 												P(edit);
-												atomic {
-													counter--;
-													inAlley[_pid] = true;
-												}
+												counter--;
 							fi;
 		:: else ->			P(edit);
 							if
-							:: counter > 0 -> 	atomic { counter++; inAlley[_pid] = true; }
+							:: counter > 0 -> 	counter++;
 
 							:: else -> 			V(edit);
 												P(mutex);
 												P(edit);
-												atomic {
-													counter++;
-													inAlley[_pid] = true;
-												}
+												counter++;
 							fi;
 		fi;
 		V(edit);
@@ -64,8 +52,8 @@ entry:
 crit:
 		P(edit);
 		if
-		:: _pid < 4 -> atomic { counter++; inAlley[_pid] = false; down--; }
-		:: else -> atomic { counter--; inAlley[_pid] = false; up--; }
+		:: _pid < 4 -> counter++;
+		:: else -> counter--; 
 		fi;
 
 		if
@@ -79,13 +67,11 @@ crit:
 }
 
 
-
-
 active proctype SafetyCheck() {
     do ::     
 		assert(
-			!((inAlley[0] || inAlley[1] || inAlley[2] || inAlley[3]) 
-			&& (inAlley[4] || inAlley[5] || inAlley[6] || inAlley[7]))
+			!((SafetyAlley[0]@crit || SafetyAlley[1]@crit || SafetyAlley[2]@crit || SafetyAlley[3]@crit) 
+			&& (SafetyAlley[4]@crit || SafetyAlley[5]@crit || SafetyAlley[6]@crit || SafetyAlley[7]@crit))
 		);
 	od;
 } 
@@ -99,14 +85,14 @@ active proctype SafetyCheck() {
 */
 
 //Resolution
-/*ltl res { [] ( (SafetyAlley[0]@entry || SafetyAlley[1]@entry || SafetyAlley[2]@entry || SafetyAlley[3]@entry ||
+ltl res { [] ( (SafetyAlley[0]@entry || SafetyAlley[1]@entry || SafetyAlley[2]@entry || SafetyAlley[3]@entry ||
 	  			  SafetyAlley[4]@entry || SafetyAlley[5]@entry || SafetyAlley[6]@entry || SafetyAlley[7]@entry) 
 				  -> <> (SafetyAlley[0]@crit || SafetyAlley[1]@crit || SafetyAlley[2]@crit || SafetyAlley[3]@crit ||
 	  				     SafetyAlley[4]@crit || SafetyAlley[5]@crit || SafetyAlley[6]@crit || SafetyAlley[7]@crit) )}
-*/
+
 
 //Fairness:
-ltl fair1 { []( (SafetyAlley[1]@entry) -> <> (SafetyAlley[1]@crit) ) }
+//ltl fair1 { []( (SafetyAlley[1]@entry) -> <> (SafetyAlley[1]@crit) ) }
 
 
 

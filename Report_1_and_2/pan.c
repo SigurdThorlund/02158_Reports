@@ -536,7 +536,7 @@ addproc(int n)
 		reached3[0] = 1;
 		accpstate[3][1] = 1;
 		break;
-	case 2:	/* fair1 */
+	case 2:	/* res */
 		((P2 *)pptr(h))->_t = 2;
 		((P2 *)pptr(h))->_p = 5;
 		reached2[5]=1;
@@ -563,8 +563,8 @@ addproc(int n)
 		break;
 	case 0:	/* SafetyAlley */
 		((P0 *)pptr(h))->_t = 0;
-		((P0 *)pptr(h))->_p = 103;
-		reached0[103]=1;
+		((P0 *)pptr(h))->_p = 90;
+		reached0[90]=1;
 		/* params: */
 		/* locals: */
 #ifdef VAR_RANGES
@@ -676,8 +676,8 @@ run(void)
 	stopstate[2][endstate2] = 1;
 	stopstate[3][endstate3] = 1;
 	accpstate[2][9] = 1;
-	visstate[0][77] = 1;
-	visstate[0][68] = 1;
+	visstate[0][70] = 1;
+	visstate[0][61] = 1;
 	retrans(0, nstates0, start0, src_ln0, reached0, loopstate0);
 	retrans(1, nstates1, start1, src_ln1, reached1, loopstate1);
 	retrans(2, nstates2, start2, src_ln2, reached2, loopstate2);
@@ -10205,25 +10205,11 @@ iniglobals(void)
 		now.mutex = 1;
 		now.wait = 1;
 		now.edit = 1;
-	{	int l_in;
-		for (l_in = 0; l_in < 8; l_in++)
-		{
-			now.inAlley[l_in] = 0;
-		}
-	}
 		now.counter = 0;
-		up = 0;
-		down = 0;
 #ifdef VAR_RANGES
 		logval("mutex", now.mutex);
 		logval("wait", now.wait);
 		logval("edit", now.edit);
-	{	int l_in;
-		for (l_in = 0; l_in < 8; l_in++)
-		{
-			logval("inAlley[l_in]", now.inAlley[l_in]);
-		}
-	}
 		logval("counter", now.counter);
 #endif
 	Maxbody = max(Maxbody, sizeof(State)-VECTORSZ);
@@ -11835,12 +11821,6 @@ c_globals(void)
 	printf("	bit    mutex:	%d\n", now.mutex);
 	printf("	bit    wait:	%d\n", now.wait);
 	printf("	bit    edit:	%d\n", now.edit);
-	{	int l_in;
-		for (l_in = 0; l_in < 8; l_in++)
-		{
-			printf("	bit    inAlley[%d]:	%d\n", l_in, now.inAlley[l_in]);
-		}
-	}
 }
 void
 c_locals(int pid, int tp)
@@ -11850,7 +11830,7 @@ c_locals(int pid, int tp)
 		/* none */
 		break;
 	case 1:
-		/* none */
+		printf("local vars proc %d (SafetyCheck):\n", pid);
 		break;
 	case 0:
 		printf("local vars proc %d (SafetyAlley):\n", pid);
