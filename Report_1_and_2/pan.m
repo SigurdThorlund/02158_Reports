@@ -14,8 +14,8 @@
 		if (trpt->o_pm&1) continue;
 		_m = 3; goto P999;
 
-		 /* CLAIM res */
-	case 3: /* STATE 1 - _spin_nvr.tmp:3 - [((!(!(((((((((SafetyAlley[0]._p==entry)||(SafetyAlley[1]._p==entry))||(SafetyAlley[2]._p==entry))||(SafetyAlley[3]._p==entry))||(SafetyAlley[4]._p==entry))||(SafetyAlley[5]._p==entry))||(SafetyAlley[6]._p==entry))||(SafetyAlley[7]._p==entry))))&&!(((((((((SafetyAlley[0]._p==crit)||(SafetyAlley[1]._p==crit))||(SafetyAlley[2]._p==crit))||(SafetyAlley[3]._p==crit))||(SafetyAlley[4]._p==crit))||(SafetyAlley[5]._p==crit))||(SafetyAlley[6]._p==crit))||(SafetyAlley[7]._p==crit)))))] (0:0:0 - 1) */
+		 /* CLAIM fair */
+	case 3: /* STATE 1 - _spin_nvr.tmp:3 - [((!(!((SafetyAlley[1]._p==entry)))&&!((SafetyAlley[1]._p==crit))))] (0:0:0 - 1) */
 		
 #if defined(VERI) && !defined(NP)
 #if NCLAIMS>1
@@ -37,10 +37,10 @@
 #endif
 #endif
 		reached[2][1] = 1;
-		if (!(( !( !(((((((((((int)((P0 *)Pptr(BASE+0))->_p)==61)||(((int)((P0 *)Pptr(BASE+1))->_p)==61))||(((int)((P0 *)Pptr(BASE+2))->_p)==61))||(((int)((P0 *)Pptr(BASE+3))->_p)==61))||(((int)((P0 *)Pptr(BASE+4))->_p)==61))||(((int)((P0 *)Pptr(BASE+5))->_p)==61))||(((int)((P0 *)Pptr(BASE+6))->_p)==61))||(((int)((P0 *)Pptr(BASE+7))->_p)==61))))&& !(((((((((((int)((P0 *)Pptr(BASE+0))->_p)==70)||(((int)((P0 *)Pptr(BASE+1))->_p)==70))||(((int)((P0 *)Pptr(BASE+2))->_p)==70))||(((int)((P0 *)Pptr(BASE+3))->_p)==70))||(((int)((P0 *)Pptr(BASE+4))->_p)==70))||(((int)((P0 *)Pptr(BASE+5))->_p)==70))||(((int)((P0 *)Pptr(BASE+6))->_p)==70))||(((int)((P0 *)Pptr(BASE+7))->_p)==70))))))
+		if (!(( !( !((((int)((P0 *)Pptr(BASE+1))->_p)==61)))&& !((((int)((P0 *)Pptr(BASE+1))->_p)==70)))))
 			continue;
 		_m = 3; goto P999; /* 0 */
-	case 4: /* STATE 7 - _spin_nvr.tmp:8 - [(!(((((((((SafetyAlley[0]._p==crit)||(SafetyAlley[1]._p==crit))||(SafetyAlley[2]._p==crit))||(SafetyAlley[3]._p==crit))||(SafetyAlley[4]._p==crit))||(SafetyAlley[5]._p==crit))||(SafetyAlley[6]._p==crit))||(SafetyAlley[7]._p==crit))))] (0:0:0 - 1) */
+	case 4: /* STATE 7 - _spin_nvr.tmp:8 - [(!((SafetyAlley[1]._p==crit)))] (0:0:0 - 1) */
 		
 #if defined(VERI) && !defined(NP)
 #if NCLAIMS>1
@@ -62,7 +62,7 @@
 #endif
 #endif
 		reached[2][7] = 1;
-		if (!( !(((((((((((int)((P0 *)Pptr(BASE+0))->_p)==70)||(((int)((P0 *)Pptr(BASE+1))->_p)==70))||(((int)((P0 *)Pptr(BASE+2))->_p)==70))||(((int)((P0 *)Pptr(BASE+3))->_p)==70))||(((int)((P0 *)Pptr(BASE+4))->_p)==70))||(((int)((P0 *)Pptr(BASE+5))->_p)==70))||(((int)((P0 *)Pptr(BASE+6))->_p)==70))||(((int)((P0 *)Pptr(BASE+7))->_p)==70)))))
+		if (!( !((((int)((P0 *)Pptr(BASE+1))->_p)==70))))
 			continue;
 		_m = 3; goto P999; /* 0 */
 	case 5: /* STATE 11 - _spin_nvr.tmp:10 - [-end-] (0:0:0 - 1) */
@@ -91,12 +91,12 @@
 		_m = 3; goto P999; /* 0 */
 
 		 /* PROC SafetyCheck */
-	case 6: /* STATE 1 - SafetyAlley.pml:74 - [assert(!((((((SafetyAlley[0]._p==crit)||(SafetyAlley[1]._p==crit))||(SafetyAlley[2]._p==crit))||(SafetyAlley[3]._p==crit))&&((((SafetyAlley[4]._p==crit)||(SafetyAlley[5]._p==crit))||(SafetyAlley[6]._p==crit))||(SafetyAlley[7]._p==crit)))))] (0:0:0 - 1) */
+	case 6: /* STATE 1 - SafetyAlley.pml:75 - [assert((!((((((SafetyAlley[0]._p==crit)||(SafetyAlley[1]._p==crit))||(SafetyAlley[2]._p==crit))||(SafetyAlley[3]._p==crit))&&((((SafetyAlley[4]._p==crit)||(SafetyAlley[5]._p==crit))||(SafetyAlley[6]._p==crit))||(SafetyAlley[7]._p==crit))))&&((counter<5)&&(counter>-(5)))))] (0:0:0 - 1) */
 		IfNotBlocked
 		reached[1][1] = 1;
-		spin_assert( !((((((((int)((P0 *)Pptr(BASE+0))->_p)==70)||(((int)((P0 *)Pptr(BASE+1))->_p)==70))||(((int)((P0 *)Pptr(BASE+2))->_p)==70))||(((int)((P0 *)Pptr(BASE+3))->_p)==70))&&((((((int)((P0 *)Pptr(BASE+4))->_p)==70)||(((int)((P0 *)Pptr(BASE+5))->_p)==70))||(((int)((P0 *)Pptr(BASE+6))->_p)==70))||(((int)((P0 *)Pptr(BASE+7))->_p)==70)))), " !((((((SafetyAlley[0]._p==crit)||(SafetyAlley[1]._p==crit))||(SafetyAlley[2]._p==crit))||(SafetyAlley[3]._p==crit))&&((((SafetyAlley[4]._p==crit)||(SafetyAlley[5]._p==crit))||(SafetyAlley[6]._p==crit))||(SafetyAlley[7]._p==crit))))", II, tt, t);
+		spin_assert(( !((((((((int)((P0 *)Pptr(BASE+0))->_p)==70)||(((int)((P0 *)Pptr(BASE+1))->_p)==70))||(((int)((P0 *)Pptr(BASE+2))->_p)==70))||(((int)((P0 *)Pptr(BASE+3))->_p)==70))&&((((((int)((P0 *)Pptr(BASE+4))->_p)==70)||(((int)((P0 *)Pptr(BASE+5))->_p)==70))||(((int)((P0 *)Pptr(BASE+6))->_p)==70))||(((int)((P0 *)Pptr(BASE+7))->_p)==70))))&&((now.counter<5)&&(now.counter> -(5)))), "( !((((((SafetyAlley[0]._p==crit)||(SafetyAlley[1]._p==crit))||(SafetyAlley[2]._p==crit))||(SafetyAlley[3]._p==crit))&&((((SafetyAlley[4]._p==crit)||(SafetyAlley[5]._p==crit))||(SafetyAlley[6]._p==crit))||(SafetyAlley[7]._p==crit))))&&((counter<5)&&(counter> -(5))))", II, tt, t);
 		_m = 3; goto P999; /* 0 */
-	case 7: /* STATE 5 - SafetyAlley.pml:77 - [-end-] (0:0:0 - 1) */
+	case 7: /* STATE 5 - SafetyAlley.pml:79 - [-end-] (0:0:0 - 1) */
 		IfNotBlocked
 		reached[1][5] = 1;
 		if (!delproc(1, II)) continue;

@@ -1,11 +1,11 @@
-never res {    /* !([] ((! (((((((((SafetyAlley[0]@entry)) || ((SafetyAlley[1]@entry))) || ((SafetyAlley[2]@entry))) || ((SafetyAlley[3]@entry))) || ((SafetyAlley[4]@entry))) || ((SafetyAlley[5]@entry))) || ((SafetyAlley[6]@entry))) || ((SafetyAlley[7]@entry)))) || (<> (((((((((SafetyAlley[0]@crit)) || ((SafetyAlley[1]@crit))) || ((SafetyAlley[2]@crit))) || ((SafetyAlley[3]@crit))) || ((SafetyAlley[4]@crit))) || ((SafetyAlley[5]@crit))) || ((SafetyAlley[6]@crit))) || ((SafetyAlley[7]@crit)))))) */
+never fair {    /* !([] ((! ((SafetyAlley[1]@entry))) || (<> ((SafetyAlley[1]@crit))))) */
 T0_init:
 	if
-	:: (! ((! (((((((((SafetyAlley[0]@entry)) || ((SafetyAlley[1]@entry))) || ((SafetyAlley[2]@entry))) || ((SafetyAlley[3]@entry))) || ((SafetyAlley[4]@entry))) || ((SafetyAlley[5]@entry))) || ((SafetyAlley[6]@entry))) || ((SafetyAlley[7]@entry))))) && ! ((((((((((SafetyAlley[0]@crit)) || ((SafetyAlley[1]@crit))) || ((SafetyAlley[2]@crit))) || ((SafetyAlley[3]@crit))) || ((SafetyAlley[4]@crit))) || ((SafetyAlley[5]@crit))) || ((SafetyAlley[6]@crit))) || ((SafetyAlley[7]@crit))))) -> goto accept_S4
+	:: (! ((! ((SafetyAlley[1]@entry)))) && ! (((SafetyAlley[1]@crit)))) -> goto accept_S4
 	:: (1) -> goto T0_init
 	fi;
 accept_S4:
 	if
-	:: (! ((((((((((SafetyAlley[0]@crit)) || ((SafetyAlley[1]@crit))) || ((SafetyAlley[2]@crit))) || ((SafetyAlley[3]@crit))) || ((SafetyAlley[4]@crit))) || ((SafetyAlley[5]@crit))) || ((SafetyAlley[6]@crit))) || ((SafetyAlley[7]@crit))))) -> goto accept_S4
+	:: (! (((SafetyAlley[1]@crit)))) -> goto accept_S4
 	fi;
 }

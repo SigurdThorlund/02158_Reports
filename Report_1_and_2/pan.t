@@ -24,21 +24,21 @@ settable(void)
 
 	trans = (Trans ***) emalloc(4*sizeof(Trans **));
 
-	/* proctype 2: res */
+	/* proctype 2: fair */
 
 	trans[2] = (Trans **) emalloc(12*sizeof(Trans *));
 
 	T = trans[2][5] = settr(102,0,0,0,0,"IF", 0, 2, 0);
 	T = T->nxt	= settr(102,0,1,0,0,"IF", 0, 2, 0);
 	    T->nxt	= settr(102,0,3,0,0,"IF", 0, 2, 0);
-	trans[2][1]	= settr(98,0,9,3,0,"((!(!(((((((((SafetyAlley[0]._p==entry)||(SafetyAlley[1]._p==entry))||(SafetyAlley[2]._p==entry))||(SafetyAlley[3]._p==entry))||(SafetyAlley[4]._p==entry))||(SafetyAlley[5]._p==entry))||(SafetyAlley[6]._p==entry))||(SafetyAlley[7]._p==entry))))&&!(((((((((SafetyAlley[0]._p==crit)||(SafetyAlley[1]._p==crit))||(SafetyAlley[2]._p==crit))||(SafetyAlley[3]._p==crit))||(SafetyAlley[4]._p==crit))||(SafetyAlley[5]._p==crit))||(SafetyAlley[6]._p==crit))||(SafetyAlley[7]._p==crit)))))", 1, 2, 0);
+	trans[2][1]	= settr(98,0,9,3,0,"((!(!((SafetyAlley[1]._p==entry)))&&!((SafetyAlley[1]._p==crit))))", 1, 2, 0);
 	trans[2][2]	= settr(99,0,9,1,0,"goto accept_S4", 0, 2, 0);
 	trans[2][6]	= settr(103,0,9,1,0,".(goto)", 0, 2, 0);
 	trans[2][3]	= settr(100,0,5,1,0,"(1)", 0, 2, 0);
 	trans[2][4]	= settr(101,0,5,1,0,"goto T0_init", 0, 2, 0);
 	T = trans[2][9] = settr(106,0,0,0,0,"IF", 0, 2, 0);
 	    T->nxt	= settr(106,0,7,0,0,"IF", 0, 2, 0);
-	trans[2][7]	= settr(104,0,9,4,0,"(!(((((((((SafetyAlley[0]._p==crit)||(SafetyAlley[1]._p==crit))||(SafetyAlley[2]._p==crit))||(SafetyAlley[3]._p==crit))||(SafetyAlley[4]._p==crit))||(SafetyAlley[5]._p==crit))||(SafetyAlley[6]._p==crit))||(SafetyAlley[7]._p==crit))))", 1, 2, 0);
+	trans[2][7]	= settr(104,0,9,4,0,"(!((SafetyAlley[1]._p==crit)))", 1, 2, 0);
 	trans[2][8]	= settr(105,0,9,1,0,"goto accept_S4", 0, 2, 0);
 	trans[2][10]	= settr(107,0,11,1,0,".(goto)", 0, 2, 0);
 	trans[2][11]	= settr(108,0,0,5,5,"-end-", 0, 3500, 0);
@@ -50,7 +50,7 @@ settable(void)
 	trans[1][3]	= settr(95,0,2,1,0,".(goto)", 0, 2, 0);
 	T = trans[1][2] = settr(94,0,0,0,0,"DO", 0, 2, 0);
 	    T->nxt	= settr(94,0,1,0,0,"DO", 0, 2, 0);
-	trans[1][1]	= settr(93,0,2,6,0,"assert(!((((((SafetyAlley[0]._p==crit)||(SafetyAlley[1]._p==crit))||(SafetyAlley[2]._p==crit))||(SafetyAlley[3]._p==crit))&&((((SafetyAlley[4]._p==crit)||(SafetyAlley[5]._p==crit))||(SafetyAlley[6]._p==crit))||(SafetyAlley[7]._p==crit)))))", 1, 2, 0);
+	trans[1][1]	= settr(93,0,2,6,0,"assert((!((((((SafetyAlley[0]._p==crit)||(SafetyAlley[1]._p==crit))||(SafetyAlley[2]._p==crit))||(SafetyAlley[3]._p==crit))&&((((SafetyAlley[4]._p==crit)||(SafetyAlley[5]._p==crit))||(SafetyAlley[6]._p==crit))||(SafetyAlley[7]._p==crit))))&&((counter<5)&&(counter>-(5)))))", 1, 2, 0);
 	trans[1][4]	= settr(96,0,5,1,0,"break", 0, 2, 0);
 	trans[1][5]	= settr(97,0,0,7,7,"-end-", 0, 3500, 0);
 

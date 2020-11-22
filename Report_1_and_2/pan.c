@@ -536,7 +536,7 @@ addproc(int n)
 		reached3[0] = 1;
 		accpstate[3][1] = 1;
 		break;
-	case 2:	/* res */
+	case 2:	/* fair */
 		((P2 *)pptr(h))->_t = 2;
 		((P2 *)pptr(h))->_p = 5;
 		reached2[5]=1;

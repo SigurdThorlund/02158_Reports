@@ -44,7 +44,7 @@ char *trailfilename;
 #ifndef NFAIR
 	#define NFAIR	2	/* must be >= 2 */
 #endif
-#define REM_REFS	48
+#define REM_REFS	13
 #define HAS_CODE
 #if defined(RANDSTORE) && !defined(RANDSTOR)
 	#define RANDSTOR	RANDSTORE
@@ -73,7 +73,7 @@ typedef struct S_F_MAP {
 	char *fnm; int from; int upto;
 } S_F_MAP;
 
-#define nstates2	12	/* res */
+#define nstates2	12	/* fair */
 #define endstate2	11
 short src_ln2 [] = {
 	  0,   3,   3,   4,   4,   2,   6,   8, 
@@ -92,7 +92,7 @@ uchar *loopstate2;
 #define nstates1	6	/* SafetyCheck */
 #define endstate1	5
 short src_ln1 [] = {
-	  0,  74,  71,  77,  71,  77,   0, };
+	  0,  75,  71,  79,  71,  79,   0, };
 S_F_MAP src_file1 [] = {
 	{ ""-"", 0, 0 },
 	{ "SafetyAlley.pml", 1, 5 },
@@ -172,7 +172,7 @@ struct {
 char *procname[] = {
    "SafetyAlley",
    "SafetyCheck",
-   "res",
+   "fair",
    ":np_:",
 };
 
@@ -180,11 +180,11 @@ enum btypes { NONE=0, N_CLAIM=1, I_PROC=2, A_PROC=3, P_PROC=4, E_TRACE=5, N_TRAC
 int Btypes[] = {
    3,	/* SafetyAlley */
    3,	/* SafetyCheck */
-   1,	/* res */
+   1,	/* fair */
    0	/* :np_: */
 };
 
-typedef struct P2 { /* res */
+typedef struct P2 { /* fair */
 	unsigned _pid : 8;  /* 0..255 */
 	unsigned _t   : 3; /* proctype */
 	unsigned _p   : 8; /* state    */
