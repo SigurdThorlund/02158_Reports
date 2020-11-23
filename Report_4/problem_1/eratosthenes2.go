@@ -8,14 +8,31 @@ package main
 
 import "fmt"
 
-const N = 15
+const N = 5
 
-func odds(out chan<- int) {
-    for i := 3; i<5*N; i += 2 {
-        out<- i
+func odds(out chan<- int, in <-chan int, comm chan<- int) {
+    generator:
+    for i := 3; ; i += 2 {
+        select {
+        case <-in:
+            break generator
+        default:
+            out<- i
+        }
     }
+
     fmt.Println(2)
     close(out)
+
+    for {
+        gobble := <-in
+        if gobble == 0 {
+            break
+        }
+    }
+
+    comm<- 1
+    close(comm)
 }
 
 func sieve(in <-chan int, out chan<- int) {
@@ -43,6 +60,7 @@ func sieve(in <-chan int, out chan<- int) {
 func main() {
     // Declare channels
     var chans [N]chan int
+    comm := make(chan int)
     // Initialize channels
     for i := 0; i<N; i++ {
         chans[i] = make(chan int)
@@ -51,17 +69,11 @@ func main() {
     fmt.Println("The first", N, "prime numbers are:");
 
     // Connect/start goroutines
-    go odds(chans[0])
+    go odds(chans[0], chans[N-1], comm)
     for i := 1; i<N; i++ {
         go sieve(chans[i-1], chans[i])
     }
     // Await termination
-    for {
-        gobble := <-chans[N-1]
-        if gobble == 0 {
-            break
-        }
-    }
-
+    <-comm
     fmt.Println("Done!")
 }
