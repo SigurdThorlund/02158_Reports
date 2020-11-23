@@ -11,7 +11,7 @@ import "fmt"
 const N = 5
 
 func odds(out chan<- int) {
-    for i := 3; i<5*N; i += 2 {
+    for i := 3; i<2*5*N; i += 2 {
         out<- i
     }
     fmt.Println(2)
