@@ -7,15 +7,15 @@
 public class Alley {
 
     Semaphore mutex;
-    Semaphore mutexCC;
+    Semaphore edit;
     int counter;
-    int counterCC;
+    Semaphore wait;
 
     public Alley() {
         mutex = new Semaphore(1);
-        mutexCC = new Semaphore(1);
+        wait = new Semaphore(1);
+        edit = new Semaphore(1);
         counter = 0;
-        counterCC = 0;
     }
 
     /* Determine whether pos is right before alley is entered */
@@ -37,42 +37,54 @@ public class Alley {
 
     /* Block until car no. may enter alley */
     public void enter(int no) throws InterruptedException {
-        // Counterclockwise car entering alley with car in same direction
-        if (no < 5 && counter < 0) {
-            counterCC--;
-            counter--;
-        // Clockwise car entering alley with car in same direction
-        } else if (no >= 5 && counter > 0) {
-            counter++;
-        // Clockwise car entering alley with no car or car in opposite direction
-        } else if (no >= 5) {
-            mutex.P();
-            counter++;
-        // Counterclockwise car entering alley with no car or car in opposite direction
-        } else if (no < 5) {
-            mutexCC.P();
-            if (counterCC == 0) {
-                counterCC--;
-                mutex.P();
-            } else {
-                counterCC--;
+        if (no < 5) {
+            //Alley direction down
+            wait.P(); //In case there is another car waiting, driving in the same direction
+            edit.P(); //Get permission to edit counter
+            if(counter < 0) {
+                //There is already traffic in the same direction
+                counter--;
+                wait.V();
             }
-            mutexCC.V();
-            counter--;
+            else {
+                edit.V();
+                mutex.P(); //Request alley entry permission
+                wait.V(); //Release blocker for parallel track
+                edit.P();
+                counter--;
+            }
+
         }
+        else {
+            //Alley direction up
+            edit.P();
+            if (counter > 0) {
+                counter++;
+            }
+            else {
+                edit.V();
+                mutex.P();
+                edit.P();
+                counter++;
+            }
+        }
+        edit.V(); //Done editing
     }
 
     /* Register that car no. has left the alley */
     public void leave(int no) {
-        if (no < 5) {
-            counter++;
-            counterCC++;
-        } else if (no >= 5) {
-            counter--;
-        }
-
-        if (counter == 0) {
-            mutex.V();
+        try {
+            edit.P(); //Request edit permission
+            if(no < 5) {
+                counter++;
+            }
+            else {
+                counter--;
+            }
+            if (counter == 0) mutex.V(); //If counter is zero, reopen alley for both directions
+            edit.V();
+        } catch(InterruptedException e) {
+            System.out.println("P() operation interrupted, in leave("+no+")!");
         }
     }
 }

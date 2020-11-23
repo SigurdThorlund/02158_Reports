@@ -10,6 +10,7 @@ public class Alley {
     
     /* Block until car no. may enter alley */
     public synchronized void enter(int no) throws InterruptedException {
+        //System.out.println("Enter " + no);
         if (no < 5) {
             while (up   > 0) { wait(); }
             down++;
@@ -17,17 +18,19 @@ public class Alley {
             while (down > 0) { wait(); }
             up++;
         }
+        //System.out.println("Down: "+ down + " Up: " + up);
      }
 
     /* Register that car no. has left the alley */
     public synchronized void leave(int no) {
         if (no < 5) {
-            down--; 
+            down--;
             if (down == 0) notifyAll();
         } else {
             up--; 
             if (up   == 0) notifyAll();
         }
+        //System.out.println("Down: "+ down + " Up: " + up);
     }
 
 }

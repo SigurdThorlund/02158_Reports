@@ -1,5 +1,5 @@
 #define SpinVersion	"Spin Version 6.0.0 -- 5 December 2010"
-#define PanSource	"SafetyAlley4Cars.pml"
+#define PanSource	"SafetyAlley.pml"
 
 #define G_long	4
 #define G_int	4
@@ -44,6 +44,7 @@ char *trailfilename;
 #ifndef NFAIR
 	#define NFAIR	2	/* must be >= 2 */
 #endif
+#define REM_REFS	13
 #define HAS_CODE
 #if defined(RANDSTORE) && !defined(RANDSTOR)
 	#define RANDSTOR	RANDSTORE
@@ -72,66 +73,68 @@ typedef struct S_F_MAP {
 	char *fnm; int from; int upto;
 } S_F_MAP;
 
-#define nstates2	9	/* nocrash */
-#define endstate2	8
+#define nstates2	12	/* fair */
+#define endstate2	11
 short src_ln2 [] = {
-	  0,   3,   3,   4,   4,   2,   6,   7, 
-	  8,   0, };
+	  0,   3,   3,   4,   4,   2,   6,   8, 
+	  8,   7,  10,  10,   0, };
 S_F_MAP src_file2 [] = {
 	{ ""-"", 0, 0 },
-	{ "_spin_nvr.tmp", 1, 8 },
-	{ ""-"", 9, 10 }
+	{ "_spin_nvr.tmp", 1, 11 },
+	{ ""-"", 12, 13 }
 };
 short *src_claim;
 uchar reached2 [] = {
 	  0,   1,   1,   1,   1,   0,   1,   1, 
-	  0,   0, };
+	  1,   0,   1,   0,   0, };
 uchar *loopstate2;
 
-#define nstates1	69	/* Alley */
-#define endstate1	68
+#define nstates1	6	/* SafetyCheck */
+#define endstate1	5
 short src_ln1 [] = {
-	  0,  44,  45,  45,  46,  47,  48,  49, 
-	 51,  51,  52,  53,  54,  56,  56,  57, 
-	 58,  59,  60,  62,  62,  64,  64,  65, 
-	 66,  67,  68,  70,  70,  71,  72,  73, 
-	 74,  74,  63,  76,  76,  77,  78,  78, 
-	 44,  80,  80,  81,  81,  82,  83,  83, 
-	 80,  85,  86,  86,  87,  88,  88,  85, 
-	 90,  90,  90,  91,  91,  43,  93,  94, 
-	 95,  41,  97,  41,  97,   0, };
+	  0,  75,  71,  79,  71,  79,   0, };
 S_F_MAP src_file1 [] = {
 	{ ""-"", 0, 0 },
-	{ "SafetyAlley4Cars.pml", 1, 68 },
-	{ ""-"", 69, 70 }
+	{ "SafetyAlley.pml", 1, 5 },
+	{ ""-"", 6, 7 }
 };
 uchar reached1 [] = {
-	  0,   1,   1,   0,   0,   0,   0,   1, 
-	  1,   0,   0,   0,   1,   1,   0,   0, 
-	  0,   0,   1,   1,   0,   1,   0,   0, 
-	  0,   0,   0,   1,   0,   0,   0,   0, 
-	  1,   1,   0,   1,   0,   1,   1,   1, 
-	  0,   1,   1,   1,   0,   0,   1,   0, 
-	  0,   1,   1,   0,   0,   1,   0,   0, 
-	  1,   0,   0,   1,   1,   1,   1,   0, 
-	  0,   0,   1,   1,   0,   0, };
+	  0,   1,   0,   1,   1,   0,   0, };
 uchar *loopstate1;
 
-#define nstates0	20	/* SafetyAlley */
-#define endstate0	19
+#define nstates0	94	/* SafetyAlley */
+#define endstate0	93
 short src_ln0 [] = {
-	  0,  20,  22,  23,  24,  27,  27,  28, 
-	 29,  31,  31,  32,  33,  26,  35,  35, 
-	 18,  37,  18,  37,   0, };
+	  0,  23,  24,  27,  14,  14,  13,  16, 
+	 14,  14,  13,  16,  30,  30,  18,  18, 
+	 18,  18,  33,  18,  18,  18,  18,  14, 
+	 14,  13,  16,  18,  18,  18,  18,  14, 
+	 14,  13,  16,  37,  29,  39,  39,  14, 
+	 14,  13,  16,  41,  41,  43,  18,  18, 
+	 18,  18,  14,  14,  13,  16,  14,  14, 
+	 13,  16,  46,  40,  48,  26,  49,  18, 
+	 18,  18,  18,  14,  14,  13,  16,  55, 
+	 55,  56,  56,  54,  59,  60,  18,  18, 
+	 18,  18,  61,  61,  59,  64,  18,  18, 
+	 18,  18,  22,  67,  22,  67,   0, };
 S_F_MAP src_file0 [] = {
 	{ ""-"", 0, 0 },
-	{ "SafetyAlley4Cars.pml", 1, 19 },
-	{ ""-"", 20, 21 }
+	{ "SafetyAlley.pml", 1, 93 },
+	{ ""-"", 94, 95 }
 };
 uchar reached0 [] = {
-	  0,   1,   0,   0,   0,   1,   0,   0, 
-	  0,   1,   0,   0,   0,   0,   1,   0, 
-	  0,   1,   1,   0,   0, };
+	  0,   1,   1,   1,   1,   0,   1,   0, 
+	  1,   0,   1,   0,   1,   0,   1,   0, 
+	  1,   0,   1,   1,   0,   1,   0,   1, 
+	  0,   1,   0,   1,   0,   1,   0,   1, 
+	  0,   1,   0,   0,   0,   1,   1,   1, 
+	  0,   1,   0,   1,   0,   1,   1,   0, 
+	  1,   0,   1,   0,   1,   0,   1,   0, 
+	  1,   0,   0,   0,   1,   0,   1,   1, 
+	  0,   1,   0,   1,   0,   1,   0,   1, 
+	  0,   1,   0,   0,   1,   1,   1,   0, 
+	  1,   0,   1,   1,   0,   1,   1,   0, 
+	  1,   0,   0,   1,   1,   0,   0, };
 uchar *loopstate0;
 struct {
 	int tp; short *src;
@@ -151,8 +154,8 @@ struct {
 } code_lookup[] = {
 	{ (char *) 0, "" }
 };
-#define _T5	63
-#define _T2	64
+#define _T5	35
+#define _T2	36
 #define T_ID	unsigned char
 #define SYNC	0
 #define ASYNC	0
@@ -168,33 +171,32 @@ struct {
 #endif
 char *procname[] = {
    "SafetyAlley",
-   "Alley",
-   "nocrash",
+   "SafetyCheck",
+   "fair",
    ":np_:",
 };
 
 enum btypes { NONE=0, N_CLAIM=1, I_PROC=2, A_PROC=3, P_PROC=4, E_TRACE=5, N_TRACE=6 };
 int Btypes[] = {
    3,	/* SafetyAlley */
-   3,	/* Alley */
-   1,	/* nocrash */
+   3,	/* SafetyCheck */
+   1,	/* fair */
    0	/* :np_: */
 };
 
-typedef struct P2 { /* nocrash */
+typedef struct P2 { /* fair */
 	unsigned _pid : 8;  /* 0..255 */
 	unsigned _t   : 3; /* proctype */
 	unsigned _p   : 8; /* state    */
 } P2;
 #define Air2	(sizeof(P2) - 3)
-#define PAlley	((P1 *)this)
-typedef struct P1 { /* Alley */
+#define PSafetyCheck	((P1 *)this)
+typedef struct P1 { /* SafetyCheck */
 	unsigned _pid : 8;  /* 0..255 */
 	unsigned _t   : 3; /* proctype */
 	unsigned _p   : 8; /* state    */
-	int _2_i;
 } P1;
-#define Air1	(sizeof(P1) - Offsetof(P1, _2_i) - 1*sizeof(int))
+#define Air1	(sizeof(P1) - 3)
 #define PSafetyAlley	((P0 *)this)
 typedef struct P0 { /* SafetyAlley */
 	unsigned _pid : 8;  /* 0..255 */
@@ -408,13 +410,10 @@ typedef struct State {
 		unsigned short _event;
 	#endif
 #endif
-	uchar enter[4];
-	uchar inAlley[4];
-	uchar exit[4];
-	int co;
-	int mutex;
-	int mutexCC;
-	int coCC;
+	unsigned mutex : 1;
+	unsigned wait : 1;
+	unsigned edit : 1;
+	short counter;
 	uchar sv[VECTORSZ];
 } State;
 
@@ -432,8 +431,8 @@ uchar *loopstate3;  /* np_ */
 
 #define start3	0 /* np_ */
 #define start2	5
-#define start1	65
-#define start0	16
+#define start1	2
+#define start0	90
 #ifdef NP
 	#define ACCEPT_LAB	1 /* at least 1 in np_ */
 #else
@@ -564,7 +563,7 @@ void qsend(int, int, int);
 #define GLOBAL	7
 #define BAD	8
 #define ALPHA_F	9
-#define NTRANS	65
+#define NTRANS	37
 #ifdef PEG
 	long peg[NTRANS];
 #endif
