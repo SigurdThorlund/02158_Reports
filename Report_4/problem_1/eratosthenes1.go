@@ -8,7 +8,7 @@ package main
 
 import "fmt"
 
-const N = 15
+const N = 5
 
 func odds(out chan<- int) {
     for i := 3; i<5*N; i += 2 {

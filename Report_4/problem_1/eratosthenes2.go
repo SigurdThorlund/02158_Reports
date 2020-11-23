@@ -20,7 +20,6 @@ func odds(out chan<- int, in <-chan int, comm chan<- int) {
             out<- i
         }
     }
-
     fmt.Println(2)
     close(out)
 
@@ -60,11 +59,15 @@ func sieve(in <-chan int, out chan<- int) {
 func main() {
     // Declare channels
     var chans [N]chan int
-    comm := make(chan int)
+    comm := make(chan int, 1)
     // Initialize channels
-    for i := 0; i<N; i++ {
+    for i := 0; i<N-1; i++ {
         chans[i] = make(chan int)
     }
+    // Make the last channel buffered as the odds goroutine
+    // will not necessarily be ready to read when the sieve
+    // is ready to write
+    chans[N-1] = make(chan int, 1)
 
     fmt.Println("The first", N, "prime numbers are:");
 
