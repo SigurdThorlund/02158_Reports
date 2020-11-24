@@ -8,10 +8,11 @@ package main
 
 import "fmt"
 
-const N = 5
+const N = 10000
 
 func odds(out chan<- int) {
     for i := 3; i<2*5*N; i += 2 {
+        fmt.Println(i)
         out<- i
     }
     fmt.Println(2)
