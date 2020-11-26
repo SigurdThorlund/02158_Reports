@@ -113,8 +113,6 @@ class Conductor extends Thread {
             while (true) {
                 // periodically check if thread has been interrupted
                 if (isInterrupted()) {
-
-                    field.leave(curpos);
                     takeOutOfService();
                     return;
                 }
@@ -162,6 +160,7 @@ class Conductor extends Thread {
         if (inAlley) {
             alley.leave(no);
         }
+        field.leave(curpos);
     }
 }
 
@@ -174,7 +173,6 @@ public class CarControl implements CarControlI{
     Alley alley;              // Alley
     Barrier barrier;          // Barrier
     boolean terminating[];
-
 
     public CarControl(CarDisplayI cd) {
         this.cd = cd;
@@ -214,20 +212,28 @@ public class CarControl implements CarControlI{
 
     public synchronized void removeCar(int no) {
         Conductor c = conductor[no];
-        if (c.isAlive()) {
-            System.out.println("remove");
+        if (c.isAlive()) {  
             c.interrupt();
             cd.deregister(c.car);
+            terminating[no] = true;
         }
     }
 
     public synchronized void restoreCar(int no) {
         Conductor c = conductor[no];
+
+        if (terminating[no]) {
+            try {
+                c.join();
+            } catch (InterruptedException e) {}
+        }
+
         if (!c.isAlive()) {
             c = new Conductor(no,cd,gate[no],field,alley,barrier);
             conductor[no] = c;
             c.setName("Conductor-" + no);
             c.start();
+            terminating[no] = false;
         }
     }
 
