@@ -12,14 +12,13 @@ import (
 )
 
 func main() {
-
-    q := queue.NewBoundedQueue(19, nil)
-
-    q.StartConsumers(2, func(item interface{}) { fmt.Println(item) } )
+    size := 2
+    q := queue.NewBoundedQueue(size, func(item interface{}) { fmt.Println(item) })
 
     q.Produce("A")
     q.Produce("B")
     q.Produce("C")
+    q.Produce("D")
 
     q.Stop()
 
