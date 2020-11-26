@@ -44,9 +44,11 @@ class Conductor extends Thread {
         curpos = startpos;
         newpos = startpos;
         barpos   = cd.getBarrierPos(no);  // For later use
-        
-
         col = chooseColor();
+        car = cd.newCar(no, col, startpos);
+
+
+        cd.register(car);
 
         // special settings for car no. 0
         if (no==0) {
@@ -105,41 +107,42 @@ class Conductor extends Thread {
     }
 
     public void run() {
-        //car = cd.newCar(no, col, startpos);
         try {
-            car = cd.newCar(no, col, startpos);
             curpos = startpos;
             field.enter(no, curpos);
-            cd.register(car);
             while (true) {
+                // periodically check if thread has been interrupted
+                if (isInterrupted()) {
+
+                    field.leave(curpos);
+                    takeOutOfService();
+                    return;
+                }
+
                 if (atGate(curpos)) { 
                     mygate.pass(); 
                     car.setSpeed(chooseSpeed());
                 }
 
-                synchronized(this) {
-                    newpos = nextPos(curpos);
-                    if (atBarrier(curpos)) barrier.sync(no);
-                    if (atEntry(curpos)) {
-                        alley.enter(no);
-                        inAlley = true;
-                    }
+                newpos = nextPos(curpos);
+                if (atBarrier(curpos)) barrier.sync(no);
+                if (atEntry(curpos)) {
+                    alley.enter(no);
+                    inAlley = true;
                 }
 
-                synchronized(this) {
-                    field.enter(no, newpos);
-                    this.isAdvancing = true;
-                    
-                    car.driveTo(newpos);
-                    
-                    field.leave(curpos);
-                    this.isAdvancing = false;
-                    curpos = newpos;
+                field.enter(no, newpos);
+                this.isAdvancing = true;
+                
+                car.driveTo(newpos);
+                
+                field.leave(curpos);
+                this.isAdvancing = false;
+                curpos = newpos;
 
-                    if (atExit(newpos)) {
-                        alley.leave(no);
-                        inAlley = false;
-                    }
+                if (atExit(newpos)) {
+                    alley.leave(no);
+                    inAlley = false;
                 }
             }
         } catch (InterruptedException e) {
@@ -159,7 +162,6 @@ class Conductor extends Thread {
         if (inAlley) {
             alley.leave(no);
         }
-        field.leave(curpos);
     }
 }
 
@@ -211,25 +213,11 @@ public class CarControl implements CarControlI{
     }
 
     public synchronized void removeCar(int no) {
-
         Conductor c = conductor[no];
         if (c.isAlive()) {
+            System.out.println("remove");
             c.interrupt();
-
-            synchronized(c) {
-                if (c.isInterrupted()) {
-                    c.takeOutOfService();
-                }
-            }
-            try {
-                TimeUnit.SECONDS.sleep(1);
-                
-        System.out.println("remove");
-            } catch (Exception e) {
-
-            }
             cd.deregister(c.car);
-            terminating[no] = true;
         }
     }
 
@@ -240,8 +228,6 @@ public class CarControl implements CarControlI{
             conductor[no] = c;
             c.setName("Conductor-" + no);
             c.start();
-
-            System.out.println("restore");
         }
     }
 
