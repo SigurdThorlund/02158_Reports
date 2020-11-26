@@ -14,6 +14,8 @@ class SafeBarrier extends Barrier {
     boolean lastOut;
     int driving;
 
+    boolean carArrived[] = new boolean[9];
+
     public SafeBarrier(CarDisplayI cd) {
         super(cd);
     }
@@ -24,15 +26,19 @@ class SafeBarrier extends Barrier {
         if (!active) return;
 
         arrived++;
+        carArrived[no] = true;
 
         //First barrier: The first car leaving will reset the driving variable.
-        while (arrived < 9) wait();
+        while (arrived < 9) {
+            wait();
+            if (!carArrived[no]) return;
+        }
+        
 
         if (driving == 9) driving = 0;
 
         //First car out notifies the rest and then goes to wait until all cars have reached the second barrier.
         notifyAll();
-
         driving ++;
 
         //Second barrier: When last car arrives to the second barrier then we can reset the cars arrived.
@@ -41,7 +47,7 @@ class SafeBarrier extends Barrier {
         }
 
         if (arrived == 9) arrived = 0;
-
+        carArrived[no] = false;
         notifyAll();
 
     }
@@ -55,6 +61,7 @@ class SafeBarrier extends Barrier {
     public synchronized void off() {
         active = false;
         arrived = 0;
+        for (int i=0; i<9; i++) carArrived[i] = false;
         notifyAll();
     }
 

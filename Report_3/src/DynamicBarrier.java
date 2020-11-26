@@ -28,8 +28,10 @@ class DynamicBarrier extends Barrier {
 
         arrived++;
         //First barrier: The first car leaving will reset the driving variable.
-        while (arrived < aThreshold) wait();
-
+        while (arrived < aThreshold ) wait();
+        
+        if (!active) return;
+        
         if (driving >= dThreshold) {
             driving = 0;
             dThreshold = nextThreshold;
