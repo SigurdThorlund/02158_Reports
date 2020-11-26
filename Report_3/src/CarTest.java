@@ -34,6 +34,14 @@ public class CarTest extends Thread {
                 cars.barrierOff();
                 cars.barrierOn();
                 break;
+            case 3:
+                cars.removeCar(4);
+                cars.restoreCar(4);
+                break;
+            case 4:
+                cars.restoreCar(4);
+                cars.removeCar(4);
+                break;
 
             case 19:
                 // Demonstration of speed setting.

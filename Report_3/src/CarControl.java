@@ -3,7 +3,7 @@
 //Course 02158 Concurrent Programming, DTU, Fall 2020
 
 //Hans Henrik Lovengreen     Oct 30, 2020
-
+import java.util.concurrent.TimeUnit ;
 
 import java.awt.Color;
 
@@ -111,17 +111,16 @@ class Conductor extends Thread {
             curpos = startpos;
             field.enter(no, curpos);
             cd.register(car);
-            while (true) { 
+            while (true) {
                 if (atGate(curpos)) { 
                     mygate.pass(); 
                     car.setSpeed(chooseSpeed());
                 }
 
-                newpos = nextPos(curpos);
-                if (atBarrier(curpos)) barrier.sync(no);
-                
-                if (atEntry(curpos)) {
-                    synchronized(this) {
+                synchronized(this) {
+                    newpos = nextPos(curpos);
+                    if (atBarrier(curpos)) barrier.sync(no);
+                    if (atEntry(curpos)) {
                         alley.enter(no);
                         inAlley = true;
                     }
@@ -130,19 +129,13 @@ class Conductor extends Thread {
                 synchronized(this) {
                     field.enter(no, newpos);
                     this.isAdvancing = true;
-                }
-
-                synchronized(this) {
+                    
                     car.driveTo(newpos);
-                }
-
-                synchronized(this) {
+                    
                     field.leave(curpos);
                     this.isAdvancing = false;
                     curpos = newpos;
-                }
 
-                synchronized(this) {
                     if (atExit(newpos)) {
                         alley.leave(no);
                         inAlley = false;
@@ -166,6 +159,7 @@ class Conductor extends Thread {
         if (inAlley) {
             alley.leave(no);
         }
+        field.leave(curpos);
     }
 }
 
@@ -177,7 +171,8 @@ public class CarControl implements CarControlI{
     Field field;              // Field
     Alley alley;              // Alley
     Barrier barrier;          // Barrier
-    boolean[] active = new boolean[9];
+    boolean terminating[];
+
 
     public CarControl(CarDisplayI cd) {
         this.cd = cd;
@@ -186,9 +181,9 @@ public class CarControl implements CarControlI{
         field = new Field();
         alley = new Alley();
         barrier = Barrier.create(cd);
+        terminating = new boolean[9];
 
         for (int no = 0; no < 9; no++) {
-            active[no] = true;
             gate[no] = Gate.create();
             conductor[no] = new Conductor(no,cd,gate[no],field,alley,barrier);
             conductor[no].setName("Conductor-" + no);
@@ -216,25 +211,37 @@ public class CarControl implements CarControlI{
     }
 
     public synchronized void removeCar(int no) {
-        if (active[no]) {
 
-            Conductor c = conductor[no];
+        Conductor c = conductor[no];
+        if (c.isAlive()) {
             c.interrupt();
-            
-            synchronized (c) {
-                cd.deregister(c.car);
-                c.field.leave(c.curpos);
+
+            synchronized(c) {
+                if (c.isInterrupted()) {
+                    c.takeOutOfService();
+                }
             }
-            active[no] = false;
+            try {
+                TimeUnit.SECONDS.sleep(1);
+                
+        System.out.println("remove");
+            } catch (Exception e) {
+
+            }
+            cd.deregister(c.car);
+            terminating[no] = true;
         }
     }
 
     public synchronized void restoreCar(int no) {
-        if (!active[no]) {
-            conductor[no] = new Conductor(no,cd,gate[no],field,alley,barrier);
-            conductor[no].setName("Conductor-" + no);
-            conductor[no].start();
-            active[no] = true;
+        Conductor c = conductor[no];
+        if (!c.isAlive()) {
+            c = new Conductor(no,cd,gate[no],field,alley,barrier);
+            conductor[no] = c;
+            c.setName("Conductor-" + no);
+            c.start();
+
+            System.out.println("restore");
         }
     }
 
