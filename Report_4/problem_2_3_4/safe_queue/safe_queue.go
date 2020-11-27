@@ -13,7 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package queue
+package safe_queue
 
 import (
 	"sync"
@@ -25,7 +25,7 @@ import (
 // the producer force the earliest items to be dropped. The implementation is actually based on
 // channels, with a special Reaper goroutine that wakes up when the queue is full and consumers
 // the items from the top of the queue until its size drops back to maxSize
-type BoundedQueue struct {
+type SafeQueue struct {
 	capacity      int
 	size          int32
 	onDroppedItem func(item interface{})
@@ -38,8 +38,8 @@ type BoundedQueue struct {
 
 // NewBoundedQueue constructs the new queue of specified capacity, and with an optional
 // callback for dropped items (e.g. useful to emit metrics).
-func NewBoundedQueue(capacity int, onDroppedItem func(item interface{})) *BoundedQueue {
-	q := &BoundedQueue{
+func NewSafeQueue(capacity int, onDroppedItem func(item interface{})) *SafeQueue {
+	q := &SafeQueue{
 		capacity:      capacity,
 		onDroppedItem: onDroppedItem,
 		items:         make(chan interface{}, capacity),
@@ -51,7 +51,7 @@ func NewBoundedQueue(capacity int, onDroppedItem func(item interface{})) *Bounde
 
 // StartConsumers starts a given number of goroutines consuming items from the queue
 // and passing them into the consumer callback.
-func (q *BoundedQueue) StartConsumers(num int, consumer func(item interface{})) {
+func (q *SafeQueue) StartConsumers(num int, consumer func(item interface{})) {
 	var startWG sync.WaitGroup
 	for i := 0; i < num; i++ {
 		q.stopWG.Add(1)
@@ -63,7 +63,10 @@ func (q *BoundedQueue) StartConsumers(num int, consumer func(item interface{})) 
 			for {
 				q.release.L.Lock()
 				select {
-				case item := <-q.items:
+				case item, ok := <-q.items:
+					if !ok {
+						return
+					}
 					atomic.AddInt32(&q.size, -1)
 					consumer(item)
 				case <-q.stopCh:
@@ -79,14 +82,11 @@ func (q *BoundedQueue) StartConsumers(num int, consumer func(item interface{})) 
 }
 
 // Produce is used by the producer to submit new item to the queue. Returns false in case of queue overflow.
-func (q *BoundedQueue) Produce(item interface{}) bool {
+func (q *SafeQueue) Produce(item interface{}) bool {
 	if atomic.LoadInt32(&q.stopped) != 0 {
 		q.onDroppedItem(item)
 		return false
 	}
-	defer q.release.L.Unlock()
-	defer q.release.Broadcast()
-	q.release.L.Lock()
 	select {
 	case q.items <- item:
 		atomic.AddInt32(&q.size, 1)
@@ -101,7 +101,7 @@ func (q *BoundedQueue) Produce(item interface{}) bool {
 
 // Stop stops all consumers, as well as the length reporter if started,
 // and releases the items channel. It blocks until all consumers have stopped.
-func (q *BoundedQueue) Stop() {
+func (q *SafeQueue) Stop() {
 	atomic.StoreInt32(&q.stopped, 1) // disable producer
 	close(q.stopCh)
 	q.stopWG.Wait()
@@ -109,11 +109,14 @@ func (q *BoundedQueue) Stop() {
 }
 
 // Size returns the current size of the queue
-func (q *BoundedQueue) Size() int {
+func (q *SafeQueue) Size() int {
+	defer q.release.L.Unlock()
+	defer q.release.Broadcast()
+	q.release.L.Lock()
 	return int(atomic.LoadInt32(&q.size))
 }
 
 // Capacity returns capacity of the queue
-func (q *BoundedQueue) Capacity() int {
+func (q *SafeQueue) Capacity() int {
 	return q.capacity
 }
