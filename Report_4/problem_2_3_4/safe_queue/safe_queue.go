@@ -87,11 +87,16 @@ func (q *SafeQueue) Produce(item interface{}) bool {
 		q.onDroppedItem(item)
 		return false
 	}
+
+	defer q.release.Broadcast()
+	q.release.L.Lock()
 	select {
 	case q.items <- item:
 		atomic.AddInt32(&q.size, 1)
+		q.release.L.Unlock()
 		return true
 	default:
+		q.release.L.Unlock()
 		if q.onDroppedItem != nil {
 			q.onDroppedItem(item)
 		}
