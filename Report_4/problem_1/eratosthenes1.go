@@ -8,11 +8,10 @@ package main
 
 import "fmt"
 
-const N = 10000
+const N = 5
 
 func odds(out chan<- int) {
     for i := 3; i<2*5*N; i += 2 {
-        fmt.Println(i)
         out<- i
     }
     fmt.Println(2)
@@ -58,8 +57,8 @@ func main() {
     }
     // Await termination
     for {
-        gobble := <-chans[N-1]
-        if gobble == 0 {
+        _, ok:= <-chans[N-1]
+        if !ok {
             break
         }
     }
