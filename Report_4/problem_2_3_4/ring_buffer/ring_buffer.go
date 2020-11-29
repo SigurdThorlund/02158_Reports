@@ -5,7 +5,7 @@ import(
 	"sync/atomic"
 )
 
-type ring_buffer struct {
+type RingBuffer struct {
 	capacity      int
 	size          int32
 	onDroppedItem func(item interface{})
@@ -16,8 +16,8 @@ type ring_buffer struct {
 	release 	  *sync.Cond
 }
 
-func NewRingBuffer(capacity int, onDroppedItem func(item interface{})) *ring_buffer {
-	q := &ring_buffer{
+func NewRingBuffer(capacity int, onDroppedItem func(item interface{})) *RingBuffer {
+	q := &RingBuffer{
 		capacity:      capacity,
 		onDroppedItem: onDroppedItem,
 		items:         make(chan interface{}, capacity),
@@ -27,7 +27,7 @@ func NewRingBuffer(capacity int, onDroppedItem func(item interface{})) *ring_buf
 	return q
 }
 
-func (q *ring_buffer) StartConsumers(num int, consumer func(item interface{})) {
+func (q *RingBuffer) StartConsumers(num int, consumer func(item interface{})) {
 	var startWG sync.WaitGroup
 	for i := 0; i < num; i++ {
 		q.stopWG.Add(1)
@@ -55,7 +55,7 @@ func (q *ring_buffer) StartConsumers(num int, consumer func(item interface{})) {
 }
 
 // Produce is used by the producer to submit new item to the queue. Returns false in case of queue overflow.
-func (q *ring_buffer) Produce(item interface{}) bool {
+func (q *RingBuffer) Produce(item interface{}) bool {
 	if atomic.LoadInt32(&q.stopped) != 0 {
 		q.onDroppedItem(item)
 		return false
@@ -76,7 +76,7 @@ func (q *ring_buffer) Produce(item interface{}) bool {
 
 // Stop stops all consumers, as well as the length reporter if started,
 // and releases the items channel. It blocks until all consumers have stopped.
-func (q *ring_buffer) Stop() {
+func (q *RingBuffer) Stop() {
 	atomic.StoreInt32(&q.stopped, 1) // disable producer
 	close(q.stopCh)
 	q.stopWG.Wait()
@@ -84,11 +84,11 @@ func (q *ring_buffer) Stop() {
 }
 
 // Size returns the current size of the queue
-func (q *ring_buffer) Size() int {
+func (q *RingBuffer) Size() int {
 	return int(atomic.LoadInt32(&q.size))
 }
 
 // Capacity returns capacity of the queue
-func (q *ring_buffer) Capacity() int {
+func (q *RingBuffer) Capacity() int {
 	return q.capacity
 }
