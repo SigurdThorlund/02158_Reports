@@ -40,6 +40,9 @@ func (q *RingBuffer) StartConsumers(num int, consumer func(item interface{})) {
 				q.release.L.Lock()
 				select {
 				case item := <-q.items:
+					if !ok {
+						return
+					}
 					atomic.AddInt32(&q.size, -1)
 					consumer(item)
 				case <-q.stopCh:
@@ -60,16 +63,25 @@ func (q *RingBuffer) Produce(item interface{}) bool {
 		q.onDroppedItem(item)
 		return false
 	}
+
 	defer q.release.L.Unlock()
 	defer q.release.Broadcast()
 	q.release.L.Lock()
 	select {
 		case q.items <- item:
 			atomic.AddInt32(&q.size, 1)
+			q.release.L.Unlock()
+			q.release.Broadcast()
 			return true
 		default:
-			<-q.items
+			dropped <- q.items
 			q.items <- item
+			q.release.L.Unlock()
+			q.release.Broadcast()
+
+			if q.onDroppedItem != nil {
+				q.onDroppedItem(dropped)
+			}
 			return true
 	}
 }
@@ -85,6 +97,9 @@ func (q *RingBuffer) Stop() {
 
 // Size returns the current size of the queue
 func (q *RingBuffer) Size() int {
+	defer q.release.L.Unlock()
+	defer q.release.Broadcast()
+	q.release.L.Lock()
 	return int(atomic.LoadInt32(&q.size))
 }
 
